@@ -1,6 +1,6 @@
-struct s_Flags {
+/*struct s_Flags {
 	bool one;
 	bool l;
 	bool a;
 	bool A;
-} Flags;
+} Flags;*/
