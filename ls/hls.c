@@ -51,7 +51,10 @@ int main(int argc, char *argv[]) {
 
 	for (index_directory = 0; index_directory < argument_count; index_directory++) {
 		d = opendir(directories[index_directory]);
-	
+		if (d == NULL) {
+			printf("ls: cannot access '%s': No such file or directory\n", directories[index_directory]);
+			continue;
+		}
 		count = count_element_in_dir(d);
 		char *values[count];
 	
