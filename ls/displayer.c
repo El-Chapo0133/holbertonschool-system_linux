@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <math.h>
 
-void display(int argc, int index_directory, char* directory, int count, char *values[count], Flags *my_flags) {
+void display(int argument_count, int index_directory, char* directory, int count, char *values[count], Flags *my_flags) {
 	int index;
 	
 	/**
@@ -19,7 +19,7 @@ void display(int argc, int index_directory, char* directory, int count, char *va
 	max_str_length += abs(((int)max_str_length % 8) - 8);
 
 	/* simple print the elements, ignore the NULL values */
-	if (argc > 2)
+	if (argument_count > 1)
 		printf("%s:\n", directory);
 	for (index = 0; index < count; index++) {
 		if (values[index] == NULL) { continue; }
@@ -42,7 +42,7 @@ void display(int argc, int index_directory, char* directory, int count, char *va
 		}
 	}
 	/* print an additionnal '\n' if there's more directory to scan */
-	if (argc > 2 && index_directory < argc - 2)
+	if (argument_count > 1 && index_directory < argument_count - 1)
 		printf("\n");
 	/* end of programme '\n' */
 	printf("\n");

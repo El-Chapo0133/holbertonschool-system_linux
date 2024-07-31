@@ -32,7 +32,7 @@ int main(int argc, char *argv[]) {
 		count = analyse_folder(directories[index_directory], &values);
 		if (count == 0)
 			continue;
-		display(argc, index_directory, directories[index_directory], count, values, &my_flags);
+		display(argument_count, index_directory, directories[index_directory], count, values, &my_flags);
 	
 		free(values);
 	}
