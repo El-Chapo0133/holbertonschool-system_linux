@@ -1,25 +1,75 @@
+#include "hls.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
-/* add struct *Flags */
-int parse_args(int argc, char *argv[], char ***directories) {
+int is_flags(char *arg) {
+	if (arg[0] == '\0')
+		return false;
+	else if (arg[0] == '-')
+		return true;
+	return false;
+}
+
+void parse_flags(char *arg, Flags *my_flags) {
+	int index = 0;
+	int length = strlen(arg);
+
+	for (index = 0; index < length; index++) {
+		if (arg[index] == '-')
+			continue;
+		else if (arg[index] == '1')
+			my_flags->one = true;
+		else if (arg[index] == 'a')
+			my_flags->a = true;
+		else if (arg[index] == 'A')
+			my_flags->A = true;
+		else if (arg[index] == 'l')
+			my_flags->l = true;
+	}	
+}
+
+int count_arguments(int argc, char *argv[]) {
+	int argument_count = 0;
 	int index;
-	int argument_count = argc - 1;
+
+	for (index = 1; index < argc; index++) {
+		if (argv[index] != NULL && argv[index][0] != '-')
+			argument_count++;
+	}
+	/* means no argument given : use "." */
 	if (argument_count == 0)
-		argument_count = 1;
-	// detect if - argument found, if yes argument_count--;
-	*directories = malloc(argument_count * sizeof(char*));
-	
-	if (argc == 1)
-		(*directories)[0] = ".";
-	else
-		for (index = 1; index < argc; index++)
-			(*directories)[index - 1] = argv[index];
+		argument_count++;
 
 	return (argument_count);
 }
 
-/*
-void detect_flags() {}
-void parse_flags() {}
-*/
+/**
+ * parse_args - parse argv to a list of arguments, fill the struct Flags with the declared flags
+ * @argc: main argc
+ * @argv: main argv
+ * @directories: array to be filled with directories
+ * @arg_flags: flags to be filled
+ *
+ * Return: quantity of directories 
+ */
+int parse_args(int argc, char *argv[], char ***directories, Flags *arg_flags) {
+	int index;
+	int argument_count = count_arguments(argc, argv);
+	
+	*directories = malloc(argument_count * sizeof(char*));
+
+	for (index = 1; index < argc; index++) {
+		if (argv[index][0] == '\0')
+			continue;
+		else if (argv[index][0] == '-')
+			parse_flags(argv[index], arg_flags);
+		else
+			(*directories)[index - 1] = argv[index];
+	}
+	/* if no arguments found, use "." */
+	if ((*directories)[0] == NULL)
+		(*directories)[0] = ".";
+
+	return (argument_count);
+}

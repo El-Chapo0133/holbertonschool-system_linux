@@ -1,11 +1,12 @@
+#include "hls.h"
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 #include <math.h>
 
-void display(int argc, int index_directory, char* directory, int count, char *values[count]) {
+void display(int argc, int index_directory, char* directory, int count, char *values[count], Flags *my_flags) {
 	int index;
-		
+	
 	/**
 	 * this block find the max string size (element name + space) length
 	 * it will be used to know how many '\t' we must write for each element
@@ -27,11 +28,16 @@ void display(int argc, int index_directory, char* directory, int count, char *va
 
 		/* else print it normally with '\t' */
 		if (index < count - 1) {
-			int difference_chars = max_str_length - strlen(values[index]);
-			int amount_of_tabs = ceil((float)(difference_chars) / 8);
-			int j;
-			for (j = 0; j < amount_of_tabs; j++) {
-				printf("\t");
+			if (my_flags->one == true) {
+				printf("\n");
+			}
+			else {
+				int difference_chars = max_str_length - strlen(values[index]);
+				int amount_of_tabs = ceil((float)(difference_chars) / 8);
+				int j;
+				for (j = 0; j < amount_of_tabs; j++) {
+						printf("\t");
+				}
 			}
 		}
 	}
