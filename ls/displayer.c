@@ -12,6 +12,13 @@
 #include <grp.h>
 
 
+/**
+ * display_normal - Display normal, as columns
+ * @count: count of values
+ * @values: values in directory
+ *
+ * Return: void
+ */
 void display_normal(int count, char *values[count]) {
 	int index;
 	/**
@@ -39,6 +46,13 @@ void display_normal(int count, char *values[count]) {
 		}
 	}
 }
+/**
+ * display_one - display with \n as separator
+ * @count: count of values
+ * @values: values in directory
+ *
+ * Return: void
+ */
 void display_one(int count, char *values[count]) {
 	int index;
 	for (index = 0; index < count; index++) {
@@ -48,10 +62,47 @@ void display_one(int count, char *values[count]) {
 		if (index < count - 1) { printf("\n");}
 	}
 }
+/**
+ * display_long - display values in long format, with permissions, links, groupd, owner and modification time
+ * @count: count of values
+ * @values: values in directory
+ * @stats: stats of each values, can be NULL
+ *
+ * Return: void
+ */
 void display_long(int count, char *values[count], struct stat stats[count]) {
-	int index;
+	int index, index_j, difference;	
 
-	
+	char *group_names[count];
+	char *passwd_names[count];
+	unsigned short st_nlinks[count];
+	unsigned long long st_sizes[count];
+	int max_group_names, max_passwd_names, max_st_nlinks;
+	unsigned long long max_st_sizes;
+	int max_length_st_nlinks, max_length_st_sizes;
+
+	struct passwd *usr;
+	struct group *group;
+
+	/* fill the array */
+	for (index = 0; index < count; index++) {
+		if (values[index] == NULL)
+			continue;
+		
+		usr = getpwuid(stats[index].st_uid);
+		group = getgrgid(stats[index].st_gid);
+
+		st_nlinks[index] = stats[index].st_nlink;
+		st_sizes[index] = stats[index].st_size;
+		passwd_names[index] = usr->pw_name;
+		group_names[index] = group->gr_name;
+	}
+	max_group_names = get_max_string(count, group_names);
+	max_passwd_names = get_max_string(count, passwd_names);
+	max_st_nlinks = get_max_int(count, st_nlinks);
+	max_st_sizes = get_max_long_long_int(count, st_sizes);
+	max_length_st_nlinks = get_length_of_int(max_st_nlinks);
+	max_length_st_sizes = get_length_of_long_long_int(max_st_sizes);
 
 	for (index = 0; index < count; index++) {
 		if (values[index] == NULL)
@@ -71,11 +122,24 @@ void display_long(int count, char *values[count], struct stat stats[count]) {
 
 		char time_str[10];
 		strftime(time_str, 10, "%b %H:%M", localtime(&stats[index].st_mtime));
-	
-		struct passwd *usr = getpwuid(stats[index].st_uid);
-		struct group *group = getgrgid(stats[index].st_gid);
 
-		printf("%s  %d %s %s %lld %s %s\n", permissions, stats[index].st_nlink, usr->pw_name, group->gr_name, stats[index].st_size, time_str, values[index]);
+		/* no spaces */	
+		// printf("%s  %d %s %s %lld %s %s\n", permissions, st_nlinks[index], passwd_names[index], group_names[index], st_sizes[index], time_str, values[index]);
+		printf("%s  ", permissions);
+		/* with spaces */
+		difference = max_length_st_nlinks - get_length_of_int(st_nlinks[index]);
+		for (index_j = 0; index_j < difference; index_j++) { printf(" "); }
+		printf("%d ", st_nlinks[index]);
+		difference = max_passwd_names - strlen(passwd_names[index]);
+		for (index_j = 0; index_j < difference; index_j++) { printf(" "); }
+		printf("%s ", passwd_names[index]);
+		difference = max_group_names - strlen(group_names[index]);
+		for (index_j = 0; index_j < difference; index_j++) { printf(" "); }
+		printf("%s ", group_names[index]);
+		difference = max_length_st_sizes - get_length_of_long_long_int(st_sizes[index]);
+		for (index_j = 0; index_j < difference; index_j++) { printf(" "); }
+		printf("%llu ", st_sizes[index]);
+		printf("%s\n", values[index]);
 	}
 }
 void display(int argument_count, int index_directory, char *directory, int count, char *values[count], Flags *my_flags, struct stat stats[count]) {

@@ -20,6 +20,13 @@ void remove_hidden(int count, char* values[count]) {
 			values[index] = NULL;
 }
 
+/**
+ * remove_dot_and_dotdot - Replace the items "." and ".." by NULL
+ * @count: count of items in array
+ * @values: array of items
+ *
+ * Return: void
+ */
 void remove_dot_and_dotdot(int count, char* values[count]) {
 	int index;
 	for (index = 0; index < count; index++) {
@@ -29,6 +36,14 @@ void remove_dot_and_dotdot(int count, char* values[count]) {
 	}
 }
 
+/**
+ * analyse_folder - analyse the given folder by filling the array with items
+ * @directory: folder to analyse
+ * @values: array to be filled with items
+ * @my_flags: struct to define what filter on the items
+ *
+ * Return: amount of items found
+ */
 int analyse_folder(char *directory, char ***values, Flags *my_flags) {
 	DIR *d;
 	struct dirent *dir;

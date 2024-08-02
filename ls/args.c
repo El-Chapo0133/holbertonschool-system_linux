@@ -3,6 +3,12 @@
 #include <stdlib.h>
 #include <string.h>
 
+/**
+ * is_flag - get if a string is a flag (starts with '-')
+ * @arg: value to check
+ *
+ * Return: 1=true 0=false
+ */
 int is_flags(char *arg) {
 	if (arg[0] == '\0')
 		return false;
@@ -11,6 +17,13 @@ int is_flags(char *arg) {
 	return false;
 }
 
+/**
+ * parse_flags - fill the struct with given chars
+ * @arg: list of flags, ex: -la
+ * @my_flags: struct to be filled
+ *
+ * Return: void
+ */
 void parse_flags(char *arg, Flags *my_flags) {
 	int index = 0;
 	int length = strlen(arg);
@@ -29,6 +42,13 @@ void parse_flags(char *arg, Flags *my_flags) {
 	}	
 }
 
+/**
+ * count_arguments - count the amount of valid arguments
+ * @argc: argc
+ * @argv: argv
+ *
+ * Return: count of valid arguments
+ */
 int count_arguments(int argc, char *argv[]) {
 	int argument_count = 0;
 	int index;
@@ -59,10 +79,12 @@ int parse_args(int argc, char *argv[], char ***directories, Flags *arg_flags) {
 	
 	*directories = malloc(argument_count * sizeof(char*));
 
+	/* start at 1, because [0] is the program argument */
 	for (index = 1; index < argc; index++) {
 		if (argv[index][0] == '\0')
 			continue;
-		else if (argv[index][0] == '-')
+		/* if the args is a flag, parse them */
+		else if (is_flags(argv[index]))
 			parse_flags(argv[index], arg_flags);
 		else
 			(*directories)[index - 1] = argv[index];

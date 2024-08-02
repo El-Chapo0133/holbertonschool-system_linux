@@ -10,6 +10,7 @@
 int count_element_in_dir(DIR *d) {
 	int result = 0;
 	while (readdir(d) != NULL) { result += 1; }
+	/* re-place d at start */
 	rewinddir(d);
 	return (result);
 }
