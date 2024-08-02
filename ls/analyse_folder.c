@@ -1,8 +1,10 @@
+#include "hls.h"
 #include "sort.h"
 #include "dir_utils.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <dirent.h>
+#include <string.h>
 
 /**
  * remove_hidden - Replace the items that starts with "." by NULL
@@ -12,15 +14,22 @@
  * Return: void
  */
 void remove_hidden(int count, char* values[count]) {
-	int i;
-	for (i = 0; i < count; i++) {
-		if (values[i][0] == '.') {
-			values[i] = NULL;
-		}
+	int index;
+	for (index = 0; index < count; index++)
+		if (values[index][0] == '.')
+			values[index] = NULL;
+}
+
+void remove_dot_and_dotdot(int count, char* values[count]) {
+	int index;
+	for (index = 0; index < count; index++) {
+		if (values[index] == NULL) continue;
+		if (strcmp(values[index], ".") == 0 || strcmp(values[index], "..") == 0)
+			values[index] = NULL;
 	}
 }
 
-int analyse_folder(char *directory, char ***values) {
+int analyse_folder(char *directory, char ***values, Flags *my_flags) {
 	DIR *d;
 	struct dirent *dir;
 	int index, count;
@@ -50,7 +59,10 @@ int analyse_folder(char *directory, char ***values) {
 	sort_strings(count, (*values));
 	
 	/* unless the flag -a is triggered, we remove every elements that starts with a '.' */
-	remove_hidden(count, (*values));
+	if (my_flags->A == true)
+		remove_dot_and_dotdot(count, (*values));
+	else if (my_flags->a == false)
+		remove_hidden(count, (*values));
 
 	return (count);
 }
