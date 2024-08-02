@@ -92,6 +92,7 @@ void display_long(int count, char *values[count], struct stat stats[count]) {
 		usr = getpwuid(stats[index].st_uid);
 		group = getgrgid(stats[index].st_gid);
 
+		printf("%d - ", stats[index].st_nlink);
 		st_nlinks[index] = stats[index].st_nlink;
 		st_sizes[index] = stats[index].st_size;
 		passwd_names[index] = usr->pw_name;
@@ -100,6 +101,7 @@ void display_long(int count, char *values[count], struct stat stats[count]) {
 	max_group_names = get_max_string(count, group_names);
 	max_passwd_names = get_max_string(count, passwd_names);
 	max_st_nlinks = get_max_int(count, st_nlinks);
+	printf("%d\n", max_st_nlinks);
 	max_st_sizes = get_max_long_long_int(count, st_sizes);
 	max_length_st_nlinks = get_length_of_int(max_st_nlinks);
 	max_length_st_sizes = get_length_of_long_long_int(max_st_sizes);
@@ -107,7 +109,7 @@ void display_long(int count, char *values[count], struct stat stats[count]) {
 	for (index = 0; index < count; index++) {
 		if (values[index] == NULL)
 			continue;
-		
+
 		char permissions[11];
 		permissions[0] = (S_ISDIR(stats[index].st_mode)) ? 'd' : '-';
 		permissions[1] = (stats[index].st_mode & S_IRUSR) ? 'r' : '-';
@@ -128,6 +130,7 @@ void display_long(int count, char *values[count], struct stat stats[count]) {
 		printf("%s  ", permissions);
 		/* with spaces */
 		difference = max_length_st_nlinks - get_length_of_int(st_nlinks[index]);
+		printf("%d - %d", max_length_st_nlinks, difference);
 		for (index_j = 0; index_j < difference; index_j++) { printf(" "); }
 		printf("%d ", st_nlinks[index]);
 		difference = max_passwd_names - strlen(passwd_names[index]);
