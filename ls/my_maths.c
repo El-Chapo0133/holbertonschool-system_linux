@@ -25,7 +25,6 @@ long long get_max_long_long_int(int count, unsigned long long values[count]) {
 	unsigned long long max = values[0];
 	int index;
 	for (index = 1; index < count; index++) {
-		printf("%llu\n", values[index]);
 		if (values[index] > max)
 			max = values[index];
 	}
