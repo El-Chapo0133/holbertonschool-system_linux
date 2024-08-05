@@ -19,7 +19,8 @@
  *
  * Return: void
  */
-void display_normal(int count, char *values[count]) {
+void display_normal(char *values) {
+	int count = sizeof(values) / sizeof(values[0]);
 	int index;
 	/**
 	 * this block find the max string size (element name + space) length
@@ -53,7 +54,8 @@ void display_normal(int count, char *values[count]) {
  *
  * Return: void
  */
-void display_one(int count, char *values[count]) {
+void display_one(char *values) {
+	int count = sizeof(values) / sizeof(values[0]);
 	int index;
 	for (index = 0; index < count; index++) {
 		if (values[index] == NULL) { continue; }
