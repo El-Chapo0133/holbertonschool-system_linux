@@ -1,5 +1,4 @@
 #include "hls.h"
-#include "sort.h"
 #include "dir_utils.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -70,9 +69,6 @@ int analyse_folder(char *directory, char ***values, Flags *my_flags) {
 	}
 	closedir(d);
 
-	/* ls sort the element, so we do */
-	sort_strings(count, (*values));
-	
 	/* unless the flag -a is triggered, we remove every elements that starts with a '.' */
 	if (my_flags->A == true)
 		remove_dot_and_dotdot(count, (*values));

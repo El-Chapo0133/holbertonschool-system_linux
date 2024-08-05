@@ -9,7 +9,7 @@ int get_max_int(int count, unsigned short values[count]) {
 		return (0);
 	if (count == 1)
 		return (values[0]);
-	int max = values[0];
+	unsigned int max = values[0];
 	int index;
 	for (index = 1; index < count; index++) {
 		if (values[index] > max)

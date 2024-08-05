@@ -57,9 +57,7 @@ void display_one(int count, char *values[count]) {
 	int index;
 	for (index = 0; index < count; index++) {
 		if (values[index] == NULL) { continue; }
-		printf("%s", values[index]);
-		
-		if (index < count - 1) { printf("\n");}
+		printf("%s\n", values[index]);
 	}
 }
 /**
@@ -86,13 +84,17 @@ void display_long(int count, char *values[count], struct stat stats[count]) {
 
 	/* fill the array */
 	for (index = 0; index < count; index++) {
-		if (values[index] == NULL)
+		if (values[index] == NULL) {
+			st_nlinks[index] = 0;
+			st_sizes[index] = 0;
+			passwd_names[index] = "";
+			group_names[index] = "";
 			continue;
+		}
 		
 		usr = getpwuid(stats[index].st_uid);
 		group = getgrgid(stats[index].st_gid);
 
-		printf("%d - ", stats[index].st_nlink);
 		st_nlinks[index] = stats[index].st_nlink;
 		st_sizes[index] = stats[index].st_size;
 		passwd_names[index] = usr->pw_name;
@@ -101,7 +103,6 @@ void display_long(int count, char *values[count], struct stat stats[count]) {
 	max_group_names = get_max_string(count, group_names);
 	max_passwd_names = get_max_string(count, passwd_names);
 	max_st_nlinks = get_max_int(count, st_nlinks);
-	printf("%d\n", max_st_nlinks);
 	max_st_sizes = get_max_long_long_int(count, st_sizes);
 	max_length_st_nlinks = get_length_of_int(max_st_nlinks);
 	max_length_st_sizes = get_length_of_long_long_int(max_st_sizes);
@@ -130,18 +131,19 @@ void display_long(int count, char *values[count], struct stat stats[count]) {
 		printf("%s  ", permissions);
 		/* with spaces */
 		difference = max_length_st_nlinks - get_length_of_int(st_nlinks[index]);
-		printf("%d - %d", max_length_st_nlinks, difference);
+		// printf("%d - %d", max_length_st_nlinks, difference);
 		for (index_j = 0; index_j < difference; index_j++) { printf(" "); }
 		printf("%d ", st_nlinks[index]);
 		difference = max_passwd_names - strlen(passwd_names[index]);
 		for (index_j = 0; index_j < difference; index_j++) { printf(" "); }
-		printf("%s ", passwd_names[index]);
+		printf("%s  ", passwd_names[index]);
 		difference = max_group_names - strlen(group_names[index]);
 		for (index_j = 0; index_j < difference; index_j++) { printf(" "); }
-		printf("%s ", group_names[index]);
+		printf("%s  ", group_names[index]);
 		difference = max_length_st_sizes - get_length_of_long_long_int(st_sizes[index]);
 		for (index_j = 0; index_j < difference; index_j++) { printf(" "); }
 		printf("%llu ", st_sizes[index]);
+		printf("%s ", time_str);
 		printf("%s\n", values[index]);
 	}
 }
@@ -165,5 +167,5 @@ void display(int argument_count, int index_directory, char *directory, int count
 	if (argument_count > 1 && index_directory < argument_count - 1)
 		printf("\n");
 	/* end of programme '\n' */
-	printf("\n");
+	//printf("\n");
 }
