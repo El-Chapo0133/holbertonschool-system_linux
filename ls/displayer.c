@@ -100,10 +100,10 @@ void display_long(int count, char *values[count], struct stat stats[count]) {
 		passwd_names[index] = usr->pw_name;
 		group_names[index] = group->gr_name;
 	}
-	max_group_names = get_max_string(count, group_names);
-	max_passwd_names = get_max_string(count, passwd_names);
-	max_st_nlinks = get_max_int(count, st_nlinks);
-	max_st_sizes = get_max_long_long_int(count, st_sizes);
+	max_group_names = get_max_string(group_names);
+	max_passwd_names = get_max_string(passwd_names);
+	max_st_nlinks = get_max_int(st_nlinks);
+	max_st_sizes = get_max_long_long_int(st_sizes);
 	max_length_st_nlinks = get_length_of_int(max_st_nlinks);
 	max_length_st_sizes = get_length_of_long_long_int(max_st_sizes);
 

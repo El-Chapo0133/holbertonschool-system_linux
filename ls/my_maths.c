@@ -4,7 +4,8 @@
 #include <math.h>
 
 
-int get_max_int(int count, unsigned short values[count]) {
+int get_max_int(unsigned short *values) {
+	int count = sizeof(values) / sizeof(values[0]);
 	if (count == 0)
 		return (0);
 	if (count == 1)
@@ -17,7 +18,8 @@ int get_max_int(int count, unsigned short values[count]) {
 	}
 	return (max);
 }
-long long get_max_long_long_int(int count, unsigned long long values[count]) {
+long long get_max_long_long_int(unsigned long long *values) {
+	int count = sizeof(values) / sizeof(values[0]);
 	if (count == 0)
 		return (0);
 	if (count == 1)
@@ -30,7 +32,8 @@ long long get_max_long_long_int(int count, unsigned long long values[count]) {
 	}
 	return (max);
 }
-int get_max_string(int count, char *values[count]) {
+int get_max_string(char **values) {
+	int count = sizeof(values) / sizeof(values[0]);
 	if (count == 0)
 		return (0);
 	if (count == 1)

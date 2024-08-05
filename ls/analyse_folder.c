@@ -12,8 +12,9 @@
  *
  * Return: void
  */
-void remove_hidden(int count, char* values[count]) {
+void remove_hidden(char **values) {
 	int index;
+	int count = sizeof(values) / sizeof(values[0]);
 	for (index = 0; index < count; index++)
 		if (values[index][0] == '.')
 			values[index] = NULL;
@@ -26,8 +27,9 @@ void remove_hidden(int count, char* values[count]) {
  *
  * Return: void
  */
-void remove_dot_and_dotdot(int count, char* values[count]) {
+void remove_dot_and_dotdot(char **values) {
 	int index;
+	int count = sizeof(values) / sizeof(values[0]);
 	for (index = 0; index < count; index++) {
 		if (values[index] == NULL) continue;
 		if (strcmp(values[index], ".") == 0 || strcmp(values[index], "..") == 0)
@@ -71,9 +73,9 @@ int analyse_folder(char *directory, char ***values, Flags *my_flags) {
 
 	/* unless the flag -a is triggered, we remove every elements that starts with a '.' */
 	if (my_flags->A == true)
-		remove_dot_and_dotdot(count, (*values));
+		remove_dot_and_dotdot((*values));
 	else if (my_flags->a == false)
-		remove_hidden(count, (*values));
+		remove_hidden((*values));
 
 	return (count);
 }
