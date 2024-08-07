@@ -17,6 +17,7 @@
 int main(int argc, char *argv[]) {
 	int index_directory, argument_count, count;
 	char **directories = NULL;
+	/* todo: switch this struct to an array and define indexes */
 	Flags my_flags;
 	my_flags.one = false;
 	my_flags.l = false;
@@ -25,8 +26,8 @@ int main(int argc, char *argv[]) {
 
 	/* parse the arguments to get the directories and the flags */
 	argument_count = parse_args(argc, argv, &directories, &my_flags);
-	
-	
+
+	/* loop over given directories */
 	for (index_directory = 0; index_directory < argument_count; index_directory++) {
 		char **values = NULL;
 
@@ -47,11 +48,11 @@ int main(int argc, char *argv[]) {
 		}
 
 		/* display the directories with the flags given */
-		display(argument_count, index_directory, directories[index_directory], count, values, &my_flags, stats);
-	
+		display(argument_count, index_directory, directories[index_directory], values, &my_flags, stats);
+
 		/* free values and stats to be re-set */
 		free(values);
-		// free(stats);
+		free(stats);
 	}
 	free(directories);
 

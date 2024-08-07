@@ -149,19 +149,19 @@ void display_long(int count, char *values[count], struct stat stats[count]) {
 		printf("%s\n", values[index]);
 	}
 }
-void display(int argument_count, int index_directory, char *directory, int count, char *values[count], Flags *my_flags, struct stat stats[count]) {
+void display(int argument_count, int index_directory, char *directory, char **values, Flags *my_flags, struct stat *stats) {
 	/* if there's many folder to display, print the directory as a header */
 	if (argument_count > 1)
 		printf("%s:\n", directory);
 	
 	if (my_flags->one == true) {
-		display_one(count, values);
+		display_one(values);
 	}
 	else if (my_flags->l == true) {
-		display_long(count, values, stats);
+		display_long(values, stats);
 	}
 	else {
-		display_normal(count, values);
+		display_normal(*values);
 	}
 	
 
