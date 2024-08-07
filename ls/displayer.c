@@ -22,30 +22,12 @@
 void display_normal(char *values) {
 	int count = sizeof(values) / sizeof(values[0]);
 	int index;
-	/**
-	 * this block find the max string size (element name + space) length
-	 * it will be used to know how many '\t' we must write for each element
-	 */
-	unsigned long max_str_length = 0;
-	for (index = 0; index < count; index++) {
-		if (values[index] == NULL) { continue; }
-		if (strlen(values[index]) > max_str_length) { max_str_length = strlen(values[index]); }
-	}
-	max_str_length += abs(((int)max_str_length % 8) - 8);
 
 	for (index = 0; index < count; index++) {
 		if (values[index] == NULL) { continue; }
-		printf("%s", values[index]);
-
-		if (index < count - 1) {
-			int difference_chars = max_str_length - strlen(values[index]);
-			int amount_of_tabs = ceil((float)(difference_chars) / 8);
-			int j;
-			for (j = 0; j < amount_of_tabs; j++) {
-				printf("\t");
-			}
-		}
+		printf("%s\t", values[index]);
 	}
+	printf("\n");
 }
 /**
  * display_one - display with \n as separator
@@ -70,8 +52,9 @@ void display_one(char *values) {
  *
  * Return: void
  */
-void display_long(int count, char *values[count], struct stat stats[count]) {
-	int index, index_j, difference;	
+void display_long(char **values, struct stat stats) {
+	int count = sizeof(values) / sizeof(values[0]);
+	int index, index_j, difference;
 
 	char *group_names[count];
 	char *passwd_names[count];
@@ -149,7 +132,9 @@ void display_long(int count, char *values[count], struct stat stats[count]) {
 		printf("%s\n", values[index]);
 	}
 }
-void display(int argument_count, int index_directory, char *directory, int count, char *values[count], Flags *my_flags, struct stat stats[count]) {
+void display(int argument_count, int index_directory, char *directory, int count, char **values, Flags *my_flags, struct stat stats[count]) {
+	int count = sizeof(values) / sizeof(values[0]);
+	
 	/* if there's many folder to display, print the directory as a header */
 	if (argument_count > 1)
 		printf("%s:\n", directory);
@@ -168,6 +153,4 @@ void display(int argument_count, int index_directory, char *directory, int count
 	/* print an additionnal '\n' if there's more directory to scan */
 	if (argument_count > 1 && index_directory < argument_count - 1)
 		printf("\n");
-	/* end of programme '\n' */
-	//printf("\n");
 }

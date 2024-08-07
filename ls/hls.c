@@ -14,7 +14,7 @@
  *
  * Return: 0 (success) or 1 (error)
  */
-int main(int argc, char *argv[]) {
+int main(int argc, char **argv) {
 	int index_directory, argument_count, count;
 	char **directories = NULL;
 	Flags my_flags;
@@ -35,10 +35,10 @@ int main(int argc, char *argv[]) {
 		if (count == 0)
 			continue;
 
-		struct stat stats[count];
 		/* when -l flag is up, fill the array with stat values */
+		/* create an array of stat the same length as the values in directory */
+		struct stat *stats = malloc(count * sizeof(struct stat*));
 		if (my_flags.l == true) {
-			// stats = malloc(count * sizeof(struct stat*));
 			int status = get_lstats(count, values, stats);
 			if (status != 0) {
 				printf("ls: lstats issue - status code: %d\n", status);
@@ -51,9 +51,12 @@ int main(int argc, char *argv[]) {
 	
 		/* free values and stats to be re-set */
 		free(values);
-		// free(stats);
+		free(stats);
 	}
 	free(directories);
+
+	/* end of programme '\n' */
+	// printf("\n");
 
 	return (EXIT_SUCCESS);
 }

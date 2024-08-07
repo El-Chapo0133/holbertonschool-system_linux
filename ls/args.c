@@ -73,7 +73,7 @@ int count_arguments(int argc, char *argv[]) {
  *
  * Return: quantity of directories 
  */
-int parse_args(int argc, char *argv[], char ***directories, Flags *arg_flags) {
+int parse_args(int argc, char **argv, char ***directories, Flags *arg_flags) {
 	int index;
 	int argument_count = count_arguments(argc, argv);
 	
