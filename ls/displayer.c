@@ -58,6 +58,8 @@ void display_one(int count, char **values) {
 void display_long(int count, char **values, struct stat *stats) {
 	int index;
 
+	char *permissions = NULL;
+	char *time_str = NULL;
 	char **group_names = malloc(count * sizeof(char*));
 	char **passwd_names = malloc(count * sizeof(char*));
 	unsigned short *st_nlinks = malloc(count * sizeof(unsigned short));
@@ -89,7 +91,7 @@ void display_long(int count, char **values, struct stat *stats) {
 		if (values[index] == NULL)
 			continue;
 
-		char *permissions = malloc(11 * sizeof(char));
+		permissions = malloc(11 * sizeof(char));
 		permissions[0] = (S_ISDIR(stats[index].st_mode)) ? 'd' : '-';
 		permissions[1] = (stats[index].st_mode & S_IRUSR) ? 'r' : '-';
 		permissions[2] = (stats[index].st_mode & S_IWUSR) ? 'w' : '-';
@@ -101,10 +103,10 @@ void display_long(int count, char **values, struct stat *stats) {
 		permissions[8] = (stats[index].st_mode & S_IWOTH) ? 'w' : '-';
 		permissions[9] = (stats[index].st_mode & S_IXOTH) ? 'x' : '-';
 
-		char *time_str = malloc(10 * sizeof(char));
+		time_str = malloc(10 * sizeof(char));
 		strftime(time_str, 10, "%b %H:%M", localtime(&stats[index].st_mtime));
 
-		printf("%s  %d %s %s %lld %s %s\n", permissions, st_nlinks[index], passwd_names[index], group_names[index], st_sizes[index], time_str, values[index]);
+		printf("%s  %d %s %s %ld %s %s\n", permissions, st_nlinks[index], passwd_names[index], group_names[index], st_sizes[index], time_str, values[index]);
 
 		free(permissions);
 		free(time_str);

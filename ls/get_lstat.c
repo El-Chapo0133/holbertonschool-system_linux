@@ -10,7 +10,6 @@ int get_lstats(int count, char **values, struct stat *stats) {
 	for (index = 0; index < count; index++) {
 		if (values[index] == NULL)
 			continue;
-		// (*stats)[index] = (struct stat*)malloc(sizeof(struct stat*));
 		status = lstat(values[index], &stats[index]);
 		if (status != 0)
 			return (status);
