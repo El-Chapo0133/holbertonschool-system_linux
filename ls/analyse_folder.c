@@ -5,6 +5,11 @@
 #include <dirent.h>
 #include <string.h>
 
+#define INDEX_FLAG_ONE 0
+#define INDEX_FLAG_TINY_A 1
+#define INDEX_FLAG_BIG_A 2
+#define INDEX_FLAG_L 3
+
 /**
  * remove_hidden - Replace the items that starts with "." by NULL
  * @count: count of items in array
@@ -45,7 +50,7 @@ void remove_dot_and_dotdot(char **values) {
  *
  * Return: amount of items found
  */
-int analyse_folder(char *directory, char ***values, Flags *my_flags) {
+int analyse_folder(char *directory, char ***values, int *flags) {
 	DIR *d;
 	struct dirent *dir;
 	int index, count;
@@ -72,9 +77,9 @@ int analyse_folder(char *directory, char ***values, Flags *my_flags) {
 	closedir(d);
 
 	/* unless the flag -a is triggered, we remove every elements that starts with a '.' */
-	if (my_flags->A == true)
+	if (flags[INDEX_FLAG_BIG_A] == true)
 		remove_dot_and_dotdot((*values));
-	else if (my_flags->a == false)
+	else if (flags[INDEX_FLAG_TINY_A] == false)
 		remove_hidden((*values));
 
 	return (count);

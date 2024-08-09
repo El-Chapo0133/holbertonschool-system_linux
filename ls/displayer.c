@@ -10,6 +10,12 @@
 #include <pwd.h>
 #include <grp.h>
 
+#ifndef INDEX_FLAG_L
+#define INDEX_FLAG_L 3
+#endif
+#ifndef INDEX_FLAG_ONE
+#define INDEX_FLAG_ONE 0
+#endif
 
 /**
  * display_normal - Display normal, as columns
@@ -18,8 +24,7 @@
  *
  * Return: void
  */
-void display_normal(char *values) {
-	int count = sizeof(values) / sizeof(values[0]);
+void display_normal(int count, char **values) {
 	int index;
 
 	for (index = 0; index < count; index++) {
@@ -35,8 +40,7 @@ void display_normal(char *values) {
  *
  * Return: void
  */
-void display_one(char *values) {
-	int count = sizeof(values) / sizeof(values[0]);
+void display_one(int count, char **values) {
 	int index;
 	for (index = 0; index < count; index++) {
 		if (values[index] == NULL) { continue; }
@@ -51,14 +55,13 @@ void display_one(char *values) {
  *
  * Return: void
  */
-void display_long(char **values, struct stat stats) {
-	int count = sizeof(values) / sizeof(values[0]);
-	int index, index_j, difference;
+void display_long(int count, char **values, struct stat *stats) {
+	int index;
 
-	char *group_names = malloc(count * sizeof(*char));
-	char *passwd_names = malloc(count * sizeof(*char));
-	unsigned short st_nlinks = malloc(count * sizeof(unsigned short));
-	unsigned long long st_sizes = malloc(count * sizeof(unsigned long long));
+	char **group_names = malloc(count * sizeof(char*));
+	char **passwd_names = malloc(count * sizeof(char*));
+	unsigned short *st_nlinks = malloc(count * sizeof(unsigned short));
+	unsigned long long *st_sizes = malloc(count * sizeof(unsigned long long));
 
 	struct passwd *usr;
 	struct group *group;
@@ -107,19 +110,19 @@ void display_long(char **values, struct stat stats) {
 		free(time_str);
 	}
 }
-void display(int argument_count, int index_directory, char *directory, char **values, int *flags, struct stat *stats) {
+void display(int argument_count, int index_directory, char *directory, int count, char **values, int *flags, struct stat *stats) {
 	/* if there's many folder to display, print the directory as a header */
 	if (argument_count > 1)
 		printf("%s:\n", directory);
-	
+
 	if (flags[INDEX_FLAG_ONE] == true) {
-		display_one(values);
+		display_one(count, values);
 	}
 	else if (flags[INDEX_FLAG_L] == true) {
-		display_long(values, stats);
+		display_long(count, values, stats);
 	}
 	else {
-		display_normal(*values);
+		display_normal(count, values);
 	}
 	
 

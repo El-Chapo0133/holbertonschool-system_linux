@@ -2,4 +2,4 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
-void display(int argc, int index_directory, char* directory, int count, char *values[count], Flags *my_flags, struct stat stats[count]);
+void display(int argc, int index_directory, char* directory, int count, char **values, int *flags, struct stat *stats);

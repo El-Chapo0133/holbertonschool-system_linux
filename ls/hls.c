@@ -32,7 +32,7 @@ int main(int argc, char **argv) {
 		char **values = NULL;
 
 		/* analyse the given folder, fill &values with _every_ files/directories in it, fill the &flags if a "-" argument given */
-		count = analyse_folder(directories[index_directory], &values, &flags);
+		count = analyse_folder(directories[index_directory], &values, flags);
 		if (count == 0)
 			continue;
 
@@ -40,7 +40,8 @@ int main(int argc, char **argv) {
 		/* create an array of stat the same length as the values in directory */
 		struct stat *stats = malloc(count * sizeof(struct stat*));
 		if (flags[INDEX_FLAG_L] == true) {
-			int status = get_lstats(values, stats);
+			printf("Foo\n");
+			int status = get_lstats(count, values, stats);
 			if (status != 0) {
 				printf("ls: lstats issue - status code: %d\n", status);
 				continue;
@@ -48,7 +49,7 @@ int main(int argc, char **argv) {
 		}
 
 		/* display the directories with the flags given */
-		display(argument_count, index_directory, directories[index_directory], values, &flags, stats);
+		display(argument_count, index_directory, directories[index_directory], count, values, flags, stats);
 
 		/* free values and stats to be re-set */
 		free(values);

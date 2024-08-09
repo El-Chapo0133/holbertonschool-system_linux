@@ -3,6 +3,11 @@
 #include <stdlib.h>
 #include <string.h>
 
+#define INDEX_FLAG_ONE 0
+#define INDEX_FLAG_TINY_A 1
+#define INDEX_FLAG_BIG_A 2
+#define INDEX_FLAG_L 3
+
 /**
  * is_flag - get if a string is a flag (starts with '-')
  * @arg: value to check
@@ -23,11 +28,11 @@ int is_flags(char *arg) {
  * 
  * Return: void
  */
-void initialize_flags(int *flags) {
+void initialize_flags(int **flags) {
 	int count = sizeof(flags) / sizeof(int);
 	int index;
 	for (index = 0; index < count; index++)
-		flags[index] = false;
+		(*flags)[index] = false;
 }
 
 /**
@@ -37,20 +42,20 @@ void initialize_flags(int *flags) {
  *
  * Return: void
  */
-void parse_flags(char *arg, int *flags) {
+void parse_flags(char *arg, int **flags) {
 	int index = 0;
 
 	while (arg[index] != '\0') {
 		if (arg[index] == '-')
 			continue;
 		else if (arg[index] == '1')
-			flags[INDEX_FLAG_ONE] = true;
+			(*flags)[INDEX_FLAG_ONE] = true;
 		else if (arg[index] == 'a')
-			flags[INDEX_FLAG_TINY_A] = true;
+			(*flags)[INDEX_FLAG_TINY_A] = true;
 		else if (arg[index] == 'A')
-			flags[INDEX_FLAG_BIG_A] = true;
+			(*flags)[INDEX_FLAG_BIG_A] = true;
 		else if (arg[index] == 'l')
-			flags[INDEX_FLAG_L] = true;
+			(*flags)[INDEX_FLAG_L] = true;
 
 		index++;
 	}	
@@ -87,7 +92,7 @@ int count_arguments(int argc, char *argv[]) {
  *
  * Return: quantity of directories 
  */
-int parse_args(int argc, char **argv, char ***directories, int *flags) {
+int parse_args(int argc, char **argv, char ***directories, int **flags) {
 	int index;
 	int argument_count = count_arguments(argc, argv);
 	

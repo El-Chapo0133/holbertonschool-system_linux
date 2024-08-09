@@ -2,4 +2,4 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
-int get_lstats(int count, char *values[count], struct stat stats[count]);
+int get_lstats(int count, char **values, struct stat *stats);

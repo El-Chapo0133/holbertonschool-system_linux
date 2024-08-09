@@ -4,8 +4,7 @@
 #include <string.h>
 
 
-int get_lstats(char **values, struct stat *stats) {
-	int count = sizeof(values) / sizeof(values[0]);
+int get_lstats(int count, char **values, struct stat *stats) {
 	int index, status;
 
 	for (index = 0; index < count; index++) {
