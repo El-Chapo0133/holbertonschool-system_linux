@@ -21,8 +21,9 @@
 int main(int argc, char **argv) {
 	int index_directory, argument_count, count;
 	char **directories = NULL;
-	/* todo: switch this struct to an array and define indexes */
+	struct stat *stats = NULL;
 	int *flags = malloc(4 * sizeof(int));
+	int status;
 
 	/* parse the arguments to get the directories and the flags */
 	argument_count = parse_args(argc, argv, &directories, &flags);
@@ -38,10 +39,10 @@ int main(int argc, char **argv) {
 
 		/* when -l flag is up, fill the array with stat values */
 		/* create an array of stat the same length as the values in directory */
-		struct stat *stats = malloc(count * sizeof(struct stat*));
+		stats = malloc(count * sizeof(struct stat*));
 		if (flags[INDEX_FLAG_L] == true) {
 			printf("Foo\n");
-			int status = get_lstats(count, values, stats);
+			status = get_lstats(count, values, stats);
 			if (status != 0) {
 				printf("ls: lstats issue - status code: %d\n", status);
 				continue;
@@ -59,7 +60,7 @@ int main(int argc, char **argv) {
 	free(flags);
 
 	/* end of programme '\n' */
-	// printf("\n");
+	/* printf("\n"); */
 
 	return (EXIT_SUCCESS);
 }

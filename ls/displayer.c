@@ -61,7 +61,7 @@ void display_long(int count, char **values, struct stat *stats) {
 	char **group_names = malloc(count * sizeof(char*));
 	char **passwd_names = malloc(count * sizeof(char*));
 	unsigned short *st_nlinks = malloc(count * sizeof(unsigned short));
-	unsigned long long *st_sizes = malloc(count * sizeof(unsigned long long));
+	unsigned long *st_sizes = malloc(count * sizeof(unsigned long));
 
 	struct passwd *usr;
 	struct group *group;
