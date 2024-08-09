@@ -1,19 +1,21 @@
+#include "laps.h"
 #include <stdio.h>
+#include <stddef.h>
+#include <stdlib.h>
+
 
 int find_free_id(int *cars) {
 	int index;
-	int length = sizeof(cars) / sizeof(int);
 	
-	for (index = 0; index < length; index++)
+	for (index = 0; index < 99; index++)
 		if (cars[index] == 0)
 			return index;
 	return -1;
 }
 int find_car(int *cars, int car_to_find) {
 	int index;
-	int length = sizeof(cars) / sizeof(int);
 	
-	for (index = 0; index < length; index++)
+	for (index = 0; index < 99; index++)
 		if (cars[index] == car_to_find)
 			return index;
 	return -1;
@@ -22,7 +24,7 @@ int find_car(int *cars, int car_to_find) {
 void race_state(int *id, size_t size) {
 	static int* cars;
 	static int* laps;
-	int index;
+	size_t index;
 	int car_index;
 	int free_car_index;
 
