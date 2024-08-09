@@ -1,5 +1,4 @@
 #include "hls.h"
-#include "my_maths.h"
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -56,13 +55,10 @@ void display_long(char **values, struct stat stats) {
 	int count = sizeof(values) / sizeof(values[0]);
 	int index, index_j, difference;
 
-	char *group_names[count];
-	char *passwd_names[count];
-	unsigned short st_nlinks[count];
-	unsigned long long st_sizes[count];
-	int max_group_names, max_passwd_names, max_st_nlinks;
-	unsigned long long max_st_sizes;
-	int max_length_st_nlinks, max_length_st_sizes;
+	char *group_names = malloc(count * sizeof(*char));
+	char *passwd_names = malloc(count * sizeof(*char));
+	unsigned short st_nlinks = malloc(count * sizeof(unsigned short));
+	unsigned long long st_sizes = malloc(count * sizeof(unsigned long long));
 
 	struct passwd *usr;
 	struct group *group;
@@ -85,18 +81,12 @@ void display_long(char **values, struct stat stats) {
 		passwd_names[index] = usr->pw_name;
 		group_names[index] = group->gr_name;
 	}
-	max_group_names = get_max_string(group_names);
-	max_passwd_names = get_max_string(passwd_names);
-	max_st_nlinks = get_max_int(st_nlinks);
-	max_st_sizes = get_max_long_long_int(st_sizes);
-	max_length_st_nlinks = get_length_of_int(max_st_nlinks);
-	max_length_st_sizes = get_length_of_long_long_int(max_st_sizes);
 
 	for (index = 0; index < count; index++) {
 		if (values[index] == NULL)
 			continue;
 
-		char permissions[11];
+		char *permissions = malloc(11 * sizeof(char));
 		permissions[0] = (S_ISDIR(stats[index].st_mode)) ? 'd' : '-';
 		permissions[1] = (stats[index].st_mode & S_IRUSR) ? 'r' : '-';
 		permissions[2] = (stats[index].st_mode & S_IWUSR) ? 'w' : '-';
@@ -108,45 +98,28 @@ void display_long(char **values, struct stat stats) {
 		permissions[8] = (stats[index].st_mode & S_IWOTH) ? 'w' : '-';
 		permissions[9] = (stats[index].st_mode & S_IXOTH) ? 'x' : '-';
 
-		char time_str[10];
+		char *time_str = malloc(10 * sizeof(char));
 		strftime(time_str, 10, "%b %H:%M", localtime(&stats[index].st_mtime));
 
-		/* no spaces */	
-		// printf("%s  %d %s %s %lld %s %s\n", permissions, st_nlinks[index], passwd_names[index], group_names[index], st_sizes[index], time_str, values[index]);
-		printf("%s  ", permissions);
-		/* with spaces */
-		difference = max_length_st_nlinks - get_length_of_int(st_nlinks[index]);
-		// printf("%d - %d", max_length_st_nlinks, difference);
-		for (index_j = 0; index_j < difference; index_j++) { printf(" "); }
-		printf("%d ", st_nlinks[index]);
-		difference = max_passwd_names - strlen(passwd_names[index]);
-		for (index_j = 0; index_j < difference; index_j++) { printf(" "); }
-		printf("%s  ", passwd_names[index]);
-		difference = max_group_names - strlen(group_names[index]);
-		for (index_j = 0; index_j < difference; index_j++) { printf(" "); }
-		printf("%s  ", group_names[index]);
-		difference = max_length_st_sizes - get_length_of_long_long_int(st_sizes[index]);
-		for (index_j = 0; index_j < difference; index_j++) { printf(" "); }
-		printf("%llu ", st_sizes[index]);
-		printf("%s ", time_str);
-		printf("%s\n", values[index]);
+		printf("%s  %d %s %s %lld %s %s\n", permissions, st_nlinks[index], passwd_names[index], group_names[index], st_sizes[index], time_str, values[index]);
+
+		free(permissions);
+		free(time_str);
 	}
 }
-void display(int argument_count, int index_directory, char *directory, int count, char **values, Flags *my_flags, struct stat stats[count]) {
-	int count = sizeof(values) / sizeof(values[0]);
-	
+void display(int argument_count, int index_directory, char *directory, char **values, int *flags, struct stat *stats) {
 	/* if there's many folder to display, print the directory as a header */
 	if (argument_count > 1)
 		printf("%s:\n", directory);
 	
-	if (my_flags->one == true) {
-		display_one(count, values);
+	if (flags[INDEX_FLAG_ONE] == true) {
+		display_one(values);
 	}
-	else if (my_flags->l == true) {
-		display_long(count, values, stats);
+	else if (flags[INDEX_FLAG_L] == true) {
+		display_long(values, stats);
 	}
 	else {
-		display_normal(count, values);
+		display_normal(*values);
 	}
 	
 

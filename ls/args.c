@@ -18,27 +18,41 @@ int is_flags(char *arg) {
 }
 
 /**
+ * initialize_flags - initialize the array of flags to false
+ * @flags: array of flags
+ * 
+ * Return: void
+ */
+void initialize_flags(int *flags) {
+	int count = sizeof(flags) / sizeof(int);
+	int index;
+	for (index = 0; index < count; index++)
+		flags[index] = false;
+}
+
+/**
  * parse_flags - fill the struct with given chars
  * @arg: list of flags, ex: -la
  * @my_flags: struct to be filled
  *
  * Return: void
  */
-void parse_flags(char *arg, Flags *my_flags) {
+void parse_flags(char *arg, int *flags) {
 	int index = 0;
-	int length = strlen(arg);
 
-	for (index = 0; index < length; index++) {
+	while (arg[index] != '\0') {
 		if (arg[index] == '-')
 			continue;
 		else if (arg[index] == '1')
-			my_flags->one = true;
+			flags[INDEX_FLAG_ONE] = true;
 		else if (arg[index] == 'a')
-			my_flags->a = true;
+			flags[INDEX_FLAG_TINY_A] = true;
 		else if (arg[index] == 'A')
-			my_flags->A = true;
+			flags[INDEX_FLAG_BIG_A] = true;
 		else if (arg[index] == 'l')
-			my_flags->l = true;
+			flags[INDEX_FLAG_L] = true;
+
+		index++;
 	}	
 }
 
@@ -73,11 +87,13 @@ int count_arguments(int argc, char *argv[]) {
  *
  * Return: quantity of directories 
  */
-int parse_args(int argc, char **argv, char ***directories, Flags *arg_flags) {
+int parse_args(int argc, char **argv, char ***directories, int *flags) {
 	int index;
 	int argument_count = count_arguments(argc, argv);
 	
 	*directories = malloc(argument_count * sizeof(char*));
+
+	initialize_flags(flags);
 
 	/* start at 1, because [0] is the program argument */
 	for (index = 1; index < argc; index++) {
@@ -85,7 +101,7 @@ int parse_args(int argc, char **argv, char ***directories, Flags *arg_flags) {
 			continue;
 		/* if the args is a flag, parse them */
 		else if (is_flags(argv[index]))
-			parse_flags(argv[index], arg_flags);
+			parse_flags(argv[index], flags);
 		else
 			(*directories)[index - 1] = argv[index];
 	}
