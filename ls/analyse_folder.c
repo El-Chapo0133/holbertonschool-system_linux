@@ -68,6 +68,8 @@ int analyse_folder(char *directory, char ***values, int *flags) {
 	count = count_element_in_dir(d);
 	*values = malloc(count * sizeof(char*));
 
+	d = opendir(directory);
+	
 	/* fill array with dir elements, no need to check for NULL as we did it earlier */
 	index = 0;
 	while ((dir = readdir(d)) != NULL) {
