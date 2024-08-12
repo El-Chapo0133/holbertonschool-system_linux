@@ -23,9 +23,9 @@ void update_cars(Car *head, int *id, size_t size) {
 }
 
 void insert_car(Car *head, int id) {
-	while (head != null) {
+	while (head != NULL) {
 		if (head->id > id) {
-			Car_t temp = malloc(sizeof(Car_t));
+			Car *temp = malloc(sizeof(*Car));
 			temp->id = id;
 			temp->laps = 0;
 			temp->next = head->next;
@@ -35,7 +35,7 @@ void insert_car(Car *head, int id) {
 		}
 		else if (head->next == NULL) {
 			/* biggest id ever yet */
-			Car_t temp = malloc(sizeof(Car_t));
+			Car *temp = malloc(sizeof(*Car));
 			temp->id = id;
 			temp->laps = 0;
 			temp->next = NULL;
@@ -48,7 +48,7 @@ void insert_car(Car *head, int id) {
 }
 
 void race_state(int *id, size_t size) {
-	static Car_t cars;
+	static Car cars;
 	if (cars == NULL) {
 		fprintf("Memory error :(");
 		exit(1);
@@ -57,4 +57,19 @@ void race_state(int *id, size_t size) {
 	update_cars(cars, id, size);
 	
 	print_cars(cars);
+}
+
+
+int main(void) {
+	int ids1[3] = {1, 42, 101};
+    int ids2[1] = {11};
+
+    race_state(ids1, 3);
+    printf("--\n");
+    race_state(ids1, 3);
+    printf("--\n");
+    race_state(ids1, 3);
+    printf("--\n");
+    race_state(ids2, 1);
+
 }
