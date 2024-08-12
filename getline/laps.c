@@ -1,52 +1,60 @@
 #include "laps.h"
-#include <stdio.h>
-#include <stddef.h>
-#include <stdlib.h>
 
 
-int find_free_id(int *cars) {
-	int index;
-	
-	for (index = 0; index < 99; index++)
-		if (cars[index] == 0)
-			return index;
-	return -1;
+void print_cars(Car *head) {
+	printf("Race state:\n");
+	while (head != NULL) {
+		printf("Car %d [%d laps]", head->id, head->laps);
+	}
 }
-int find_car(int *cars, int car_to_find) {
-	int index;
-	
-	for (index = 0; index < 99; index++)
-		if (cars[index] == car_to_find)
-			return index;
-	return -1;
+
+void update_cars(Car *head, int *id, size_t size) {
+	size_t indexcars;
+	for (index = 0; index < size; index++) {
+		while (head != NULL) {
+			if (id[index] == head->id) {
+				head->laps++;
+				break;
+			}
+			head = head->next;
+		}
+		insert_car(head, id[index]);
+	}
+}
+
+void insert_car(Car *head, int id) {
+	while (head != null) {
+		if (head->id > id) {
+			Car_t temp = malloc(sizeof(Car_t));
+			temp->id = id;
+			temp->laps = 0;
+			temp->next = head->next;
+			head->next = temp;
+			printf("Car %d joined race", id);
+			return;
+		}
+		else if (head->next == NULL) {
+			/* biggest id ever yet */
+			Car_t temp = malloc(sizeof(Car_t));
+			temp->id = id;
+			temp->laps = 0;
+			temp->next = NULL;
+			head->next = temp;
+			printf("Car %d joined race", id);
+			return;
+		}
+		head = head->next;
+	}
 }
 
 void race_state(int *id, size_t size) {
-	static int* cars;
-	static int* laps;
-	size_t index;
-	int car_index;
-	int free_car_index;
-
-	if (cars == NULL)
-		cars = malloc(99 * sizeof(int));
-	if (laps == NULL)
-		laps = malloc(99 * sizeof(int));
-
-	for (index = 0; index < size; index++) {
-		car_index = find_car(cars, id[index]);
-		if (car_index == -1) {
-			free_car_index = find_free_id(cars);
-			if (free_car_index == 0)
-				exit(1);
-			cars[free_car_index] = id[index];
-			laps[free_car_index] = 0;
-			printf("Car %d joined the race\n", id[index]);
-		}
+	static Car_t cars;
+	if (cars == NULL) {
+		fprintf("Memory error :(");
+		exit(1);
 	}
 
-	printf("Race state:\n");
-	for (index = 0; index < 99; index++) {
-		printf("Car %d [%d laps]\n", cars[index], laps[index]);
-	}
+	update_cars(cars, id, size);
+	
+	print_cars(cars);
 }
