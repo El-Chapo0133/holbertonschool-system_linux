@@ -2,15 +2,14 @@
 
 /**
  * free_cars - free all alocated cars
- * @head: head of the linked list
  *
  * Return: void
  */
-void free_cars(Car *head) {
-	while (head != NULL) {
-		Car *temp = head;
-		head = head->next;
-		free(free);
+void free_cars(Car *cars) {
+	while (cars != NULL) {
+		Car *temp = cars;
+		cars = cars->next;
+		free(temp);
 	}
 }
 
@@ -20,10 +19,10 @@ void free_cars(Car *head) {
  *
  * Return: void
  */
-void print_cars(Car *head) {
+void print_cars(Car *cars) {
 	printf("Race state:\n");
-	while (head != NULL) {
-		printf("Car %d [%d laps]", head->id, head->laps);
+	while (cars != NULL) {
+		printf("Car %d [%d laps]", cars->id, cars->laps);
 	}
 }
 
@@ -34,49 +33,49 @@ void print_cars(Car *head) {
  *
  * Return: void
  */
-void insert_car(Car *head, int id) {
-	if (head == NULL) {
+void insert_car(Car *cars, int id) {
+	if (cars == NULL) {
 		Car *car = malloc(sizeof(Car));
 		car->id = id;
 		car->laps = 0;
 		car->next = NULL;
-		head = car;
+		cars = car;
 		return;
 	}
-	while (head != NULL) {
-		if (head->id > id) {
+	while (cars != NULL) {
+		if (cars->id > id) {
 			Car *temp = malloc(sizeof(Car));
 			temp->id = id;
 			temp->laps = 0;
-			temp->next = head->next;
-			head->next = temp;
+			temp->next = cars->next;
+			cars->next = temp;
 			printf("Car %d joined race", id);
 			return;
 		}
-		else if (head->next == NULL) {
+		else if (cars->next == NULL) {
 			/* biggest id ever yet */
 			Car *temp = malloc(sizeof(Car));
 			temp->id = id;
 			temp->laps = 0;
 			temp->next = NULL;
-			head->next = temp;
+			cars->next = temp;
 			printf("Car %d joined race", id);
 			return;
 		}
-		head = head->next;
+		cars = cars->next;
 	}
 }
-void update_cars(Car *head, int *id, size_t size) {
+void update_cars(Car *cars, int *id, size_t size) {
 	size_t index;
 	for (index = 0; index < size; index++) {
-		while (head != NULL) {
-			if (id[index] == head->id) {
-				head->laps++;
+		while (cars != NULL) {
+			if (id[index] == cars->id) {
+				cars->laps++;
 				break;
 			}
-			head = head->next;
+			cars = cars->next;
 		}
-		insert_car(head, id[index]);
+		insert_car(cars, id[index]);
 	}
 }
 
@@ -86,7 +85,7 @@ void race_state(int *id, size_t size) {
 
 	if (size == 0) {
 		free_cars(cars);
-		exit(0);
+		return;
 	}
 
 	update_cars(cars, id, size);
