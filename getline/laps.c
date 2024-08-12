@@ -73,9 +73,8 @@ void insert_car(int id) {
 }
 void update_cars(int *id, size_t size) {
 	size_t index;
-	int need_to_create_car;
+	int need_to_create_car = 1;
 	for (index = 0; index < size; index++) {
-		need_to_create_car = 1;
 		while (cars != NULL) {
 			if (id[index] == cars->id) {
 				cars->laps++;
