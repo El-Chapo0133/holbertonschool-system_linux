@@ -1,6 +1,14 @@
 #include "laps.h"
 
 
+void free_cars(Car *head) {
+	while (head != NULL) {
+		Car *temp = head->next;
+		free(head);
+		head = temp;
+	}
+}
+
 void print_cars(Car *head) {
 	printf("Race state:\n");
 	while (head != NULL) {
@@ -49,9 +57,10 @@ void update_cars(Car *head, int *id, size_t size) {
 
 void race_state(int *id, size_t size) {
 	static Car *cars;
-	if (cars == NULL) {
-		printf("Memory error :(");
-		exit(1);
+
+	if (size == 0) {
+		free_cars(cars);
+		exit(0);
 	}
 
 	update_cars(cars, id, size);
@@ -59,3 +68,20 @@ void race_state(int *id, size_t size) {
 	print_cars(cars);
 }
 
+/*
+int main(void)
+{
+
+    int ids1[3] = {1, 42, 101};
+    int ids2[1] = {11};
+
+    race_state(ids1, 3);
+    printf("--\n");
+    race_state(ids1, 3);
+    printf("--\n");
+    race_state(ids1, 3);
+    printf("--\n");
+    race_state(ids2, 1);
+    printf("--\n");
+    race_state(ids1, 3);
+}*/
