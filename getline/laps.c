@@ -1,11 +1,15 @@
 #include "laps.h"
 
+
+
+static Car *cars;
+
 /**
  * free_cars - free all alocated cars
  *
  * Return: void
  */
-void free_cars(Car *cars) {
+void free_cars(void) {
 	while (cars != NULL) {
 		Car *temp = cars;
 		cars = cars->next;
@@ -19,10 +23,11 @@ void free_cars(Car *cars) {
  *
  * Return: void
  */
-void print_cars(Car *cars) {
+void print_cars(void) {
 	printf("Race state:\n");
 	while (cars != NULL) {
-		printf("Car %d [%d laps]", cars->id, cars->laps);
+		printf("Car %d [%d laps]\n", cars->id, cars->laps);
+		cars = cars->next;
 	}
 }
 
@@ -33,13 +38,14 @@ void print_cars(Car *cars) {
  *
  * Return: void
  */
-void insert_car(Car *cars, int id) {
+void insert_car(int id) {
 	if (cars == NULL) {
 		Car *car = malloc(sizeof(Car));
 		car->id = id;
 		car->laps = 0;
 		car->next = NULL;
 		cars = car;
+		printf("Car %d joined race\n", id);
 		return;
 	}
 	while (cars != NULL) {
@@ -65,31 +71,33 @@ void insert_car(Car *cars, int id) {
 		cars = cars->next;
 	}
 }
-void update_cars(Car *cars, int *id, size_t size) {
+void update_cars(int *id, size_t size) {
 	size_t index;
+	int need_to_create_car;
 	for (index = 0; index < size; index++) {
+		need_to_create_car = 1;
 		while (cars != NULL) {
 			if (id[index] == cars->id) {
 				cars->laps++;
+				need_to_create_car = 0;
 				break;
 			}
 			cars = cars->next;
 		}
-		insert_car(cars, id[index]);
+		if (need_to_create_car)
+			insert_car(id[index]);
 	}
 }
 
 
 void race_state(int *id, size_t size) {
-	static Car *cars;
-
 	if (size == 0) {
-		free_cars(cars);
+		free_cars();
 		return;
 	}
 
-	update_cars(cars, id, size);
+	update_cars(id, size);
 	
-	print_cars(cars);
+	print_cars();
 }
 
