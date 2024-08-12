@@ -17,6 +17,14 @@ void print_cars(Car *head) {
 }
 
 void insert_car(Car *head, int id) {
+	if (head == NULL) {
+		Car *car = malloc(sizeof(Car));
+		car->id = id;
+		car->laps = 0;
+		car->next = NULL;
+		head = car;
+		return;
+	}
 	while (head != NULL) {
 		if (head->id > id) {
 			Car *temp = malloc(sizeof(Car));
@@ -68,20 +76,3 @@ void race_state(int *id, size_t size) {
 	print_cars(cars);
 }
 
-/*
-int main(void)
-{
-
-    int ids1[3] = {1, 42, 101};
-    int ids2[1] = {11};
-
-    race_state(ids1, 3);
-    printf("--\n");
-    race_state(ids1, 3);
-    printf("--\n");
-    race_state(ids1, 3);
-    printf("--\n");
-    race_state(ids2, 1);
-    printf("--\n");
-    race_state(ids1, 3);
-}*/
