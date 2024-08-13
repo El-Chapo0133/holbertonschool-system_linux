@@ -24,10 +24,12 @@ void free_cars(void) {
  * Return: void
  */
 void print_cars(void) {
+	Car *head = cars;
+
 	printf("Race state:\n");
-	while (cars != NULL) {
-		printf("Car %d [%d laps]\n", cars->id, cars->laps);
-		cars = cars->next;
+	while (head != NULL) {
+		printf("Car %d [%d laps]\n", head->id, head->laps);
+		head = head->next;
 	}
 }
 
@@ -39,49 +41,52 @@ void print_cars(void) {
  * Return: void
  */
 void insert_car(int id) {
-	if (cars == NULL) {
-		Car *car = malloc(sizeof(Car));
-		car->id = id;
-		car->laps = 0;
-		car->next = NULL;
-		cars = car;
-		printf("Car %d joined race\n", id);
-		return;
+	Car *new_car = malloc(sizeof(Car));
+	new_car->id = id;
+	new_car->laps = 0;
+	printf("Car %d joined race\n", id);
+
+	Car *head = cars;
+
+	/* When it's the first node to be added */
+	if (head == NULL) {
+		new_car->next = NULL;
+		cars = new_car;
 	}
-	while (cars != NULL) {
-		if (cars->id > id) {
-			Car *temp = malloc(sizeof(Car));
-			temp->id = id;
-			temp->laps = 0;
-			temp->next = cars->next;
-			cars->next = temp;
-			printf("Car %d joined race", id);
-			return;
+	else {
+		while (head != NULL) {
+			/* Insert the node at the right place */
+			if (head->id > id) {
+				new_car->next = head->next;
+				head->next = new_car;
+				break;
+			}
+			/* When it's the end place the node at the end */
+			else if (head->next == NULL) {
+				new_car->next = NULL;
+				head->next = new_car;
+				break;
+			}
+			head = head->next;
 		}
-		else if (cars->next == NULL) {
-			/* biggest id ever yet */
-			Car *temp = malloc(sizeof(Car));
-			temp->id = id;
-			temp->laps = 0;
-			temp->next = NULL;
-			cars->next = temp;
-			printf("Car %d joined race", id);
-			return;
-		}
-		cars = cars->next;
 	}
 }
+
 void update_cars(int *id, size_t size) {
 	size_t index;
-	int need_to_create_car = 1;
+	int need_to_create_car;
+
+	Car *head = cars;
+
 	for (index = 0; index < size; index++) {
-		while (cars != NULL) {
-			if (id[index] == cars->id) {
-				cars->laps++;
+		need_to_create_car = 1;
+		while (head != NULL) {
+			if (id[index] == head->id) {
+				head->laps++;
 				need_to_create_car = 0;
 				break;
 			}
-			cars = cars->next;
+			head = head->next;
 		}
 		if (need_to_create_car)
 			insert_car(id[index]);
