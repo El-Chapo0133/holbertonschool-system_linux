@@ -44,7 +44,7 @@ void insert_car(int id) {
 	Car *new_car = malloc(sizeof(Car));
 	new_car->id = id;
 	new_car->laps = 0;
-	printf("Car %d joined race\n", id);
+	printf("Car %d joined the race\n", id);
 
 	Car *head = cars;
 
