@@ -42,11 +42,10 @@ void print_cars(void) {
  */
 void insert_car(int id) {
 	Car *new_car = malloc(sizeof(Car));
+	Car *head = cars;
 	new_car->id = id;
 	new_car->laps = 0;
 	printf("Car %d joined the race\n", id);
-
-	Car *head = cars;
 
 	/* When it's the first node to be added */
 	if (head == NULL) {
@@ -56,7 +55,7 @@ void insert_car(int id) {
 	else {
 		while (head != NULL) {
 			/* Insert the node at the right place */
-			if (head->id > id) {
+			if (head->next != NULL && head->next->id > id) {
 				new_car->next = head->next;
 				head->next = new_car;
 				break;
