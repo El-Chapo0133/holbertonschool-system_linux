@@ -72,6 +72,13 @@ void insert_car(int id) {
 	}
 }
 
+/**
+ * update_cars - update the cars with laps, insert if needed
+ * @id: array of id to laps or insert
+ * @size: size of the array id
+ *
+ * Return: void
+ */
 void update_cars(int *id, size_t size) {
 	size_t index;
 	int need_to_create_car;
@@ -93,7 +100,13 @@ void update_cars(int *id, size_t size) {
 	}
 }
 
-
+/**
+ * race_state - function asked "race_state"
+ * @id: array of id to laps or insert
+ * @size: size of the array id
+ *
+ * Return: void
+ */
 void race_state(int *id, size_t size) {
 	if (size == 0) {
 		free_cars();
