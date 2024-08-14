@@ -1,7 +1,5 @@
 #include "laps.h"
 
-
-
 static Car *cars;
 
 /**
@@ -23,7 +21,6 @@ void free_cars(void)
 
 /**
  * print_cars - print all cars in the linked list
- * @head: head of the linked list
  *
  * Return: void
  */
@@ -41,7 +38,6 @@ void print_cars(void)
 
 /**
  * insert_car - insert a can in the right place of the linked list
- * @head: head of the linked list
  * @id: id to insert
  *
  * Return: void
@@ -74,8 +70,7 @@ void insert_car(int id)
 
 /**
  * update_cars - update the cars with laps, insert if needed
- * @id: array of id to laps or insert
- * @size: size of the array id
+ * @id: id of laps or insert
  *
  * Return: void
  */
