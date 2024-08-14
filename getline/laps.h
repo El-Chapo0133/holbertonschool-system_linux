@@ -6,7 +6,7 @@
 #include <stdlib.h>
 
 /**
- * struct ar - car node
+ * struct Car - car node
  * @id: id of the car, unique
  * @laps: amount of laps the car made
  * @next: next car in the linked list
