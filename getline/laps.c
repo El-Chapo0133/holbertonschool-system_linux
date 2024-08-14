@@ -9,7 +9,8 @@ static Car *cars;
  *
  * Return: void
  */
-void free_cars(void) {
+void free_cars(void)
+{
 	while (cars != NULL) {
 		Car *temp = cars;
 		cars = cars->next;
@@ -23,11 +24,13 @@ void free_cars(void) {
  *
  * Return: void
  */
-void print_cars(void) {
+void print_cars(void)
+{
 	Car *head = cars;
 
 	printf("Race state:\n");
-	while (head != NULL) {
+	while (head != NULL)
+	{
 		printf("Car %d [%d laps]\n", head->id, head->laps);
 		head = head->next;
 	}
@@ -40,20 +43,25 @@ void print_cars(void) {
  *
  * Return: void
  */
-void insert_car(int id) {
+void insert_car(int id)
+{
 	Car *new_car = malloc(sizeof(Car));
 	Car *head = cars;
+	
 	new_car->id = id;
 	new_car->laps = 0;
 	printf("Car %d joined the race\n", id);
 
 	/* When it's the first node to be added or the first sorted node */
-	if (head == NULL || head->id > id) {
+	if (head == NULL || head->id > id)
+	{
 		new_car->next = cars;
 		cars = new_car;
 	}
-	else {
-		while (head->next != NULL && head->next->id < id) {
+	else
+	{
+		while (head->next != NULL && head->next->id < id)
+		{
 			head = head->next;
 		}
 		new_car->next = head->next;
@@ -68,13 +76,16 @@ void insert_car(int id) {
  *
  * Return: void
  */
-void update_cars(int id) {
+void update_cars(int id)
+{
 	int need_to_create_car = 1;
 
 	Car *head = cars;
 
-	while (head != NULL) {
-		if (id == head->id) {
+	while (head != NULL)
+	{
+		if (id == head->id)
+		{
 			head->laps++;
 			need_to_create_car = 0;
 			break;
@@ -92,15 +103,18 @@ void update_cars(int id) {
  *
  * Return: void
  */
-void race_state(int *id, size_t size) {
+void race_state(int *id, size_t size)
+{
 	size_t index;
 
-	if (size == 0) {
+	if (size == 0)
+	{
 		free_cars();
 		return;
 	}
 
-	for (index = 0; index < size; index++) {
+	for (index = 0; index < size; index++)
+	{
 		update_cars(id[index]);
 	}
 
