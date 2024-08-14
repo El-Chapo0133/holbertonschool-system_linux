@@ -9,7 +9,7 @@ typedef struct Car
 {
 	int id;
 	int laps;
-	struct Car *next;	
+	struct Car *next;
 } Car;
 
 void free_cars(void);
