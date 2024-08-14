@@ -15,7 +15,7 @@ void free_cars(void)
 
 	while (cars != NULL)
 	{
-		*temp = cars;
+		temp = cars;
 		cars = cars->next;
 		free(temp);
 	}
