@@ -47,27 +47,17 @@ void insert_car(int id) {
 	new_car->laps = 0;
 	printf("Car %d joined the race\n", id);
 
-	/* When it's the first node to be added */
-	if (head == NULL) {
-		new_car->next = NULL;
+	/* When it's the first node to be added or the first sorted node */
+	if (head == NULL || head->id > id) {
+		new_car->next = cars;
 		cars = new_car;
 	}
 	else {
-		while (head != NULL) {
-			/* Insert the node at the right place */
-			if (head->next != NULL && head->next->id > id) {
-				new_car->next = head->next;
-				head->next = new_car;
-				break;
-			}
-			/* When it's the end place the node at the end */
-			else if (head->next == NULL) {
-				new_car->next = NULL;
-				head->next = new_car;
-				break;
-			}
+		while (head->next != NULL && head->next->id < id) {
 			head = head->next;
 		}
+		new_car->next = head->next;
+		head->next = new_car;
 	}
 }
 
@@ -78,25 +68,21 @@ void insert_car(int id) {
  *
  * Return: void
  */
-void update_cars(int *id, size_t size) {
-	size_t index;
-	int need_to_create_car;
+void update_cars(int id) {
+	int need_to_create_car = 1;
 
 	Car *head = cars;
 
-	for (index = 0; index < size; index++) {
-		need_to_create_car = 1;
-		while (head != NULL) {
-			if (id[index] == head->id) {
-				head->laps++;
-				need_to_create_car = 0;
-				break;
-			}
-			head = head->next;
+	while (head != NULL) {
+		if (id == head->id) {
+			head->laps++;
+			need_to_create_car = 0;
+			break;
 		}
-		if (need_to_create_car)
-			insert_car(id[index]);
+		head = head->next;
 	}
+	if (need_to_create_car)
+		insert_car(id);
 }
 
 /**
@@ -107,13 +93,17 @@ void update_cars(int *id, size_t size) {
  * Return: void
  */
 void race_state(int *id, size_t size) {
+	size_t index;
+
 	if (size == 0) {
 		free_cars();
 		return;
 	}
 
-	update_cars(id, size);
-	
+	for (index = 0; index < size; index++) {
+		update_cars(id[index]);
+	}
+
 	print_cars();
 }
 

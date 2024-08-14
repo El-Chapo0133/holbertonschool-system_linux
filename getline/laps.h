@@ -9,7 +9,7 @@ typedef struct Car {
 } Car;
 
 void free_cars(void);
-void update_cars(int *id, size_t size);
+void update_cars(int id);
 void print_car(void);
 void insert_car(int id);
 void race_state(int *id, size_t size);
