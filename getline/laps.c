@@ -11,8 +11,11 @@ static Car *cars;
  */
 void free_cars(void)
 {
-	while (cars != NULL) {
-		Car *temp = cars;
+	Car *temp;
+
+	while (cars != NULL)
+	{
+		*temp = cars;
 		cars = cars->next;
 		free(temp);
 	}
@@ -47,7 +50,7 @@ void insert_car(int id)
 {
 	Car *new_car = malloc(sizeof(Car));
 	Car *head = cars;
-	
+
 	new_car->id = id;
 	new_car->laps = 0;
 	printf("Car %d joined the race\n", id);
