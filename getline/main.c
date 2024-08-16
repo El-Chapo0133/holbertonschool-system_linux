@@ -1,18 +1,21 @@
-#include "laps.h"
+#include "_getline.h"
+#include <fcntl.h>
+#include <stdio.h>
+#include <unistd.h>
+#include <stdlib.h>
+
 
 int main(void)
 {
+	int fd;
+	char *line;
 
-    int ids1[4] = {89, 42, 1, 101};
-    int ids2[1] = {11};
-
-    race_state(ids1, 4);
-    printf("--\n");
-    race_state(ids1, 4);
-    printf("--\n");
-    race_state(ids1, 4);
-    printf("--\n");
-    race_state(ids2, 1);
-    printf("--\n");
-    race_state(ids1, 4);
+	fd = open("main.c", 0);
+	while ((line = _getline(fd)))
+	{
+		printf("%s\n", line);
+		free(line);
+	}
+	close(fd);
+	return (0);
 }
