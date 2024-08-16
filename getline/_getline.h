@@ -1,6 +1,6 @@
 #ifndef MAIN
 #define MAIN
-#define READ_SIZE 128
+#define READ_SIZE 1048
 #define true 1
 #define false 0
 
