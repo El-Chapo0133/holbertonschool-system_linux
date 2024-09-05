@@ -19,7 +19,7 @@
  */
 void remove_hidden(char **values) {
 	int index;
-	for (index = 0; index[index] != NULL; index++)
+	for (index = 0; values[index] != NULL; index++)
 		if (values[index][0] == '.')
 			values[index] = NULL;
 }
@@ -33,7 +33,8 @@ void remove_hidden(char **values) {
  */
 void remove_dot_and_dotdot(char **values) {
 	int index;
-	for (index = 0; index[index] != NULL; index++)
+	for (index = 0; values[index] != NULL; index++)
+	{
 		if (values[index] == NULL) continue;
 		if (strcmp(values[index], ".") == 0 || strcmp(values[index], "..") == 0)
 			values[index] = NULL;
