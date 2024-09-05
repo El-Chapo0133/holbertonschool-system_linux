@@ -45,7 +45,7 @@ void initialize_flags(int **flags) {
 void parse_flags(char *arg, int **flags) {
 	int index = 0;
 
-	while (arg[index] != '\0') {
+	while (arg[index] != NULL && arg[index] != '\0') {
 		if (arg[index] == '-')
 			continue;
 		else if (arg[index] == '1')
