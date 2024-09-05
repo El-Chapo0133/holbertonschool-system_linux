@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <dirent.h>
 #include <string.h>
+#include <unistd.h>
 
 #define INDEX_FLAG_ONE 0
 #define INDEX_FLAG_TINY_A 1
