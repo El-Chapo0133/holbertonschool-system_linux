@@ -35,11 +35,11 @@ char *_getline(const int fd)
 			position++;
 
 		/* update the buffer */
-		if ((position != stream->buf_size) || stream->oef == true)
+		if ((position != stream->buf_size) || stream->eof == true)
 			line_ptr = get_update_stash(stream, position, &errors_quantity);
 
 		/*  */
-		if (stream->oef == false)
+		if (stream->eof == false)
 			set_stash(stream, &errors_quantity);
 	}
 
@@ -159,8 +159,8 @@ StreamInformations *get_or_create_stream(int fd, int *error_quantity)
  */
 void free_all_stream_informations(void)
 {
-	StreamInformations *stream = streams;
-	StreamInformations *temp_stream = streams;
+	StreamInformations *stream = stream_informations;
+	StreamInformations *temp_stream;
 
 	while (stream != NULL)
 	{
