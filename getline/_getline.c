@@ -125,7 +125,7 @@ char *get_update_stash(StreamInformations *stream, int pos, int *errors_quantity
  *
  * Return: steam found or created
  */
-StreamInformations get_or_create_stream(int fd, int *error_quantity)
+StreamInformations *get_or_create_stream(int fd, int *error_quantity)
 {
 	StreamInformations *streams = stream_informations;
 
