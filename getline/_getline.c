@@ -52,7 +52,7 @@ char *_getline(const int fd)
  * @stream: The stream to be read
  * @error_occured: flag to indicate malloc errors or any errors.
  */
-void set_stash(StreamInfo *stream, int *errors_quantity)
+void set_stash(StreamInformations *stream, int *errors_quantity)
 {
 	char buf_read[READ_SIZE];
 	int bytes_read;
@@ -87,7 +87,7 @@ void set_stash(StreamInfo *stream, int *errors_quantity)
  *
  * Return: A string where till newline occured.
  */
-char *get_update_stash(StreamInfo *stream, int pos, int *errors_quantity)
+char *get_update_stash(StreamInformations *stream, int pos, int *errors_quantity)
 {
 	char *str = NULL, *next = NULL;
 	int len = stream->buf_size - pos - 1;
