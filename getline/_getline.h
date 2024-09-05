@@ -8,6 +8,7 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <stdlib.h>
+#include <string.h>
 
 /**
  * struct stream_s - struct of linked list about informations of specific stream
@@ -24,7 +25,7 @@ typedef struct stream_s
 	int fd;
 	char *buf;
 	int buf_size;
-	int oef;
+	int eof;
 	struct stream_s *next;
 } StreamInformations;
 

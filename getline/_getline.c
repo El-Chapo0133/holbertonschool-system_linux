@@ -27,7 +27,7 @@ char *_getline(const int fd)
 	/* get the correct stream from the fd */
 	stream = get_or_create_stream(fd, &errors_quantity);
 	/* loop while line hasn't been found */
-	while (line_ptr == NULL && stream != NULL && error_quantity == 0)
+	while (line_ptr == NULL && stream != NULL && errors_quantity == 0)
 	{
 		position = 0;
 
@@ -92,7 +92,7 @@ char *get_update_stash(StreamInformations *stream, int pos, int *errors_quantity
 	char *str = NULL, *next = NULL;
 	int len = stream->buf_size - pos - 1;
 
-	if (stream->buff_size)
+	if (stream->buf_size)
 	{
 		str = malloc(pos + 1);
 		if (str)
@@ -108,12 +108,12 @@ char *get_update_stash(StreamInformations *stream, int pos, int *errors_quantity
 	{
 		next = malloc(len);
 		if (next)
-			memcpy(next, stream->buff + pos + 1, len);
+			memcpy(next, stream->buf + pos + 1, len);
 		else
 			errors_quantity++;
 		stream->buf_size = len;
 	}
-	free(stream->buff);
+	free(stream->buf);
 	stream->buf = next;
 	return (str);
 }
@@ -146,7 +146,7 @@ StreamInformations *get_or_create_stream(int fd, int *error_quantity)
 		streams->fd = fd;
 		/* place it in front */
 		streams->next = stream_informations;
-		stream_informations = steams;
+		stream_informations = streams;
 	}
 
 	return (streams);
@@ -179,10 +179,10 @@ void free_all_stream_informations(void)
  */
 void free_stream_informations(StreamInformations *stream_to_free)
 {
-	StreamInformations *streams = stream_informations, *temp_stream;
+	StreamInformations *streams = stream_informations;
 	
 	/* No streams in linked list */
-	if (!stream)
+	if (!streams)
 		return;
 	/* if the stream to free is the first in linked list */
 	else if (stream_to_free == streams)
@@ -191,7 +191,7 @@ void free_stream_informations(StreamInformations *stream_to_free)
 	else
 	{
 		/* move to the stream to free */
-		while (steams->next != stream_to_free && streams != NULL)
+		while (streams->next != stream_to_free && streams != NULL)
 			streams = streams->next;
 		/* update pointers to prepare the free */
 		streams->next = stream_to_free->next;
