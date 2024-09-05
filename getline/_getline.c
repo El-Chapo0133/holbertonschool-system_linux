@@ -36,14 +36,86 @@ char *_getline(const int fd)
 
 		/* update the buffer */
 		if ((position != stream->buf_size) || stream->oef == true)
-			line_ptr = 
+			line_ptr = get_update_stash(stream, position, &errors_quantity);
 
 		/*  */
 		if (stream->oef == false)
-			
+			set_stash(stream, &errors_quantity);
 	}
 
 	return (line_ptr);
+}
+
+
+/**
+ * setStash - store thestash from the read
+ * @stream: The stream to be read
+ * @error_occured: flag to indicate malloc errors or any errors.
+ */
+void set_stash(StreamInfo *stream, int *errors_quantity)
+{
+	char buf_read[READ_SIZE];
+	int bytes_read;
+	char *str;
+
+	bytes_read = read(stream->fd, buf_read, READ_SIZE);
+	if (bytes_read <= 0)
+		stream->eof = 1;
+	else
+	{
+		str = malloc(stream->buf_size + bytes_read);
+		if (str)
+		{
+			if (stream->buf_size)
+				memcpy(str, stream->buf, stream->buf_size);
+			memcpy(str + stream->buf_size, buf_read, bytes_read);
+		}
+		else
+			errors_quantity++;
+		free(stream->buf);
+		stream->buf = str;
+		stream->buf_size += bytes_read;
+	}
+}
+
+/**
+ * get_update_Stash - Returns a string till newline.
+ *	and reset the stash with the buffer left.
+ * @stream: stream to be searched in
+ * @pos: the index where newline occured previously.
+ * @error_occured: flag to indicate malloc errors or any errors.
+ *
+ * Return: A string where till newline occured.
+ */
+char *get_update_stash(StreamInfo *stream, int pos, int *errors_quantity)
+{
+	char *str = NULL, *next = NULL;
+	int len = stream->buf_size - pos - 1;
+
+	if (stream->buff_size)
+	{
+		str = malloc(pos + 1);
+		if (str)
+		{
+			memcpy(str, stream->buf, pos);
+			str[pos] = 0;
+		}
+		else
+			errors_quantity++;
+	}
+	stream->buf_size = 0;
+	if (len > 0)
+	{
+		next = malloc(len);
+		if (next)
+			memcpy(next, stream->buff + pos + 1, len);
+		else
+			errors_quantity++;
+		stream->buf_size = len;
+	}
+	free(stream->buff);
+	stream->buf = next;
+	return (str);
 }
 
 /**

@@ -60,9 +60,7 @@ void insert_car(int id)
 	else
 	{
 		while (head->next != NULL && head->next->id < id)
-		{
 			head = head->next;
-		}
 		new_car->next = head->next;
 		head->next = new_car;
 	}
@@ -112,9 +110,7 @@ void race_state(int *id, size_t size)
 	}
 
 	for (index = 0; index < size; index++)
-	{
 		update_cars(id[index]);
-	}
 
 	print_cars();
 }
