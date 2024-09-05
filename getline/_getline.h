@@ -1,39 +1,41 @@
-#ifndef MAIN
-#define MAIN
-#define READ_SIZE 1024
-#define true 1
-#define false 0
+#ifndef _GET_LINE_H_
+#define _GET_LINE_H_
 
 #include <stdio.h>
 #include <unistd.h>
-#include <fcntl.h>
-#include <stdlib.h>
 #include <string.h>
+#include <stdlib.h>
+
+#define READ_SIZE 1024
+#define c_buff(buffer) memset(buffer, 0, sizeof(buffer))
 
 /**
- * struct stream_s - struct of linked list about informations of specific stream
- * @fd: file description, from an "open()" call
- * @buf: buffer for the fd
- * @buf_size: size of the buffer for the fd
- * @oef: bool of end of file
- * @next: point to next node in linked list
- *
- * Description: node in linked list of streams, should be unique
+ * struct stream_s - used to store all related info of a particular stream.
+ * @fd: the file descriptor
+ * @buff: The buff for each fd
+ * @buff_size: size of the buff
+ * @eof: eof flag for each fd
+ * @next: pointer to next stream
+ * A value is not unique. It can correspond to several keys
  */
 typedef struct stream_s
 {
 	int fd;
-	char *buf;
-	int buf_size;
+	char *buff;
+	int buff_size;
 	int eof;
 	struct stream_s *next;
-} StreamInformations;
+} StreamInfo;
+
+
+
+StreamInfo *initialize_get_Stash(StreamInfo **ss, int fd, int *error_occured);
+void deleteStash(StreamInfo **ss, StreamInfo *stream);
+void setStash(StreamInfo *stream, int *error_occured);
+void freeStash(StreamInfo **ss);
+
+char *get_update_Stash(StreamInfo *stream, int at, int *error_occured);
 
 char *_getline(const int fd);
-void set_stash(StreamInformations *stream, int *errors_quantity);
-char *get_update_stash(StreamInformations *stream, int pos, int *errors_quantity);
-StreamInformations *get_or_create_stream(int fd, int *error_quantity);
-void free_all_stream_informations(void);
-void free_stream_informations(StreamInformations *stream_to_free);
 
 #endif

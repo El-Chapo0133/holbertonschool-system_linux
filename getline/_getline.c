@@ -1,85 +1,110 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+
 #include "_getline.h"
 
-
-
-static StreamInformations *stream_informations;
-
 /**
- * _getline - get line of given file
- * @fd: file descriptor to read from
+ * _getline - reads an entire line from a file descriptor.
+ * @fd: the file descriptor to read from.
  *
- * Return: char* of the line, NULL if EOF or error
+ * Return: On Success - a null-terminated string that does not
+ *include the newline character.
+ * On Failure - NUll.
  */
 char *_getline(const int fd)
 {
-	int errors_quantity = 0, position = 0;
-	StreamInformations *stream = NULL;
-	char *line_ptr = NULL;
+	static StreamInfo *ss;
+	StreamInfo *stream = NULL;
+	char *lineptr = NULL;
+	int error_occured = 0, pos = 0;
 
-	/* error on open() */
 	if (fd == -1)
+		freeStash(&ss);
+	else
 	{
-		free_all_stream_informations();
-		perror("Cannot open file :(");
-		return NULL;
+		stream = initialize_get_Stash(&ss, fd, &error_occured);
+		while (!lineptr && stream && !error_occured)
+		{
+			pos = 0;
+			/* get the position of occurence of newline in the buffer */
+			while ((pos < stream->buff_size) && (stream->buff[pos] != '\n'))
+				++pos;
+			/* get the line and update the buffer */
+			if ((pos != stream->buff_size) || stream->eof)
+				lineptr = get_update_Stash(stream, pos, &error_occured);
+			if (stream->eof == 0)
+				setStash(stream, &error_occured);
+			error_occured |= (stream->eof && (stream->buff_size == 0));
+		}
+		if (error_occured && (lineptr == NULL))
+			deleteStash(&ss, stream);
 	}
-
-	/* get the correct stream from the fd */
-	stream = get_or_create_stream(fd, &errors_quantity);
-	/* loop while line hasn't been found */
-	while (line_ptr == NULL && stream != NULL && errors_quantity == 0)
-	{
-		position = 0;
-
-		while ((position < stream->buf_size) && (stream->buf[position] != '\n'))
-			position++;
-
-		/* update the buffer */
-		if ((position != stream->buf_size) || stream->eof == true)
-			line_ptr = get_update_stash(stream, position, &errors_quantity);
-
-		/*  */
-		if (stream->eof == false)
-			set_stash(stream, &errors_quantity);
-	}
-
-	return (line_ptr);
+	return (lineptr);
 }
 
+/**
+ * initializeStash - INtailise the stash if not else retirn the stored stash
+ * @ss: All the streams
+ * @fd: the file descriptor to read from.
+ * @error_occured: flag to indicate malloc errors or any errors.
+ * Return:  a stream realted to fd.
+ */
+StreamInfo *initialize_get_Stash(StreamInfo **ss, int fd, int *error_occured)
+{
+	StreamInfo *stream = NULL;
+
+	stream = *ss;
+	while (stream && stream->fd != fd)
+		stream = stream->next;
+	if (!stream)
+	{
+		stream = malloc(sizeof(StreamInfo));
+		*error_occured |= stream == NULL;
+		if (stream)
+		{
+			memset(stream, 0, sizeof(*stream));
+			stream->fd = fd;
+			stream->next = *ss;
+			*ss = stream;
+		}
+	}
+	return (stream);
+}
 
 /**
- * set_stash - store thestash from the read
+ * setStash - store thestash from the read
  * @stream: The stream to be read
  * @error_occured: flag to indicate malloc errors or any errors.
  */
-void set_stash(StreamInformations *stream, int *errors_quantity)
+void setStash(StreamInfo *stream, int *error_occured)
 {
-	char buf_read[READ_SIZE];
+	char buff_read[READ_SIZE];
 	int bytes_read;
 	char *str;
 
-	bytes_read = read(stream->fd, buf_read, READ_SIZE);
+	bytes_read = read(stream->fd, buff_read, READ_SIZE);
 	if (bytes_read <= 0)
 		stream->eof = 1;
 	else
 	{
-		str = malloc(stream->buf_size + bytes_read);
+		str = malloc(stream->buff_size + bytes_read);
+		*error_occured |= (str == NULL);
 		if (str)
 		{
-			if (stream->buf_size)
-				memcpy(str, stream->buf, stream->buf_size);
-			memcpy(str + stream->buf_size, buf_read, bytes_read);
+			if (stream->buff_size)
+				memcpy(str, stream->buff, stream->buff_size);
+			memcpy(str + stream->buff_size, buff_read, bytes_read);
 		}
-		else
-			errors_quantity++;
-		free(stream->buf);
-		stream->buf = str;
-		stream->buf_size += bytes_read;
+		free(stream->buff);
+		stream->buff = str;
+		stream->buff_size += bytes_read;
 	}
 }
 
 /**
- * get_update_stash - Returns a string till newline.
+ * get_update_Stash - Returns a string till newline.
  *	and reset the stash with the buffer left.
  * @stream: stream to be searched in
  * @pos: the index where newline occured previously.
@@ -87,117 +112,77 @@ void set_stash(StreamInformations *stream, int *errors_quantity)
  *
  * Return: A string where till newline occured.
  */
-char *get_update_stash(StreamInformations *stream, int pos, int *errors_quantity)
+char *get_update_Stash(StreamInfo *stream, int pos, int *error_occured)
 {
 	char *str = NULL, *next = NULL;
-	int len = stream->buf_size - pos - 1;
+	int len = stream->buff_size - pos - 1;
 
-	if (stream->buf_size)
+	if (stream->buff_size)
 	{
 		str = malloc(pos + 1);
+		*error_occured |= str == NULL;
 		if (str)
 		{
-			memcpy(str, stream->buf, pos);
+			memcpy(str, stream->buff, pos);
 			str[pos] = 0;
 		}
-		else
-			errors_quantity++;
 	}
-	stream->buf_size = 0;
+	stream->buff_size = 0;
 	if (len > 0)
 	{
 		next = malloc(len);
+		*error_occured |= next != NULL;
 		if (next)
-			memcpy(next, stream->buf + pos + 1, len);
-		else
-			errors_quantity++;
-		stream->buf_size = len;
+			memcpy(next, stream->buff + pos + 1, len);
+		stream->buff_size = len;
 	}
-	free(stream->buf);
-	stream->buf = next;
+	free(stream->buff);
+	stream->buff = next;
 	return (str);
 }
 
-/**
- * get_or_add_stream - get the stream from his fd, create a new node if no stream found
- * @fd: filedescription used to find stream
- * @error_quantity: quantity of error, incremented when error occurs
- *
- * Return: steam found or created
- */
-StreamInformations *get_or_create_stream(int fd, int *error_quantity)
-{
-	StreamInformations *streams = stream_informations;
-
-	while (streams != NULL && streams->fd == fd)
-		streams = streams->next;
-	/* of streams is null, add it in front of the linked list */
-	if (streams == NULL)
-	{
-		streams = malloc(sizeof(StreamInformations));
-		if (streams == NULL)
-		{
-			error_quantity++;
-			perror("Memory error :(");
-			return (NULL);
-		}
-		/* fill memory with 0s for stream */
-		memset(streams, 0, sizeof(*streams));
-		streams->fd = fd;
-		/* place it in front */
-		streams->next = stream_informations;
-		stream_informations = streams;
-	}
-
-	return (streams);
-}
 
 /**
- * free_all_stream_informations - free all buffer and struct of the linked list
- *
- * Return: void
+ * freeStash - frees stash
+ * @ss: All the streams
  */
-void free_all_stream_informations(void)
+void freeStash(StreamInfo **ss)
 {
-	StreamInformations *stream = stream_informations;
-	StreamInformations *temp_stream;
+	StreamInfo *stream = *ss;
+	StreamInfo *tmp;
 
-	while (stream != NULL)
+	while (stream)
 	{
-		temp_stream = stream->next;
-		free(stream->buf);
+		tmp = stream->next;
+		free(stream->buff);
 		free(stream);
-		stream = temp_stream;
+		stream = tmp;
 	}
+	*ss = NULL;
 }
 
 /**
- * free_stream_informations - update linked list pointers then free given StreamInformations
- * @stream_to_free: given stream to free
+ * deleteStash - deletes the stream from streams @ss.
+ * @ss: All the streams
+ * @stream: stream to be removed from @ss.
  *
- * Return: void
  */
-void free_stream_informations(StreamInformations *stream_to_free)
+void deleteStash(StreamInfo **ss, StreamInfo *stream)
 {
-	StreamInformations *streams = stream_informations;
-	
-	/* No streams in linked list */
-	if (!streams)
-		return;
-	/* if the stream to free is the first in linked list */
-	else if (stream_to_free == streams)
-		stream_informations = streams->next;
-	/* find the stream to free and update pointers */
-	else
+	StreamInfo *s;
+
+	if (stream)
 	{
-		/* move to the stream to free */
-		while (streams->next != stream_to_free && streams != NULL)
-			streams = streams->next;
-		/* update pointers to prepare the free */
-		streams->next = stream_to_free->next;
+		if (stream == *ss)
+			*ss = stream->next;
+		else
+		{
+			s = *ss;
+			while (s->next != stream)
+				s = s->next;
+			s->next = stream->next;
+		}
+		free(stream->buff);
+		free(stream);
 	}
-	
-	/* free the buffer, then the struct */
-	free(stream_to_free->buf);
-	free(stream_to_free);
 }
