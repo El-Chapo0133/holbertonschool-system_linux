@@ -29,5 +29,10 @@ typedef struct stream_s
 } StreamInformations;
 
 char *_getline(const int fd);
+void set_stash(StreamInfo *stream, int *errors_quantity);
+char *get_update_stash(StreamInfo *stream, int pos, int *errors_quantity);
+StreamInformations get_or_create_stream(int fd, int *error_quantity);
+void free_all_stream_informations(void);
+void free_stream_informations(StreamInformations *stream_to_free);
 
 #endif

@@ -48,7 +48,7 @@ char *_getline(const int fd)
 
 
 /**
- * setStash - store thestash from the read
+ * set_stash - store thestash from the read
  * @stream: The stream to be read
  * @error_occured: flag to indicate malloc errors or any errors.
  */
@@ -79,7 +79,7 @@ void set_stash(StreamInfo *stream, int *errors_quantity)
 }
 
 /**
- * get_update_Stash - Returns a string till newline.
+ * get_update_stash - Returns a string till newline.
  *	and reset the stash with the buffer left.
  * @stream: stream to be searched in
  * @pos: the index where newline occured previously.
