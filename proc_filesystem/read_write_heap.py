@@ -1,11 +1,10 @@
 #!/usr/bin/python3
-from sys import argv
-
 """
 This file looks for a process by it's pid
 and replace a value in the heap of this process
 """
 
+from sys import argv
 
 def main():
     """
