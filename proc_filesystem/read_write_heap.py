@@ -6,9 +6,7 @@ This file looks for a process by it's pid and replace a value in the heap of thi
 from sys import argv
 
 def main():
-    """
-    This is the main function
-    """
+    """This is the main function"""
     if len(argv) < 4:
         print("Not enough args :(")
         exit(1)
