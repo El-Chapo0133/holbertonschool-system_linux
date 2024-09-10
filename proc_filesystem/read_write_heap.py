@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 """
-This file looks for a process by it's pid
-and replace a value in the heap of this process
+This file looks for a process by it's pid and replace a value in the heap of this process
 """
 
 from sys import argv
