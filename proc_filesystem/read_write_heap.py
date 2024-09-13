@@ -7,7 +7,7 @@ from sys import argv
 
 def main():
     """This is the main function"""
-    if len(argv) < 4:
+    if len(argv) < 3:
         print("Not enough args :(")
         exit(1)
     pid = argv[1]
