@@ -12,8 +12,10 @@ def main():
         exit(1)
     pid = argv[1]
     target_string = argv[2]
-    replace_string = argv[3]
-    
+    replace_string = ""
+    if len(argv) == 4:
+        replace_string = argv[3]
+
     # try to open the files
     try:
         maps_file = open("/proc/{}/maps".format(pid), 'r')
