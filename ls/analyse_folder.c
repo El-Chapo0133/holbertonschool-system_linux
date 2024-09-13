@@ -4,7 +4,6 @@
 #include <stdlib.h>
 #include <dirent.h>
 #include <string.h>
-#include <unistd.h>
 
 #define INDEX_FLAG_ONE 0
 #define INDEX_FLAG_TINY_A 1
@@ -54,17 +53,6 @@ int analyse_folder(char *directory, char ***values, int *flags) {
 	DIR *d;
 	struct dirent *dir;
 	int index, count;
-
-	/* Check if it's a file */
-	if (access(directory, F_OK) == 0)
-	{
-		*values = malloc(1 * sizeof(char*));
-		if (values == NULL)
-			return (-1);
-
-		(*values)[0] = directory;
-		return (1);
-	}
 
 	d = opendir(directory);
 	/* if the directory doesn't exist, the pointer d is NULL
