@@ -1,11 +1,12 @@
 #include "readelf.h"
 
 /**
- * main - This is the main function
- * @argc: this is argc
- * @argv: this is argv
+ * main - A program that takes the name of a elf file as a parameter and
+ * displays the information contained in section headers of an  ELF file.
+ * @argc: no of inputs.
+ * @argv: inputs.
  *
- * Return: normal main return
+ * Return: on success:  0 , on Failure: 1.
  */
 int main(int argc, char *argv[])
 {
@@ -16,10 +17,10 @@ int main(int argc, char *argv[])
 	/* validate user input */
 	if (argc < 2)
 	{
-		printf("You must provide an ELF file :(\n");
+		printf("Usage: %s elf_filename\n", argv[0]);
 		exit(1);
 	}
-
+	
 	/* open the elf file */
 	file = fopen(argv[1], "rb");
 	if (!file)
@@ -27,19 +28,14 @@ int main(int argc, char *argv[])
 		printf("%s: Error: '%s': No such file\n", argv[0], argv[1]);
 		exit(1);
 	}
-
 	if (fread(ehdr.e_ident, EI_NIDENT, 1, file) && elf_check_file(ehdr.e_ident))
 	{
 		get_architecture(ehdr.e_ident[EI_CLASS], &arch);
-		if (arch == 64)
-			read_elf_header_64(&ehdr, file);
-		else if (arch == 32)
-			read_elf_header_32(&ehdr, file);
-		print_elf_header(ehdr);
+		read_elf_section_header_N(&ehdr, file, arch);
 	}
 	else
 	{
-		printf("%s: %s\n", ERROR_ELF_FILE, argv[0]);
+		printf("%s: %s\n", E, argv[0]);
 		exit_status = 1;
 	}
 	/* finally close the file */

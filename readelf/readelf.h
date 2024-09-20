@@ -132,7 +132,7 @@ typedef struct symtab
 
 #define SHF_X86_64_LARGE 0x10000000
 #define GET_BYTE(field) get_byte(field, sizeof(field))
-#define E "Error: Not an ELF file - it has the wrong magic bytes at the start"
+#define ERROR_ELF_FILE "Error: Not an ELF file - it has the wrong magic bytes at the start"
 #define ELF_ST_BIND(x)		((x) >> 4)
 #define ELF_ST_TYPE(x)		(((unsigned int) x) & 0xf)
 #define ELF_SECTION_SIZE(sec_hdr, segment)			\

@@ -9,7 +9,7 @@
  */
 void read_elf_section_header_32(ElfN_Ehdr ehdr, ElfN_Shdr *sh_tbl, int fd)
 {
-	uint64_t (*get_byte)(uint64_t, int), i;
+	uint64_t (*get_byte)(uint64_t, int), index;
 
 	Elf32_Shdr shdr32_tbl;
 
@@ -19,21 +19,21 @@ void read_elf_section_header_32(ElfN_Ehdr ehdr, ElfN_Shdr *sh_tbl, int fd)
 	assert(lseek(fd, (off_t) ehdr.e_shoff, SEEK_SET) ==
 	       (off_t) ehdr.e_shoff);
 
-	for (i = 0; i < ehdr.e_shnum; i++)
+	for (index = 0; index < ehdr.e_shnum; index++)
 	{
 		assert(read(fd, (void *)&shdr32_tbl, ehdr.e_shentsize) ==
 		       ehdr.e_shentsize);
 
-		sh_tbl[i].sh_name = GET_BYTE(shdr32_tbl.sh_name);
-		sh_tbl[i].sh_type = GET_BYTE(shdr32_tbl.sh_type);
-		sh_tbl[i].sh_flags = GET_BYTE(shdr32_tbl.sh_flags);
-		sh_tbl[i].sh_addr = GET_BYTE(shdr32_tbl.sh_addr);
-		sh_tbl[i].sh_offset = GET_BYTE(shdr32_tbl.sh_offset);
-		sh_tbl[i].sh_size = GET_BYTE(shdr32_tbl.sh_size);
-		sh_tbl[i].sh_link = GET_BYTE(shdr32_tbl.sh_link);
-		sh_tbl[i].sh_info = GET_BYTE(shdr32_tbl.sh_info);
-		sh_tbl[i].sh_addralign = GET_BYTE(shdr32_tbl.sh_addralign);
-		sh_tbl[i].sh_entsize = GET_BYTE(shdr32_tbl.sh_entsize);
+		sh_tbl[index].sh_name = GET_BYTE(shdr32_tbl.sh_name);
+		sh_tbl[index].sh_type = GET_BYTE(shdr32_tbl.sh_type);
+		sh_tbl[index].sh_flags = GET_BYTE(shdr32_tbl.sh_flags);
+		sh_tbl[index].sh_addr = GET_BYTE(shdr32_tbl.sh_addr);
+		sh_tbl[index].sh_offset = GET_BYTE(shdr32_tbl.sh_offset);
+		sh_tbl[index].sh_size = GET_BYTE(shdr32_tbl.sh_size);
+		sh_tbl[index].sh_link = GET_BYTE(shdr32_tbl.sh_link);
+		sh_tbl[index].sh_info = GET_BYTE(shdr32_tbl.sh_info);
+		sh_tbl[index].sh_addralign = GET_BYTE(shdr32_tbl.sh_addralign);
+		sh_tbl[index].sh_entsize = GET_BYTE(shdr32_tbl.sh_entsize);
 	}
 }
 
@@ -46,7 +46,7 @@ void read_elf_section_header_32(ElfN_Ehdr ehdr, ElfN_Shdr *sh_tbl, int fd)
  */
 void read_elf_section_header_64(ElfN_Ehdr ehdr, ElfN_Shdr *sh_tbl, int fd)
 {
-	uint64_t (*get_byte)(uint64_t, int), i;
+	uint64_t (*get_byte)(uint64_t, int), index;
 	Elf64_Shdr shdr64_tbl;
 
 	get_byte = (ehdr.e_ident[EI_DATA] == ELFDATA2MSB) ? get_byte_big_endian
@@ -55,21 +55,21 @@ void read_elf_section_header_64(ElfN_Ehdr ehdr, ElfN_Shdr *sh_tbl, int fd)
 	assert(lseek(fd, (off_t) ehdr.e_shoff, SEEK_SET) ==
 	       (off_t) ehdr.e_shoff);
 
-	for (i = 0; i < ehdr.e_shnum; i++)
+	for (index = 0; index < ehdr.e_shnum; index++)
 	{
 		assert(read(fd, (void *)&shdr64_tbl, ehdr.e_shentsize) ==
 		       ehdr.e_shentsize);
 
-		sh_tbl[i].sh_name = GET_BYTE(shdr64_tbl.sh_name);
-		sh_tbl[i].sh_type = GET_BYTE(shdr64_tbl.sh_type);
-		sh_tbl[i].sh_flags = GET_BYTE(shdr64_tbl.sh_flags);
-		sh_tbl[i].sh_addr = GET_BYTE(shdr64_tbl.sh_addr);
-		sh_tbl[i].sh_offset = GET_BYTE(shdr64_tbl.sh_offset);
-		sh_tbl[i].sh_size = GET_BYTE(shdr64_tbl.sh_size);
-		sh_tbl[i].sh_link = GET_BYTE(shdr64_tbl.sh_link);
-		sh_tbl[i].sh_info = GET_BYTE(shdr64_tbl.sh_info);
-		sh_tbl[i].sh_addralign = GET_BYTE(shdr64_tbl.sh_addralign);
-		sh_tbl[i].sh_entsize = GET_BYTE(shdr64_tbl.sh_entsize);
+		sh_tbl[index].sh_name = GET_BYTE(shdr64_tbl.sh_name);
+		sh_tbl[index].sh_type = GET_BYTE(shdr64_tbl.sh_type);
+		sh_tbl[index].sh_flags = GET_BYTE(shdr64_tbl.sh_flags);
+		sh_tbl[index].sh_addr = GET_BYTE(shdr64_tbl.sh_addr);
+		sh_tbl[index].sh_offset = GET_BYTE(shdr64_tbl.sh_offset);
+		sh_tbl[index].sh_size = GET_BYTE(shdr64_tbl.sh_size);
+		sh_tbl[index].sh_link = GET_BYTE(shdr64_tbl.sh_link);
+		sh_tbl[index].sh_info = GET_BYTE(shdr64_tbl.sh_info);
+		sh_tbl[index].sh_addralign = GET_BYTE(shdr64_tbl.sh_addralign);
+		sh_tbl[index].sh_entsize = GET_BYTE(shdr64_tbl.sh_entsize);
 	}
 }
 
@@ -88,6 +88,7 @@ void read_elf_section_header_N(ElfN_Ehdr *ehdr, FILE *file, int arch)
 		read_elf_header_64(ehdr, file);
 	else if (arch == 32)
 		read_elf_header_32(ehdr, file);
+	
 	sh_tbl = malloc(sizeof(ElfN_Shdr) * ehdr->e_shnum);
 	if (!sh_tbl)
 		printf("Failed to allocate section header table\n");
@@ -105,19 +106,13 @@ void read_elf_section_header_N(ElfN_Ehdr *ehdr, FILE *file, int arch)
  */
 void print_flag_detials(bool arch32)
 {
-	printf("%s\n", "Key to Flags:");
+	printf("Key to Flags:\n");
 	if (arch32)
-		printf("  %s\n",
-		       "W (write), A (alloc), X (execute), M (merge), S (strings)");
+		printf("  W (write), A (alloc), X (execute), M (merge), S (strings)\n");
 	else
-	{
-		printf("  %s\n",
-		       "W (write), A (alloc), X (execute), M (merge), S (strings), l (large)");
-	}
-	printf("  %s\n",
-	       "I (info), L (link order), G (group), T (TLS), E (exclude), x (unknown)");
-	printf("  %s\n",
-	       "O (extra OS processing required) o (OS specific), p (processor specific)");
+		printf("  W (write), A (alloc), X (execute), M (merge), S (strings), l (large)\n");
+	printf("  I (info), L (link order), G (group), T (TLS), E (exclude), x (unknown)\n");
+	printf("  O (extra OS processing required) o (OS specific), p (processor specific)\n");
 }
 
 /**
@@ -129,7 +124,7 @@ void print_flag_detials(bool arch32)
  */
 void print_elf_section_header(ElfN_Shdr sh_tbl[], ElfN_Ehdr ehdr, int fd)
 {
-	int i = 0;
+	int index;
 	char *str_tbl;
 	bool arch32 = ehdr.e_ident[EI_CLASS] == ELFCLASS32;
 
@@ -146,26 +141,27 @@ void print_elf_section_header(ElfN_Shdr sh_tbl[], ElfN_Ehdr ehdr, int fd)
 	{
 		printf("  [Nr] Name              Type            Addr     Off    ");
 		printf("Size   ES Flg Lk Inf Al\n");
-	} else
+	}
+	else
 	{
 		printf("  [Nr] Name              Type            Address          Off ");
 		printf("   Size   ES Flg Lk Inf Al\n");
 	}
-	for (i = 0; i < ehdr.e_shnum; i++)
+	for (index = 0; index < ehdr.e_shnum; index++)
 	{
-		printf("  [%2u] %-17s %-15.15s ", i,
-		       str_tbl + sh_tbl[i].sh_name,
-		       get_section_type_name(sh_tbl[i].sh_type));
+		printf("  [%2u] %-17s %-15.15s ", index,
+		       str_tbl + sh_tbl[index].sh_name,
+		       get_section_type_name(sh_tbl[index].sh_type));
 		printf("%0*x %6.6lx %6.6lx %2.2lx", arch32 ? 8 : 16,
-		       (unsigned int)sh_tbl[i].sh_addr,
-		       (unsigned long)sh_tbl[i].sh_offset,
-		       (unsigned long)sh_tbl[i].sh_size,
-		       (unsigned long)sh_tbl[i].sh_entsize);
+		       (unsigned int)sh_tbl[index].sh_addr,
+		       (unsigned long)sh_tbl[index].sh_offset,
+		       (unsigned long)sh_tbl[index].sh_size,
+		       (unsigned long)sh_tbl[index].sh_entsize);
 		printf(" %3s ",
-		       get_elf_section_flags(ehdr, sh_tbl[i].sh_flags));
-		printf("%2ld %3lu %2ld\n", (unsigned long)sh_tbl[i].sh_link,
-		       (unsigned long)sh_tbl[i].sh_info,
-		       (unsigned long)sh_tbl[i].sh_addralign);
+		       get_elf_section_flags(ehdr, sh_tbl[index].sh_flags));
+		printf("%2ld %3lu %2ld\n", (unsigned long)sh_tbl[index].sh_link,
+		       (unsigned long)sh_tbl[index].sh_info,
+		       (unsigned long)sh_tbl[index].sh_addralign);
 	}
 	print_flag_detials(arch32);
 }

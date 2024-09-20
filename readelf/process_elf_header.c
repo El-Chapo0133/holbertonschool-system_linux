@@ -65,12 +65,13 @@ void read_elf_header_64(ElfN_Ehdr *ehdr, FILE *file)
 }
 
 /**
- * read_elf_header -  fills the elf header info
+ * read_elf_header - fills the elf header info
  * @ehdr: elf header structure
  * @entries: elf header info filled in key and values
  */
 void read_elf_header(ElfN_Ehdr ehdr, Entry entries[])
 {
+	/* Most absurd way to fill the entries but no other way */
 	entries[0].key = strdup("Class");
 	entries[0].value = get_elf_class(ehdr.e_ident[EI_CLASS]);
 	entries[1].key = strdup("Data");
@@ -115,21 +116,20 @@ void read_elf_header(ElfN_Ehdr ehdr, Entry entries[])
  */
 void print_elf_header(ElfN_Ehdr ehdr)
 {
-	int i = 0;
+	int index = 0;
 	Entry entries[18];
 
 	read_elf_header(ehdr, entries);
-	printf("ELF Header:\n");
-	printf("  Magic:   ");
-	for (i = 0; i < 16; i++)
+	printf("ELF Header:\n  Magic:   ");
+	for (index = 0; index < 16; index++)
 	{
-		printf("%02x ", ehdr.e_ident[i]);
-		if (i == 15)
+		printf("%02x ", ehdr.e_ident[index]);
+		if (index == 15)
 			printf("\n");
 	}
-	for (i = 0; i < 18; i++)
+	for (index = 0; index < 18; index++)
 	{
-		printf("  %s:%*s%s\n", entries[i].key,
-		       34 - (int)strlen(entries[i].key), "", entries[i].value);
+		printf("  %s:%*s%s\n", entries[index].key,
+		       34 - (int)strlen(entries[index].key), "", entries[index].value);
 	}
 }

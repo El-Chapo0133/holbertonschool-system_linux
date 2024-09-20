@@ -1,7 +1,7 @@
 #include "readelf.h"
 
 /**
- * read_elf_program_header_32- fills the ph with suitable(32)
+ * read_elf_program_header_32 - fills the ph with suitable(32)
  * architecture data
  * @ph_tbl: program header table
  * @fd: file descriptor of input elf file
@@ -9,7 +9,7 @@
  */
 void read_elf_program_header_32(ElfN_Ehdr ehdr, ElfN_Phdr *ph_tbl, int fd)
 {
-	uint64_t (*get_byte)(uint64_t, int), i;
+	uint64_t (*get_byte)(uint64_t, int), index;
 
 	Elf32_Phdr phdr32_tbl;
 
@@ -19,19 +19,19 @@ void read_elf_program_header_32(ElfN_Ehdr ehdr, ElfN_Phdr *ph_tbl, int fd)
 	assert(lseek(fd, (off_t) ehdr.e_phoff, SEEK_SET) ==
 	       (off_t) ehdr.e_phoff);
 
-	for (i = 0; i < ehdr.e_phnum; i++)
+	for (index = 0; index < ehdr.e_phnum; index++)
 	{
 		assert(read(fd, (void *)&phdr32_tbl, ehdr.e_phentsize) ==
 		       ehdr.e_phentsize);
-		ph_tbl[i].p_type = GET_BYTE(phdr32_tbl.p_type);
-		ph_tbl[i].p_flags = GET_BYTE(phdr32_tbl.p_flags);
-		ph_tbl[i].p_offset = GET_BYTE(phdr32_tbl.p_offset);
-		ph_tbl[i].p_vaddr = GET_BYTE(phdr32_tbl.p_vaddr);
-		ph_tbl[i].p_paddr = GET_BYTE(phdr32_tbl.p_paddr);
-		ph_tbl[i].p_filesz = GET_BYTE(phdr32_tbl.p_filesz);
-		ph_tbl[i].p_memsz = GET_BYTE(phdr32_tbl.p_memsz);
-		ph_tbl[i].p_flags = GET_BYTE(phdr32_tbl.p_flags);
-		ph_tbl[i].p_align = GET_BYTE(phdr32_tbl.p_align);
+		ph_tbl[index].p_type = GET_BYTE(phdr32_tbl.p_type);
+		ph_tbl[index].p_flags = GET_BYTE(phdr32_tbl.p_flags);
+		ph_tbl[index].p_offset = GET_BYTE(phdr32_tbl.p_offset);
+		ph_tbl[index].p_vaddr = GET_BYTE(phdr32_tbl.p_vaddr);
+		ph_tbl[index].p_paddr = GET_BYTE(phdr32_tbl.p_paddr);
+		ph_tbl[index].p_filesz = GET_BYTE(phdr32_tbl.p_filesz);
+		ph_tbl[index].p_memsz = GET_BYTE(phdr32_tbl.p_memsz);
+		ph_tbl[index].p_flags = GET_BYTE(phdr32_tbl.p_flags);
+		ph_tbl[index].p_align = GET_BYTE(phdr32_tbl.p_align);
 	}
 }
 
@@ -44,7 +44,7 @@ void read_elf_program_header_32(ElfN_Ehdr ehdr, ElfN_Phdr *ph_tbl, int fd)
  */
 void read_elf_program_header_64(ElfN_Ehdr ehdr, ElfN_Phdr *ph_tbl, int fd)
 {
-	uint64_t (*get_byte)(uint64_t, int), i;
+	uint64_t (*get_byte)(uint64_t, int), index;
 	Elf64_Phdr phdr64_tbl;
 
 	get_byte = (ehdr.e_ident[EI_DATA] == ELFDATA2MSB) ? get_byte_big_endian
@@ -53,24 +53,24 @@ void read_elf_program_header_64(ElfN_Ehdr ehdr, ElfN_Phdr *ph_tbl, int fd)
 	assert(lseek(fd, (off_t) ehdr.e_phoff, SEEK_SET) ==
 	       (off_t) ehdr.e_phoff);
 
-	for (i = 0; i < ehdr.e_phnum; i++)
+	for (index = 0; index < ehdr.e_phnum; index++)
 	{
 		assert(read(fd, (void *)&phdr64_tbl, ehdr.e_phentsize) ==
 		       ehdr.e_phentsize);
-		ph_tbl[i].p_type = GET_BYTE(phdr64_tbl.p_type);
-		ph_tbl[i].p_flags = GET_BYTE(phdr64_tbl.p_flags);
-		ph_tbl[i].p_offset = GET_BYTE(phdr64_tbl.p_offset);
-		ph_tbl[i].p_vaddr = GET_BYTE(phdr64_tbl.p_vaddr);
-		ph_tbl[i].p_paddr = GET_BYTE(phdr64_tbl.p_paddr);
-		ph_tbl[i].p_filesz = GET_BYTE(phdr64_tbl.p_filesz);
-		ph_tbl[i].p_memsz = GET_BYTE(phdr64_tbl.p_memsz);
-		ph_tbl[i].p_flags = GET_BYTE(phdr64_tbl.p_flags);
-		ph_tbl[i].p_align = GET_BYTE(phdr64_tbl.p_align);
+		ph_tbl[index].p_type = GET_BYTE(phdr64_tbl.p_type);
+		ph_tbl[index].p_flags = GET_BYTE(phdr64_tbl.p_flags);
+		ph_tbl[index].p_offset = GET_BYTE(phdr64_tbl.p_offset);
+		ph_tbl[index].p_vaddr = GET_BYTE(phdr64_tbl.p_vaddr);
+		ph_tbl[index].p_paddr = GET_BYTE(phdr64_tbl.p_paddr);
+		ph_tbl[index].p_filesz = GET_BYTE(phdr64_tbl.p_filesz);
+		ph_tbl[index].p_memsz = GET_BYTE(phdr64_tbl.p_memsz);
+		ph_tbl[index].p_flags = GET_BYTE(phdr64_tbl.p_flags);
+		ph_tbl[index].p_align = GET_BYTE(phdr64_tbl.p_align);
 	}
 }
 
 /**
- * read_elf_program_header_N -  fills the ehdr with suitable(N) architecture
+ * read_elf_program_header_N - fills the ehdr with suitable(N) architecture
  * data
  * @ehdr: elf header structure
  * @file: input file
@@ -85,6 +85,7 @@ void read_elf_program_header_N(ElfN_Ehdr *ehdr, FILE *file, int arch)
 		read_elf_header_64(ehdr, file);
 	else if (arch == 32)
 		read_elf_header_32(ehdr, file);
+	
 	ph_tbl = malloc(sizeof(ElfN_Phdr) * ehdr->e_phnum);
 	sh_tbl = malloc(sizeof(ElfN_Shdr) * ehdr->e_shnum);
 	if (!sh_tbl)
@@ -95,7 +96,8 @@ void read_elf_program_header_N(ElfN_Ehdr *ehdr, FILE *file, int arch)
 	{
 		read_elf_section_header_64(*ehdr, sh_tbl, fileno(file));
 		read_elf_program_header_64(*ehdr, ph_tbl, fileno(file));
-	} else if (arch == 32)
+	}
+	else if (arch == 32)
 	{
 		read_elf_program_header_32(*ehdr, ph_tbl, fileno(file));
 		read_elf_section_header_32(*ehdr, sh_tbl, fileno(file));
@@ -123,7 +125,7 @@ void print_header(ElfN_Ehdr ehdr, bool arch32)
 	else
 	{
 		printf("  Type           Offset   VirtAddr           PhysAddr           ");
-				printf("FileSiz  MemSiz   Flg Align\n");
+		printf("FileSiz  MemSiz   Flg Align\n");
 	}
 }
 /**
@@ -137,16 +139,12 @@ void print_type_header(ElfN_Phdr ph_tbl, int fd)
 
 	switch (ph_tbl.p_type)
 	{
-	case PT_INTERP:
-		if (lseek(fd, ph_tbl.p_offset, SEEK_SET) !=
-				ph_tbl.p_offset)
-			printf
-					("Unable to find program interpreter name\n");
+		case PT_INTERP:
+		if (lseek(fd, ph_tbl.p_offset, SEEK_SET) != ph_tbl.p_offset)
+			printf("Unable to find program interpreter name\n");
 		else
 		{
-
-			int ret = snprintf(fmt, sizeof(fmt), "%%%ds",
-						 PATH_MAX - 1);
+			int ret = snprintf(fmt, sizeof(fmt), "%%%ds", PATH_MAX - 1);
 
 			if (ret >= (int)sizeof(fmt) || ret < 0)
 			{
@@ -154,8 +152,7 @@ void print_type_header(ElfN_Phdr ph_tbl, int fd)
 				printf("program interpreter\n");
 			}
 			program_interpreter[0] = 0;
-			if (read(fd, program_interpreter, sizeof(fmt))
-					<= 0)
+			if (read(fd, program_interpreter, sizeof(fmt)) <= 0)
 				printf("Unable to read program interpreter name\n");
 			else
 				printf("      [Requesting program interpreter: %s]\n",
