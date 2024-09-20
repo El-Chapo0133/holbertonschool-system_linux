@@ -35,7 +35,7 @@ int main(int argc, char *argv[])
 	}
 	else
 	{
-		printf("%s: %s\n", E, argv[0]);
+		printf("%s: %s\n", ERROR_ELF_FILE, argv[0]);
 		exit_status = 1;
 	}
 	/* finally close the file */
