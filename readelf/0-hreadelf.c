@@ -1,12 +1,11 @@
 #include "readelf.h"
 
 /**
- * main - A program that takes the name of a elf file as a parameter and
- * displays the information contained in the ELF file header of an ELF file.
- * @argc: no of inputs.
- * @argv: inputs.
+ * main - This is the main function
+ * @argc: this is argc
+ * @argv: this is argv
  *
- * Return: on success:  0 , on Failure: 1.
+ * Return: normal main return
  */
 int main(int argc, char *argv[])
 {
@@ -17,7 +16,7 @@ int main(int argc, char *argv[])
 	/* validate user input */
 	if (argc < 2)
 	{
-		printf("Usage: %s elf_filename\n", argv[0]);
+		printf("You must provide an ELF file :(\n");
 		exit(1);
 	}
 	/* open the elf file */

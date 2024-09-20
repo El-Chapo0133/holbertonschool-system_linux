@@ -7,7 +7,7 @@
  */
 char *get_symbol_type(unsigned int type)
 {
-	char buff[32];
+	/* char buff[32]; */
 
 	switch (type)
 	{
