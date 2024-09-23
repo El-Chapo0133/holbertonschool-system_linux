@@ -2,6 +2,8 @@
 #define TRANSFORM_ENDIAN
 
 #include <inttypes.h>
+#include <elf.h>
+#include <endian.h>
 
 uint64_t get_byte_as_little_endian(unsigned char fifth_magic, uint64_t data, int size);
 

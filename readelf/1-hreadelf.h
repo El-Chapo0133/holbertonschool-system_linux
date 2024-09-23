@@ -4,8 +4,7 @@
 #include <elf.h>
 #include "elfn_ehdr.h"
 #include "validate_elf.h"
-#include "read_elf_header.h"
-#include "printer_header.h"
+#include "read_elf_section.h"
 
 #define true 1
 #define false 0

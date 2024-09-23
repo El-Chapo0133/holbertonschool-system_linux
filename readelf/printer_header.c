@@ -33,7 +33,7 @@ void print_all_attributes(ElfN_Ehdr ehdr)
 	{
         /* print key + correct amount of space + value */
 		printf("  %s:%*s%s\n", entries[index].key,
-		       34 - (int)strlen(entries[index].key), "", entries[index].value);
+		       34 - (int)_strlen(entries[index].key), "", entries[index].value);
 	}
 }
 

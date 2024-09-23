@@ -1,3 +1,5 @@
+#include "read_elf_header.h"
+
 /**
  * read_elf_header_32 -  fills the ehdr with suitable(32) architecture data
  * @ehdr: elf header structure
@@ -6,7 +8,7 @@
 void read_elf_header_32(ElfN_Ehdr *ehdr, FILE *file)
 {
 	ssize_t byte_read;
-	unsigned char magic_endian = ehdr->e_ident[EI_DATA];
+	unsigned char magic_endian = ehdr->e_ident[EI_DATA]; // either 32 or 64
 	Elf32_Ehdr ehdr32;
 
 	byte_read = fread(&ehdr32.e_type, sizeof(ehdr32) - EI_NIDENT, 1, file);
@@ -36,7 +38,7 @@ void read_elf_header_32(ElfN_Ehdr *ehdr, FILE *file)
 void read_elf_header_64(ElfN_Ehdr *ehdr, FILE *file)
 {
 	ssize_t byte_read;
-	unsigned char magic_endian = ehdr->e_ident[EI_DATA];
+	unsigned char magic_endian = ehdr->e_ident[EI_DATA]; // either 32 or 64
 	Elf64_Ehdr ehdr64;
 
 	byte_read = fread(&ehdr64.e_type, sizeof(ehdr64) - EI_NIDENT, 1, file);

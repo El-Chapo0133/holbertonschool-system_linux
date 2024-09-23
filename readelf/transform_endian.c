@@ -10,7 +10,9 @@
 uint64_t get_byte_as_little_endian(unsigned char fifth_magic, uint64_t data, int size)
 {
     if (fifth_magic == ELFDATA2LSB)
-        return (data)
+    {
+        return (data);
+    }
 
 	switch (size)
 	{

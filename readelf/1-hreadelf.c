@@ -1,11 +1,12 @@
-#include "0-hreadelf.h"
+#include "1-hreadelf.h"
 
 /**
- * main - This is the main function
- * @argc: this is argc
- * @argv: this is argv
+ * main - A program that takes the name of a elf file as a parameter and
+ * displays the information contained in section headers of an  ELF file.
+ * @argc: no of inputs.
+ * @argv: inputs.
  *
- * Return: normal main return
+ * Return: on success:  0 , on Failure: 1.
  */
 int main(int argc, char *argv[])
 {
@@ -16,10 +17,10 @@ int main(int argc, char *argv[])
 	/* validate user input */
 	if (argc < 2)
 	{
-		printf("You must provide an ELF file :(\n");
+		printf("Usage: %s elf_filename\n", argv[0]);
 		exit(1);
 	}
-
+	
 	/* open the elf file */
 	file = fopen(argv[1], "rb");
 	if (!file)
@@ -27,24 +28,17 @@ int main(int argc, char *argv[])
 		printf("%s: Error: '%s': No such file\n", argv[0], argv[1]);
 		exit(1);
 	}
-
 	if (fread(ehdr.e_ident, EI_NIDENT, 1, file) && elf_check_file(ehdr.e_ident))
 	{
 		arch = get_architecture(ehdr.e_ident[EI_CLASS]);
-		if (arch == 64)
+        if (arch == -1)
         {
-			read_elf_header_64(&ehdr, file);
-		    print_elf_header(ehdr);
+            printf("%s: %s\n", ERROR_ELF_FILE, argv[0]);
+            exit_status = 1;
         }
-        else if (arch == 32)
-		{
-        	read_elf_header_32(&ehdr, file);
-		    print_elf_header(ehdr);
-        }
-        else /* architecture error */
+        else
         {
-		    printf("%s: %s\n", ERROR_ELF_FILE, argv[0]);
-		    exit_status = 1;
+		    read_elf_section_header(&ehdr, file, arch);
         }
 	}
 	else
