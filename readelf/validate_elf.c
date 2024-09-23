@@ -1,4 +1,4 @@
-#include "readelf.h"
+#include "validate_elf.h"
 
 /**
  * elf_check_file -  checks if the elf file is valid
@@ -6,29 +6,16 @@
  *
  * Return: on success:  true , on Failure: false.
  */
-bool elf_check_file(unsigned char *magic)
+int elf_check_file(unsigned char *magic)
 {
-
 	if (magic[0] != ELFMAG0)
-	{
-		/* printf("ELF Header EI_MAG0 incorrect.\n"); */
 		return (false);
-	}
 	if (magic[1] != ELFMAG1)
-	{
-		/* printf("ELF Header EI_MAG1 incorrect.\n"); */
 		return (false);
-	}
 	if (magic[2] != ELFMAG2)
-	{
-		/* printf("ELF Header EI_MAG2 incorrect.\n"); */
 		return (false);
-	}
 	if (magic[3] != ELFMAG3)
-	{
-		/* printf("ELF Header EI_MAG3 incorrect.\n"); */
 		return (false);
-	}
 	return (true);
 }
 
@@ -39,15 +26,11 @@ bool elf_check_file(unsigned char *magic)
  *
  * Return: on success:  true , on Failure: false.
  */
-bool get_architecture(char c, int *arch)
+int get_architecture(char c)
 {
 	if (c == ELFCLASS32)
-	{
-		*arch = 32;
-	} else if (c == ELFCLASS64)
-	{
-		*arch = 64;
-	} else
-		return (false);
-	return (true);
+		return (32);
+	else if (c == ELFCLASS64)
+		return (64);
+	return (-1);
 }

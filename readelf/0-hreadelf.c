@@ -30,12 +30,22 @@ int main(int argc, char *argv[])
 
 	if (fread(ehdr.e_ident, EI_NIDENT, 1, file) && elf_check_file(ehdr.e_ident))
 	{
-		get_architecture(ehdr.e_ident[EI_CLASS], &arch);
+		arch = get_architecture(ehdr.e_ident[EI_CLASS]);
 		if (arch == 64)
+        {
 			read_elf_header_64(&ehdr, file);
-		else if (arch == 32)
-			read_elf_header_32(&ehdr, file);
-		print_elf_header(ehdr);
+		    print_elf_header(ehdr);
+        }
+        else if (arch == 32)
+		{
+        	read_elf_header_32(&ehdr, file);
+		    print_elf_header(ehdr);
+        }
+        else /* architecture error */
+        {
+		    printf("%s: %s\n", ERROR_ELF_FILE, argv[0]);
+		    exit_status = 1;
+        }
 	}
 	else
 	{
