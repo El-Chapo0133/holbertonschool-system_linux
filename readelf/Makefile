@@ -23,12 +23,15 @@ _SRC1 = 1-hreadelf.c \
 
 _SRC2 = 2-hreadelf.c \
 		validate_elf.c \
-		utils_0.c \
-		utils_1.c \
-		utils_2.c \
-		process_elf_header.c \
-		process_elf_section_header.c \
-		process_elf_program_header.c
+		_strlen.c \
+		elf_header_utils_0.c \
+		elf_header_utils_1.c \
+		elf_section_utils_0.c \
+		read_elf_program_header.c \
+		read_elf_section.c \
+		read_elf_header.c \
+		printer_program_header.c \
+		transform_endian.c
 
 
 SRC = $(patsubst %,$(SDIR)/%,$(_SRC))
