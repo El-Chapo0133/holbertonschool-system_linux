@@ -27,12 +27,12 @@ int main(int argc, char *argv[])
 		if (fread(ehdr.e_ident, EI_NIDENT, 1, file) &&
 		    elf_check_file(ehdr.e_ident))
 		{
-			get_architecture(ehdr.e_ident[EI_CLASS], &arch);
+			arch = get_architecture(ehdr.e_ident[EI_CLASS]);
 			read_elf_program_header(&ehdr, file, arch);
 		}
         else
         {
-			printf("%s: %s\n", E, argv[0]);
+			printf("%s: %s\n", ERROR_ELF_FILE, argv[0]);
 		    exit_status = 1;
         }
 	}

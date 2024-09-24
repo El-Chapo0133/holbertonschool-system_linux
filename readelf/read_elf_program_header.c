@@ -68,7 +68,7 @@ void read_elf_program_header_64(ElfN_Ehdr ehdr, ElfN_Phdr *ph_tbl, int fd)
 	for (index = 0; index < ehdr.e_phnum; index++)
 	{
         // read program header to phdr64_table
-		assert(read(fd, (void *)&phdr64_tbl, ehdr.e_phentsize) ==
+		assert(read(fd, (void *)&phdr64_table, ehdr.e_phentsize) ==
 		       ehdr.e_phentsize);
 
 		ph_tbl[index].p_type    = get_byte_as_little_endian(fifth_magic,

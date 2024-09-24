@@ -3,16 +3,16 @@
 /**
  * print_header - display the file details  & header
  * @ehdr : elf header
- * @arch32 : if architecture is 32 then true else false
+ * @arch : architecture, either 32 or 64
  */
-void print_header(ElfN_Ehdr ehdr, bool arch32)
+void print_header(ElfN_Ehdr ehdr, int arch)
 {
 	printf("\nElf file type is %s\n", get_file_type(ehdr.e_type));
 	printf("Entry point 0x%x\n", (unsigned int)ehdr.e_entry);
 	printf("There are %d program headers, starting at offset %d\n\n",
 	       ehdr.e_phnum, (unsigned int)ehdr.e_phoff);
 	printf("Program Headers:\n");
-	if (arch32)
+	if (arch == 32)
 	{
 		printf("  Type           Offset   VirtAddr   PhysAddr   ");
 		printf("FileSiz MemSiz  Flg Align\n");
@@ -69,25 +69,25 @@ void print_elf_program_header(ElfN_Phdr ph_tbl[], ElfN_Shdr sh_tbl[],
 {
 	int i = 0, j = 0;
 	char *str_tbl = read_section(fd, sh_tbl[ehdr.e_shstrndx]);
-	bool arch32 = ehdr.e_ident[EI_CLASS] == ELFCLASS32;
+	int arch = ehdr.e_ident[EI_CLASS] == ELFCLASS32;
 
 	if (ehdr.e_phnum == 0)
 	{
 		printf("\nThere are no program headers in this file.\n");
 		return;
 	}
-	print_header(ehdr, arch32);
+	print_header(ehdr, arch);
 	for (i = 0; i < ehdr.e_phnum; i++)
 	{
 		printf("  %-14s ", get_segment_type(ph_tbl[i].p_type));
 		printf("0x%6.6lx ", (unsigned long)ph_tbl[i].p_offset);
-		printf("0x%*.*lx ", (arch32) ? 8 : 16, (arch32) ? 8 : 16,
+		printf("0x%*.*lx ", (arch == 32) ? 8 : 16, (arch == 32) ? 8 : 16,
 		       (unsigned long)ph_tbl[i].p_vaddr);
-		printf("0x%*.*lx ", (arch32) ? 8 : 16, (arch32) ? 8 : 16,
+		printf("0x%*.*lx ", (arch == 32) ? 8 : 16, (arch == 32) ? 8 : 16,
 		       (unsigned long)ph_tbl[i].p_paddr);
-		printf("0x%*.*lx ", (arch32) ? 5 : 6, (arch32) ? 5 : 6,
+		printf("0x%*.*lx ", (arch == 32) ? 5 : 6, (arch == 32) ? 5 : 6,
 		       (unsigned long)ph_tbl[i].p_filesz);
-		printf("0x%*.*lx ", (arch32) ? 5 : 6, (arch32) ? 5 : 6,
+		printf("0x%*.*lx ", (arch == 32) ? 5 : 6, (arch == 32) ? 5 : 6,
 		       (unsigned long)ph_tbl[i].p_memsz);
 		printf("%c%c%c ", (ph_tbl[i].p_flags & PF_R ? 'R' : ' '),
 		       (ph_tbl[i].p_flags & PF_W ? 'W' : ' '),
@@ -101,9 +101,31 @@ void print_elf_program_header(ElfN_Phdr ph_tbl[], ElfN_Shdr sh_tbl[],
 	{
 		printf("   %2.2d     ", i);
 		for (j = 0; j < ehdr.e_shnum && str_tbl; j++)
-			if (ELF_IS_SECTION_IN_SEGMENT(sh_tbl[j], ph_tbl[i])
+			if (is_elf_section_in_segment(sh_tbl[j], ph_tbl[i])
 			    && sh_tbl[j].sh_size)
 				printf("%s ", str_tbl + sh_tbl[j].sh_name);
 		putc('\n', stdout);
 	}
+}
+
+int is_elf_section_in_segment(ElfN_Shdr shdr, ElfN_Phdr phdr)
+{
+	return (
+		((((shdr.sh_flags & SHF_TLS) != 0) && (phdr.p_type == PT_TLS || phdr.p_type == PT_LOAD))
+		|| ((shdr.sh_flags & SHF_TLS) == 0 && phdr.p_type != PT_TLS))
+		&& (shdr.sh_type == SHT_NOBITS
+		|| ((uint64_t) shdr.sh_offset >= phdr.p_offset
+		&& (shdr.sh_offset + get_elf_section_size(shdr, phdr)
+			<= phdr.p_offset + phdr.p_filesz)))
+		&& ((shdr.sh_flags & SHF_ALLOC) == 0 || (shdr.sh_addr >= phdr.p_vaddr
+		&& (shdr.sh_addr + get_elf_section_size(shdr, phdr)
+			<= phdr.p_vaddr + phdr.p_memsz)))
+	);
+}
+
+int get_elf_section_size(ElfN_Shdr shdr, ElfN_Phdr phdr)
+{
+	return ((((shdr.sh_flags & SHF_TLS) == 0
+		|| shdr.sh_type != SHT_NOBITS
+		|| phdr.p_type == PT_TLS) ? shdr.sh_size : 0));
 }

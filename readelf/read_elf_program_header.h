@@ -4,6 +4,7 @@
 #include <elf.h>
 #include <assert.h>
 #include "transform_endian.h"
+#include "read_elf_section.h"
 #include "elfn_ehdr.h"
 #include "elfn_shdr.h"
 #include "elfn_phdr.h"

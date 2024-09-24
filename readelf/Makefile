@@ -29,8 +29,10 @@ _SRC2 = 2-hreadelf.c \
 		elf_section_utils_0.c \
 		read_elf_program_header.c \
 		read_elf_section.c \
+		elf_program_header_utils.c \
 		read_elf_header.c \
 		printer_program_header.c \
+		printer_section.c \
 		transform_endian.c
 
 
