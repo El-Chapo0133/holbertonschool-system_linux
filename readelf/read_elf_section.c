@@ -11,7 +11,7 @@ void read_elf_section_header_32(ElfN_Ehdr ehdr, ElfN_Shdr *sh_tbl, int fd)
 {
 	int index;
 	Elf32_Shdr shdr32_table;
-	unsigned char magic_endian = ehdr.e_ident[EI_DATA]; // either 32 or 64
+	unsigned char magic_endian = ehdr.e_ident[EI_DATA]; // either 1 or 2
 
 	/* seek to the section memory */
 	assert(lseek(fd, (off_t) ehdr.e_shoff, SEEK_SET) == (off_t) ehdr.e_shoff);
@@ -47,7 +47,7 @@ void read_elf_section_header_64(ElfN_Ehdr ehdr, ElfN_Shdr *sh_tbl, int fd)
 {
 	int index;
 	Elf64_Shdr shdr64_table;
-	unsigned char magic_endian = ehdr.e_ident[EI_DATA]; // either 32 or 64
+	unsigned char magic_endian = ehdr.e_ident[EI_DATA]; // either 1 or 2
 
 	/* seek to the section memory */
 	assert(lseek(fd, (off_t) ehdr.e_shoff, SEEK_SET) == (off_t) ehdr.e_shoff);
