@@ -1,13 +1,12 @@
 		section .text
 		global asm_strcmp
-asm_cmpstr:
-        mov rax, 0
+asm_strcmp:
+        mov rax, 0 ; assume it returns 0 meaning equals
+        cmp rdi, rsi ; compare 1st arg (rdi) with 2nd arg (rsi)
+        je out ; if equals, jump to out and return
 
-        cmp rdi, rsi
-        je out
-
-        mov rax, 1
-        jmp out
+        mov rax, 1 ; then assume it returns 1 meaning not equals
+        jmp out ; jump to out and return
 
 out:
-        ret
+        ret ; return rax
