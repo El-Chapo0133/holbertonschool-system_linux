@@ -1,8 +1,8 @@
 #include <stdio.h>
 
-int asm_strncmp(const char *s1, const char *s2, int n);
+int asm_strcmp(const char *s1, const char *s2);
 
 int main(void) {
-    int compare = asm_strncmp("Hello World", "Hello orld", 5);
-    printf("%d", compare);
+    int compare = asm_strcmp("Hello World", "Hello orld");
+    printf("%d\n", compare);
 }
