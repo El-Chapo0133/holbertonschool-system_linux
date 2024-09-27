@@ -25,10 +25,10 @@ not_equal:
         jg greater
         jl less
 greater:
-        mov rax, 1
+        mov rax, -1
         ret
 less:
-        mov rax, -1
+        mov rax, 1
         ret
 out:
         ret             ; return rax
