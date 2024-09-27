@@ -4,14 +4,17 @@
 memcpy:
 	push rbp
 	mov rsp, rbp
-
-loop:
-	cmp rdi, 0
+	
+	cmp rdx, 0	; check for null
 	je out
-	mov rsi, rdi
 
-	inc rdi
-	inc rsi
+	mov rcx, 0
+loop:
+	cmp rdi + rcx, 0
+	je out
+	mov rsi + rcx, rdi + rcx
+
+	inc rcx
 	jmp loop
 
 out:
