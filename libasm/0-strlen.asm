@@ -6,6 +6,6 @@ loop:
 		cmp BYTE [rdi + rax], 0
 		je out
 		inc rax
-		jump loop
+		jmp loop
 out:
 		ret
