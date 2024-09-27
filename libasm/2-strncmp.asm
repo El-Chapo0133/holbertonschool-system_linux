@@ -1,51 +1,18 @@
-	BiTS 64
+
+	BYTES 64
 		section .text
 		global asm_strncmp
 asm_strncmp:
-        push    rbp
-        mov     rbp, rsp
-        mov     QWORD PTR [rbp-24], rdi
-        mov     QWORD PTR [rbp-32], rsi
-        mov     DWORD PTR [rbp-36], edx
-        mov     DWORD PTR [rbp-4], 0
-        jmp     .L2
-.L6:
-        mov     eax, DWORD PTR [rbp-4]
-        movsx   rdx, eax
-        mov     rax, QWORD PTR [rbp-24]
-        add     rax, rdx
-        movzx   edx, BYTE PTR [rax]
-        mov     eax, DWORD PTR [rbp-4]
-        movsx   rcx, eax
-        mov     rax, QWORD PTR [rbp-32]
-        add     rax, rcx
-        movzx   eax, BYTE PTR [rax]
-        cmp     dl, al
-        jle     .L3
-        mov     eax, 1
-        jmp     .L4
-.L3:
-        mov     eax, DWORD PTR [rbp-4]
-        movsx   rdx, eax
-        mov     rax, QWORD PTR [rbp-24]
-        add     rax, rdx
-        movzx   edx, BYTE PTR [rax]
-        mov     eax, DWORD PTR [rbp-4]
-        movsx   rcx, eax
-        mov     rax, QWORD PTR [rbp-32]
-        add     rax, rcx
-        movzx   eax, BYTE PTR [rax]
-        cmp     dl, al
-        jge     .L5
-        mov     eax, -1
-        jmp     .L4
-.L5:
-        add     DWORD PTR [rbp-4], 1
-.L2:
-        mov     eax, DWORD PTR [rbp-4]
-        cmp     eax, DWORD PTR [rbp-36]
-        jl      .L6
-        mov     eax, 0
-.L4:
-        pop     rbp
+        mov rax, 0
+loop:
+	cmp BYTE [rdi + rdx], BYTE [rsi + rdx]
+	jnz diff	; when not zero return 1 or -1
+	dec rdx		; dec counter
+	cmp rdx, 0	; when rdx is at zero
+	jz out		; return 0
+	jmp loop	; loop again
+diff:
+        mov rax, 1
+        ret
+out:
         ret
