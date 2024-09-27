@@ -8,19 +8,27 @@ asm_strcmp:
         je out
 
         mov rax, 0      ; assume it returns 0 meaning equals
-        cmp rdi, rsi    ; compare 1st arg (rdi) with 2nd arg (rsi)
+
+loop:
+        mov BL, [rsi]
+        mov BH, [rdi]
+        cmp rsi, rdi
+        jne not_equal
+
+        inc rdi
+        inc rsi
+        jmp out
+
+not_equal:
+        sub rdi, rsi
+        cmp rdi, 0
         jg greater
-        je out          ; if equals, jump to out and return
         jl less
-
-        mov rax, 1      ; then assume it returns 1 meaning not equals
-        jmp out         ; jump to out and return
-
 greater:
         mov rax, 1
-        jmp out
+        ret
 less:
         mov rax, -1
-        jmp out
+        ret
 out:
         ret             ; return rax
