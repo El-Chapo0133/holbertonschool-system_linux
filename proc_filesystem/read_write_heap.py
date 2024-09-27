@@ -1,9 +1,11 @@
 #!/usr/bin/python3
 """
-This file looks for a process by it's pid and replace a value in the heap of this process
+This file looks for a process by it's pid and replace a value
+in the heap of this process
 """
 
 from sys import argv
+
 
 def init():
     """This is the main function"""
@@ -19,7 +21,8 @@ def init():
     # try to open the files
     try:
         maps_file = open("/proc/{}/maps".format(pid), 'r')
-        mem_file = open("/proc/{}/mem".format(pid), 'r+b', 0) # open with binary mode
+        # open with binary mode
+        mem_file = open("/proc/{}/mem".format(pid), 'r+b', 0)
     except Exception as e:
         # problems :(
         # probably not found or permissions denied
@@ -27,7 +30,7 @@ def init():
         maps_file.close()
         mem_file.close()
         exit(1)
-    
+
     # read the maps file line by line
     for line in maps_file.readlines():
         line_splitted = line.split()
@@ -42,7 +45,7 @@ def init():
             # move to the start position and read the values
             mem_file.seek(start_position)
             string_read = mem_file.read(end_position - start_position)
-            
+
             # find the position of the target_string
             # this gives us a number where the string is
             lookup_position = string_read.find(str.encode(target_string))
@@ -60,6 +63,7 @@ def init():
     # never forget to close openned files at the end
     maps_file.close()
     mem_file.close()
+
 
 if __name__ == "__main__":
     init()
