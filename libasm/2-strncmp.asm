@@ -6,8 +6,8 @@ asm_strncmp:
 	mov rbp, rsp
         mov rax, 0
 loop:
-        movzx BL, BYTE [rdi]    ; store first arg char in BL
-        movzx BH, BYTE [rsi]    ; store second arg char in BH
+        mov BL, BYTE [rdi]    ; store first arg char in BL
+        mov BH, BYTE [rsi]    ; store second arg char in BH
         cmp BL, BH	; compare them
         jne diff	; when not zero return 1 or -1
         test BL, BL	; check for null-character
