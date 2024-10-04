@@ -13,14 +13,14 @@ asm_strcmp:
         xor	rax, rax	; assume it returns 0 meaning equals
 
 loop:
-        mov	BH, [rdi]	; load char to BH
-        mov	BL, [rsi]	; load char to BL
-        cmp	BH, BL		; compare them
+        mov	al, [rdi]	; load char to BH
+        mov	cl, [rsi]	; load char to BL
+        cmp	al, cl		; compare them
         jne	not_equal	; when not equals return 1 or -1
 
         inc	rdi		; inc rdi to next char
         inc	rsi		; inc rsi to next char
-        
+
 	cmp	rdi, 0		; check for null-character
 	je	not_equal
 
