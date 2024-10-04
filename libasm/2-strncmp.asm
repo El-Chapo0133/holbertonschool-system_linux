@@ -21,7 +21,7 @@ loop:
         test BL, BL
 	je end_of_str
 	dec rdx		; dec counter
-	jz loop		; as long as rdx is not 0 loop again
+	jnz loop	; as long as rdx is not 0 loop again
 
 	; here means it's the end of the counter, so result=0
 	mov rax, 0
