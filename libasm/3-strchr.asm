@@ -8,8 +8,6 @@ asm_strchr:
 
 	cmp	rdi, 0		; check for null
 	je	out
-	cmp	sil, 0		; check for null
-	je	out
 
 loop:
 	mov	al, BYTE [rdi]	; load current char
