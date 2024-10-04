@@ -10,25 +10,22 @@ asm_strcmp:
         xor	rax, rax      ; assume it returns 0 meaning equals
 
 loop:
-        mov BH, [rdi]	; load char to BH
-        mov BL, [rsi]	; load char to BL
-        cmp BH, BL	; compare them
-        jne not_equal	; 
+        mov	BH, [rdi]	; load char to BH
+        mov	BL, [rsi]	; load char to BL
+        cmp	BH, BL		; compare them
+        jne	not_equal	; 
 
-        inc rdi		; inc rdi to next char
-        inc rsi		; inc rsi to next char
-        jmp out		; loop again
+        inc	rdi		; inc rdi to next char
+        inc	rsi		; inc rsi to next char
+        
+	cmp	rdi, 0		; check for null-character
+	je	not_equal
+
+	jmp	out		; loop again
 
 not_equal:
-        sub rdi, rsi	
-        cmp rdi, 0
-        jg greater
-        jl less
-greater:
-        mov rax, -1
-        ret
-less:
-        mov rax, 1
-        ret
+	sub	rdi, rsi	; sub to get the difference
+	mov	rax, rdi
+	jmp	out
 out:
-        ret             ; return rax
+        ret			; return rax
