@@ -3,7 +3,7 @@ BITS 64
 		global asm_strncmp
 asm_strncmp:
 	push	rbp		; save current base ptr
-	mov	rsp, rbp	; establish a new base ptr
+	mov	rbp, rsp	; establish a new base ptr
         xor	rax, rax	; clear rax to ensure clean output
 	push	rcx		; initialize a counter
 	; rdi = first string
