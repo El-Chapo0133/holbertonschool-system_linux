@@ -2,31 +2,31 @@
 		section .text
 		global asm_strchr
 asm_strchr:
-	push rbp
-	mov rsp, rbp
+	push	rbp		; save current base ptr
+	mov	rsp, rbp	; establish new base ptr
 
-	cmp rdi, 0	; check for null
-	je out
-	cmp rsi, 0	; check for null
-	je out
+	cmp	rdi, 0		; check for null
+	je	out
+	cmp	rsi, 0		; check for null
+	je	out
 
-	mov rax, 0	; null by default
-	mov BL, BYTE [rsi]
+	xor	rax, rax	; null by default
+	mov	BL, BYTE [rsi]	; load s2 char to find
 loop:
-	mov BH, BYTE [rdi]
-	cmp BH, BL
-	je found
+	mov	BH, BYTE [rdi]	; load current char
+	cmp	BH, BL		; compare current char with char to find
+	je	found		; jump to found when they are equal
 	
-	cmp rdi, 0	; end of string
-	je out
+	cmp	rdi, 0		; check for null-character
+	je	out		; if equal jump to out
 	
-	inc rdi
-	jmp loop
+	inc	rdi		; inc char
+	jmp	loop		; loop again
 
 found:
-	mov rax, rdi
-	jmp out
+	mov	rax, rdi	; move address to rax
+	jmp	out
 out:	
-	mov rsp, rbp
-	pop rbp
-	ret
+	mov	rsp, rbp	; restore the stack ptr
+	pop	rbp		; restore the base ptr
+	ret			; return
