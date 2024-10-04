@@ -13,19 +13,19 @@ asm_strchr:
 	mov rax, 0	; null by default
 loop:
 	mov BH, BYTE [rdi]
-	mov BL, BYTE [rsi]
-	cmp BH, BL
+	cmp BH, sil
 	je found
 	
-	inc rdi
 	cmp rdi, 0	; end of string
 	je out
+	
+	inc rdi
 	jmp loop
 
 found:
 	mov rax, rdi
 	jmp out
 out:	
-	mov rbp, rsp
+	mov rsp, rbp
 	pop rbp
 	ret
