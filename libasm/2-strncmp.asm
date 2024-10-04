@@ -3,7 +3,7 @@ BITS 64
 		global asm_strncmp
 asm_strncmp:
 	push rbp
-	mov rbp, rsp
+	mov rsp, rbp
 
         mov rax, 0
 	; rdi = first string
@@ -37,6 +37,6 @@ diff:
 	mov rax, rdi
         jmp out
 out:
-	mov rsp, rbp
-	pop rsp
+	mov rbp, rsp
+	pop rbp
         ret
