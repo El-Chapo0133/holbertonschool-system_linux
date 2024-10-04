@@ -5,6 +5,8 @@ asm_strncmp:
 	push rbp
 	mov rbp, rsp
         mov rax, 0
+	push rcx
+
 loop:
         mov BL, BYTE [rdi]    ; store first arg char in BL
         mov BH, BYTE [rsi]    ; store second arg char in BH
