@@ -12,7 +12,9 @@ strchr:
 
 	mov rax, 0	; null by default
 loop:
-	cmp [rdi], [rsi]
+	mov BH, BYTE [rdi]
+	mov BL, BYTE [rsi]
+	cmp BH, BL
 	je found
 	
 	inc rdi
