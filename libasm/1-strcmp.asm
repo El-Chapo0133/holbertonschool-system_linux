@@ -3,7 +3,7 @@
 		global asm_strcmp
 asm_strcmp:
         push	rbp
-	mov	rsp, rbp
+	mov	rbp, rsp
 
 	cmp	rdi, 0		; check if rdi is null
         je	compare
@@ -39,6 +39,6 @@ less:
 	mov	rax, -1
 	jmp	out
 out:
-	mov	rsp, rbp
+	mov	rbp, rsp
 	pop	rbp
         ret			; return rax
