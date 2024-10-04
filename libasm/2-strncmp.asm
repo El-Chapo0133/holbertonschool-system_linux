@@ -4,15 +4,15 @@ BITS 64
 asm_strncmp:
 	push rbp
 	mov rbp, rsp
+
         mov rax, 0
-	push rcx
 
 loop:
         movzx eax, BYTE [rdi]    ; store first arg char in BL
         movzx ecx, BYTE [rsi]    ; store second arg char in BH
-        cmp al, cl	; compare them
+        cmp eax, ecx	; compare them
         jne diff	; when not zero return 1 or -1
-        test al, al	; check for null-character
+        test eax, eax	; check for null-character
 	je end_of_str
 	inc rdi		; inc to next char
 	inc rsi		; inc to next char
@@ -29,7 +29,6 @@ diff:
 end_of_str:
 	xor eax, eax
 out:
-	pop rcx
 	mov rsp, rbp
 	pop rsp
         ret
