@@ -18,12 +18,12 @@ loop:
         cmp	al, cl		; compare them
         jne	compare		; when not equals return 1 or -1
 
-
-	cmp	rdi, 0		; check for null-character
+	cmp	al, 0		; check for null-character
 	je	compare
 
         inc	rdi		; inc rdi to next char
         inc	rsi		; inc rsi to next char
+
 	jmp	loop		; loop again
 
 compare:
