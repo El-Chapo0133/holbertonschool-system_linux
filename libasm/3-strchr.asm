@@ -13,7 +13,7 @@ asm_strchr:
 	mov rax, 0	; null by default
 loop:
 	mov BH, BYTE [rdi]
-	cmp BH, sil
+	cmp BH, rsi
 	je found
 	
 	cmp rdi, 0	; end of string
