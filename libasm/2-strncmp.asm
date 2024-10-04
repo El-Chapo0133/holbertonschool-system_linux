@@ -3,7 +3,7 @@ BITS 64
 		global asm_strncmp
 asm_strncmp:
 	push rbp
-	mov rbp rsp
+	mov rbp, rsp
         mov rax, 0
 loop:
         movzx BL, BYTE [rdi]    ; store first arg char in BL
