@@ -24,7 +24,7 @@ loop:
 	cmp	rdi, 0		; check for null-character
 	je	compare
 
-	jmp	out		; loop again
+	jmp	loop		; loop again
 
 compare:
 	sub	rdi, rsi	; sub to get the difference
