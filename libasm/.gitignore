@@ -1,1 +1,3 @@
 *.o
+test.asm
+out
