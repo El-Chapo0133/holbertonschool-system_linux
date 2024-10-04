@@ -4,20 +4,20 @@
 asm_strchr:
 	push	rbp		; save current base ptr
 	mov	rbp, rsp	; establish new base ptr
+	xor	rax, rax	; null by default
 
 	cmp	rdi, 0		; check for null
 	je	out
 	cmp	rsi, 0		; check for null
 	je	out
 
-	xor	rax, rax	; null by default
 loop:
 	mov	al, BYTE [rdi]	; load current char
 	; sil is the lowest 8 bits of rsi
 	cmp	al, sil		; compare current char with char to find
 	je	found		; jump to found when they are equal
 
-	cmp	BYTE [rdi], 0		; check for null-character
+	cmp	al, 0		; check for null-character
 	je	out		; if equal jump to out
 
 	inc	rdi		; inc char
