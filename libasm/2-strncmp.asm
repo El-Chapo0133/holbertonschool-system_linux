@@ -4,7 +4,7 @@ BITS 64
 asm_strncmp:
 	push	rbp		; save current base ptr
 	mov	rbp, rsp	; establish a new base ptr
-        xor	rax, rax	; clear rax to ensure clean output
+	xor	rax, rax	; clear rax to ensure clean output
 	push	rcx		; initialize a counter
 	; rdi = first string
 	; rsi = second string
@@ -17,7 +17,7 @@ loop:
         jne diff	; when not zero return the diff
         
 	test al, al	; check for null-character
-	je diff
+	je equal
 	
 	inc rdi		; inc to next char
 	inc rsi		; inc to next char
@@ -29,7 +29,6 @@ loop:
 	jmp out
 diff:
 	sub rax, rcx
-	mov rax, rdi
         jmp out
 equal:
 	xor rax, rax
