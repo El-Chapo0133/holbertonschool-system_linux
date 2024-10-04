@@ -9,17 +9,23 @@ asm_strncmp:
 	; rdi = first string
 	; rsi = second string
 	; rdx = n char to check
+	; mov rdi, QWORD PTR -8 [rbp]
+	; mov rsi, QWORD PTR -16[rbp]
+	; mov rdx, DWORD PTR -20[rbp]
+
 loop:
         mov BH, BYTE [rdi]    ; store first arg char in BL
         mov BL, BYTE [rsi]    ; store second arg char in BH
         cmp BH, BL	; compare them
-        jne diff	; when not zero return 1 or -1
+        jne diff	; when not zero return the diff
+        
+	test BH, BH	; check for null-character
+	je diff
+        test BL, BL	; check for null-character
+	je diff
+	
 	inc rdi		; inc to next char
 	inc rsi		; inc to next char
-        test BH, BH	; check for null-character
-	je end_of_str
-        test BL, BL
-	je end_of_str
 	dec rdx		; dec counter
 	jnz loop	; as long as rdx is not 0 loop again
 
@@ -30,8 +36,6 @@ diff:
 	sub rdi, rsi
 	mov rax, rdi
         jmp out
-end_of_str:
-	mov rdx, 1
 out:
 	mov rsp, rbp
 	pop rsp
