@@ -11,9 +11,10 @@ asm_strchr:
 	je out
 
 	mov rax, 0	; null by default
+	mov BL, BYTE [rsi]
 loop:
 	mov BH, BYTE [rdi]
-	cmp BH, rsi
+	cmp BH, BL
 	je found
 	
 	cmp rdi, 0	; end of string
