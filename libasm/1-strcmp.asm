@@ -6,9 +6,9 @@ asm_strcmp:
 	mov	rsp, rbp
 
 	cmp	rdi, 0		; check if rdi is null
-        je	out
+        je	compare
         cmp	rsi, 0		; check if rsi is null
-        je	out
+        je	compare
 
         xor	rax, rax	; assume it returns 0 meaning equals
 
@@ -16,17 +16,17 @@ loop:
         mov	al, [rdi]	; load char to BH
         mov	cl, [rsi]	; load char to BL
         cmp	al, cl		; compare them
-        jne	not_equal	; when not equals return 1 or -1
+        jne	compare		; when not equals return 1 or -1
 
         inc	rdi		; inc rdi to next char
         inc	rsi		; inc rsi to next char
 
 	cmp	rdi, 0		; check for null-character
-	je	not_equal
+	je	compare
 
 	jmp	out		; loop again
 
-not_equal:
+compare:
 	sub	rdi, rsi	; sub to get the difference
 	cmp	rdi, 0		; compare to 0
 	jg	greater		; if greater return 1
