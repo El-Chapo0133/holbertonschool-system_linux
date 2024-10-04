@@ -2,7 +2,10 @@
 		section .text
 		global asm_strcmp
 asm_strcmp:
-        cmp	rdi, 0      ; check if rdi is null
+        push	rbp
+	mov	rsp, rbp
+
+	cmp	rdi, 0      ; check if rdi is null
         je	out
         cmp	rsi, 0      ; check if rsi is null
         je	out
@@ -25,7 +28,17 @@ loop:
 
 not_equal:
 	sub	rdi, rsi	; sub to get the difference
-	mov	rax, rdi
+	cmp	rdi, 0
+	jg	greater
+	jl	less
+	je	out
+greater:
+	mov	rax, 1
+	jmp	out
+less:
+	mov	rax, -1
 	jmp	out
 out:
+	mov	rsp, rbp
+	pop	rbp
         ret			; return rax
