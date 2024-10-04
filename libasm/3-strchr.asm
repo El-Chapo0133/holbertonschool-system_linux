@@ -24,7 +24,7 @@ loop:
 found:
 	mov	rax, rdi	; move address to rax
 	jmp	out
-out:	
+out:
 	mov	rbp, rsp	; restore the stack ptr
 	pop	rbp		; restore the base ptr
 	ret			; return
