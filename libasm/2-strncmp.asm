@@ -6,9 +6,6 @@ asm_strncmp:
 	mov rbp, rsp
 
         mov rax, 0
-
-	cmp rdx, 0
-	je out
 loop:
         mov BH, BYTE [rdi]    ; store first arg char in BL
         mov BL, BYTE [rsi]    ; store second arg char in BH
@@ -19,7 +16,7 @@ loop:
 	inc rdi		; inc to next char
 	inc rsi		; inc to next char
         dec rdx		; dec counter
-	jnz loop	; as long as rdx is not 0 loop again
+	jz loop		; as long as rdx is not 0 loop again
 
 	; here means it's the end of the counter, so result=0
 	mov rax, 0
@@ -29,7 +26,7 @@ diff:
 	mov rax, rdi
         jmp out
 end_of_str:
-	xor rdx, rdx
+	mov rdx, 1
 out:
 	mov rsp, rbp
 	pop rsp
