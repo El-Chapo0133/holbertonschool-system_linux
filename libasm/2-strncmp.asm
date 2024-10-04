@@ -8,15 +8,15 @@ asm_strncmp:
         mov rax, 0
 
 loop:
-        movzx eax, BYTE [rdi]    ; store first arg char in BL
-        movzx ecx, BYTE [rsi]    ; store second arg char in BH
-        cmp eax, ecx	; compare them
+        mov BH, BYTE [rdi]    ; store first arg char in BL
+        mov BL, BYTE [rsi]    ; store second arg char in BH
+        cmp BH, BL	; compare them
         jne diff	; when not zero return 1 or -1
-        test eax, eax	; check for null-character
+        test BH, BH	; check for null-character
 	je end_of_str
 	inc rdi		; inc to next char
 	inc rsi		; inc to next char
-        dec edx		; dec counter
+        dec rdx		; dec counter
 	jnz loop	; as long as rdx is not 0 loop again
 
 	; here means it's the end of the counter, so result=0
@@ -27,7 +27,7 @@ diff:
 	mov rax, rdi
         jmp out
 end_of_str:
-	xor eax, eax
+	xor rdx, rdx
 out:
 	mov rsp, rbp
 	pop rsp
