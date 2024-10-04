@@ -11,13 +11,13 @@ asm_strchr:
 	je	out
 
 	xor	rax, rax	; null by default
-	;mov	cl, BYTE [rsi]	; load s2 char to find
 loop:
 	mov	al, BYTE [rdi]	; load current char
+	; sil is the lowest 8 bits of rsi
 	cmp	al, sil		; compare current char with char to find
 	je	found		; jump to found when they are equal
 
-	cmp	rdi, 0		; check for null-character
+	cmp	BYTE [rdi], 0		; check for null-character
 	je	out		; if equal jump to out
 
 	inc	rdi		; inc char
