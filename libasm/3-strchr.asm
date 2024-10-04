@@ -8,7 +8,7 @@ asm_strchr:
 
 	cmp	rdi, 0		; check for null
 	je	out
-	cmp	rsi, 0		; check for null
+	cmp	sil, 0		; check for null
 	je	out
 
 loop:
