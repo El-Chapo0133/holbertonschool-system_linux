@@ -2,26 +2,21 @@ BITS 64
 		section .text
 		global asm_strncmp
 asm_strncmp:
-	push rbp
-	mov rsp, rbp
-
-        mov rax, 0
+	push	rbp		; save current base ptr
+	mov	rsp, rbp	; establish a new base ptr
+        xor	rax, rax	; clear rax to ensure clean output
+	push	rcx		; initialize a counter
 	; rdi = first string
 	; rsi = second string
 	; rdx = n char to check
-	; mov rdi, QWORD PTR -8 [rbp]
-	; mov rsi, QWORD PTR -16[rbp]
-	; mov rdx, DWORD PTR -20[rbp]
 
 loop:
-        mov BH, BYTE [rdi]    ; store first arg char in BL
-        mov BL, BYTE [rsi]    ; store second arg char in BH
-        cmp BH, BL	; compare them
+        movzx rax, BYTE [rdi]    ; store first arg char in BL
+        movzx rcx, BYTE [rsi]    ; store second arg char in BH
+        cmp al, cl	; compare them
         jne diff	; when not zero return the diff
         
-	test BH, BH	; check for null-character
-	je diff
-        test BL, BL	; check for null-character
+	test al, al	; check for null-character
 	je diff
 	
 	inc rdi		; inc to next char
@@ -30,13 +25,16 @@ loop:
 	jnz loop	; as long as rdx is not 0 loop again
 
 	; here means it's the end of the counter, so result=0
-	mov rax, 0
+	xor rax, rax
 	jmp out
 diff:
-	sub rdi, rsi
+	sub rax, rcx
 	mov rax, rdi
         jmp out
+equal:
+	xor rax, rax
 out:
-	mov rbp, rsp
-	pop rbp
-        ret
+	pop	rcx
+	mov	rbp, rsp	; restore the stack ptr
+	pop	rbp		; restore the base ptr
+        ret			; return
