@@ -7,6 +7,8 @@ asm_strncmp:
 
         mov rax, 0
 
+	cmp rdx, 0
+	je out
 loop:
         mov BH, BYTE [rdi]    ; store first arg char in BL
         mov BL, BYTE [rsi]    ; store second arg char in BH
