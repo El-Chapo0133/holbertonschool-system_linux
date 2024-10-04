@@ -27,8 +27,7 @@ loop:
 	jmp	loop		; loop again
 
 compare:
-	sub	rdi, rsi	; sub to get the difference
-	cmp	rdi, 0		; compare to 0
+	cmp	al, cl		; compare to 0
 	jg	greater		; if greater return 1
 	jl	less		; if less return -1
 	je	out		; if equals return 0
