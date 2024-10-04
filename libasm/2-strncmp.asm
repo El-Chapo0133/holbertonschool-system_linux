@@ -15,10 +15,10 @@ loop:
         movzx rcx, BYTE [rsi]    ; store second arg char in BH
         cmp al, cl	; compare them
         jne diff	; when not zero return the diff
-        
+
 	test al, al	; check for null-character
 	je equal
-	
+
 	inc rdi		; inc to next char
 	inc rsi		; inc to next char
 	dec rdx		; dec counter
