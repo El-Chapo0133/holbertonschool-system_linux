@@ -7,7 +7,7 @@
  *
  * Return: void
  */
-void sigint_handler(int sig_no)
+void sigint_handler(int sig_no, siginfo_t *siginfo, void *ucontext)
 {
 	printf("SIGQUIT sent by %d\n", siginfo->si_pid);
 }
