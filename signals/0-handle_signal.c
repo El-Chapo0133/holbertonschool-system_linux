@@ -2,7 +2,7 @@
 
 void handler(int signal)
 {
-	printf("Gotcha\n");
+	printf("Gotcha %d\n", signal);
 }
 
 int handle_signal(void)
