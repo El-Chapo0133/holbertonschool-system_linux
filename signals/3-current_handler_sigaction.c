@@ -12,17 +12,17 @@ void sigint_handler(int sig_no)
 }
 
 /**
- * handle_sigaction - create a sigaction for sigint
+ * current_handler_sigaction - create handler for sigint
  *
- * Return: 0 on success, -1 on error
+ * Return: address of handler
  */
-int handle_sigaction(void)
+void (*current_handler_sigaction(void))(int)
 {
 	struct sigaction s_action;
-	/* clean signals */
-	memset(&s_action, 0, sizeof(s_action));
 	sigemptyset(&s_action.sa_mask);
 	s_action.sa_flags = 0;
 	s_action.sa_handler = sigint_handler;
-	return (sigaction(SIGINT, &s_action, NULL));
+	if (sigaction(SIGINT, &s_action, NULL) == SIG_ERR)
+		return (NULL)
+	return (sigint_handler);
 }

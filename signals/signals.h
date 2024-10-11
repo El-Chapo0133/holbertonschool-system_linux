@@ -14,6 +14,7 @@ typedef void (*sighandler_t)(int);
 
 int handle_signal(void);
 void (*current_handler_signal(void))(int);
+void (*current_handler_sigaction(void))(int);
 
 
 #endif
