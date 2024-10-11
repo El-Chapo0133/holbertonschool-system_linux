@@ -23,5 +23,5 @@ int main(void)
 	sigaction(SIGINT, &s_action, NULL);
 	
 	pause();
-	return (0);
+	return (EXIT_SUCCESS);
 }

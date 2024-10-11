@@ -8,12 +8,12 @@ int main(int argc, char **argv)
 	if (argc != 2)
 	{
 		printf("Usage: %s <signum>\n", argv[0]);
-		return (-1);
+		return (EXIT_FAILURE);
 	}
 	signal = strsignal(atoi(argv[1]));
 	if (signal)
 		printf("%s: %s\n", argv[1], signal);
 	else
 		printf("Unknown signal %s\n", argv[1]);
-	return (0);
+	return (EXIT_SUCCESS);
 }
