@@ -1,6 +1,12 @@
 #include "signals.h"
 
-
+/**
+ * main - this is the main function
+ * @argc: argc
+ * @argv: argv
+ *
+ * Return: exit code
+ */
 int main(int argc, char **argv)
 {
 	char *signal;
