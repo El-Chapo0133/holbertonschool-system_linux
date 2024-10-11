@@ -26,5 +26,5 @@ void (*current_handler_sigaction(void))(int)
 	s_action.sa_handler = sigint_handler;
 	if (sigaction(SIGINT, NULL, &s_action) != 0)
 		return (NULL);
-	return (s_action.sa_handler);
+	return (sigint_handler);
 }
