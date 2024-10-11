@@ -2,12 +2,12 @@
 
 
 /**
- * sigint_handler - handler for sigint
+ * sigquit_handler - handler for sigint
  * @sig_no: singal id
  *
  * Return: void
  */
-void sigint_handler(int sig_no, siginfo_t *siginfo, void *ucontext)
+void sigquit_handler(int sig_no, siginfo_t *siginfo, void *ucontext)
 {
 	printf("SIGQUIT sent by %d\n", siginfo->si_pid);
 }
@@ -20,10 +20,11 @@ void sigint_handler(int sig_no, siginfo_t *siginfo, void *ucontext)
 int trace_signal_sender(void)
 {
 	struct sigaction s_action;
+	memset(&s_action, 0, sizeof(s_action));
 	sigemptyset(&s_action.sa_mask);
 	/* needed to get pid */
 	s_action.sa_flags = SA_SIGINFO;
 	/* due to SA_SIGINFO, we muse use sa_sigaction */
-	s_action.sa_sigaction = sigint_handler;
+	s_action.sa_sigaction = sigquit_handler;
 	return(sigaction(SIGQUIT, &s_action, NULL));
 }
