@@ -23,10 +23,11 @@ void sigquit_handler(int sig_no, siginfo_t *siginfo, void *ucontext)
 int trace_signal_sender(void)
 {
 	struct sigaction s_action;
+
 	sigemptyset(&s_action.sa_mask);
 	/* needed to get pid */
 	s_action.sa_flags = SA_SIGINFO;
 	/* due to SA_SIGINFO, we muse use sa_sigaction */
 	s_action.sa_sigaction = sigquit_handler;
-	return(sigaction(SIGQUIT, &s_action, NULL));
+	return (sigaction(SIGQUIT, &s_action, NULL));
 }
