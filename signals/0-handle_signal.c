@@ -7,7 +7,11 @@ void handler(int signal)
 
 int handle_signal(void)
 {
-	signal(SIGINT, handler);
+	int error;
+	
+	error = signal(SIGINT, handler);
 
+	if (error == SIG_ERR)
+		return (-1);
 	return (0);
 }
