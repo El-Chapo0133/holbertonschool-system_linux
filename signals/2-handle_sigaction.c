@@ -1,10 +1,21 @@
 #include "signals.h"
 
+/**
+ * sigint_handler - handler for sigint
+ * @sig_no: singal id
+ *
+ * Return: void
+ */
 void sigint_handler(int sig_no)
 {
 	printf("Gotcha %d\n", sig_no);
 }
 
+/**
+ * handle_sigaction - create a sigaction for sigint
+ *
+ * Return: 0 on success, -1 on error
+ */
 int handle_sigaction(void)
 {
 	struct sigaction s_action;
