@@ -1,4 +1,4 @@
-#include <stdio.h>
+#include "signals.h"
 
 void handler(int signal)
 {
@@ -7,11 +7,8 @@ void handler(int signal)
 
 int handle_signal(void)
 {
-	int error;
-	
-	error = signal(SIGINT, handler);
-
-	if (error == SIG_ERR)
+	if (signal(SIGINT, handler) == SIG_ERR)
 		return (-1);
+
 	return (0);
 }
