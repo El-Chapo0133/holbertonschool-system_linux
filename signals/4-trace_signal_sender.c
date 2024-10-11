@@ -4,6 +4,8 @@
 /**
  * sigquit_handler - handler for sigint
  * @sig_no: singal id
+ * @siginfo: signal info
+ * @ucontext: signal context
  *
  * Return: void
  */
