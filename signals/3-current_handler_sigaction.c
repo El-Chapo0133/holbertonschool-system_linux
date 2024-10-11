@@ -19,6 +19,7 @@ void sigint_handler(int sig_no)
 void (*current_handler_sigaction(void))(int)
 {
 	struct sigaction s_action;
+	
 	sigemptyset(&s_action.sa_mask);
 	s_action.sa_flags = 0;
 	s_action.sa_handler = sigint_handler;
