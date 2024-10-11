@@ -8,7 +8,8 @@
  */
 void sigint_handler(int sig_no)
 {
-	printf("Gotcha %d\n", sig_no);
+	printf("Gotcha! [%d]\n", sig_no);
+	/* force buffer to be written */
 	fflush(stdout);
 }
 
