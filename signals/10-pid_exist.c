@@ -5,7 +5,7 @@
  * @pid: pid to check
  *
  * Return: 1 if exists, 0 if not
- */ 
+ */
 int pid_exist(pid_t pid)
 {
 	return (!kill(pid, 0));
