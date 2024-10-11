@@ -20,7 +20,6 @@ void sigquit_handler(int sig_no, siginfo_t *siginfo, void *ucontext)
 int trace_signal_sender(void)
 {
 	struct sigaction s_action;
-	memset(&s_action, 0, sizeof(s_action));
 	sigemptyset(&s_action.sa_mask);
 	/* needed to get pid */
 	s_action.sa_flags = SA_SIGINFO;

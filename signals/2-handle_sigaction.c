@@ -20,7 +20,6 @@ int handle_sigaction(void)
 {
 	struct sigaction s_action;
 	/* clean signals */
-	memset(&s_action, 0, sizeof(s_action));
 	sigemptyset(&s_action.sa_mask);
 	s_action.sa_flags = 0;
 	s_action.sa_handler = sigint_handler;
