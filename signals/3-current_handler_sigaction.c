@@ -23,6 +23,6 @@ void (*current_handler_sigaction(void))(int)
 	s_action.sa_flags = 0;
 	s_action.sa_handler = sigint_handler;
 	if (sigaction(SIGINT, &s_action, NULL) == 0)
-		return (sigint_handler)
+		return (sigint_handler);
 	return (NULL);
 }
