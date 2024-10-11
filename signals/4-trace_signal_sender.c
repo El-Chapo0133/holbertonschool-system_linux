@@ -10,6 +10,9 @@
 void sigquit_handler(int sig_no, siginfo_t *siginfo, void *ucontext)
 {
 	printf("SIGQUIT sent by %d\n", siginfo->si_pid);
+	/* remove unused parameters error */
+	(void)sig_no;
+	(void)ucontext;
 }
 
 /**
