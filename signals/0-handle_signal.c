@@ -8,4 +8,6 @@ void handler(int signal)
 int handle_signal(void)
 {
 	signal(SIGINT, handler);
+
+	return (0);
 }
