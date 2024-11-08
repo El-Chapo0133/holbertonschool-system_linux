@@ -4,36 +4,49 @@
 
 
 
-int process_nm(int fd, char *file_name)
+ElfN_Ehdr process_header(int fd, char *file_name)
 {
 	size_t byte_read;
-	elf_header_all_t *helf;
 	ElfN_Ehdr ehdr;
 
-	memset(&helf, 0, 8);
-	
 	byte_read = read(fd, ehdr.e_ident, EI_NIDENT);
-	printf("%s\n", ehdr.e_ident);
+	
 	if (byte_read != 0 && elf_check_file(ehdr.e_ident))
 	{
-		printf("foo\n");
-		printf("%c - %s\n", ehdr.e_ident[EI_CLASS], file_name);
+		fprintf(stderr, "hnm: %s: File format not recognized\n", file_name);
+		return (NULL);
 	}
-	printf("foo\n");
-	
-	/*
-	byte_read = read(fd, &helf->ehdr, sizeof(helf->ehdr));
-	if(byte_read != sizeof(helf->ehdr))
+	arch = get_architechture(ehdr.e_ident[EI_CLASS]);
+	if (arch == -1)
 	{
-		fprintf(stderr, "hnm, %s: File format not recognised\n", file_name);
-		return (EXIT_FAILURE);
+		fprintf(stderr, "%s - %s\n", ERROR_ELF_FILE, file_name);
+		return (NULL);
 	}
 	
-	byte_read = read(fd, &helf->ehdr32, sizeof(helf->ehdr));
-	*/
-	return (1);
+	return (ehdr);
 }
 
+int fill_e_ident_and_validate_elf(int fd, ElfN_ehdr *ehdr)
+{
+	int arch;
+	size_t byte_read;
+
+	byte_read = read(fd, (*ehdr).e_ident, EI_NIDENT);
+	
+	if (byte_read != 0 && elf_check_file((*ehdr).e_ident))
+	{
+		fprintf(stderr, "hnm: %s: File format not recognized\n", file_name);
+		return (false);
+	}
+	arch = get_architechture((*ehdr).e_ident[EI_CLASS]);
+	if (arch == -1)
+	{
+		fprintf(stderr, "%s - %s\n", ERROR_ELF_FILE, file_name);
+		return (false);
+	}
+	
+	return (true);
+}
 
 int open_file(char *file_address)
 {
@@ -59,9 +72,11 @@ int open_file(char *file_address)
 
 int main(int argc, char **argv)
 {
-	int fd, index = 1, exit_code = EXIT_SUCCESS;
+	int fd, arch, flag, index = 1, exit_code = EXIT_SUCCESS;
+	ElfN_Ehdr ehdr;
+	ElfN_Shdr shdr;
 
-	do	
+	do
 	{
 		if (argc == 1)
 			argv[index] = "a.out";
@@ -70,8 +85,14 @@ int main(int argc, char **argv)
 		if (fd == -1)
 			return (EXIT_FAILURE);
 		
-		process_nm(fd, argv[index]);
+		if (!fill_e_ident_and_validate_elf(fd, &ehdr);
+		{
+			fprintf(stderr, "ELF is incorrect");
+			return (EXIT_FAILURE);
+		}
 		
+		ehdr = process_header(fd, argv[index]);
+
 		index++;
 	}
 	while (index < argc);

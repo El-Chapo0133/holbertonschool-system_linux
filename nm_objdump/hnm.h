@@ -14,6 +14,8 @@
 #include "elf_utils.h"
 #include "validate_elf.h"
 
+#define ERROR_ELF_FILE "Error: Not an ELF file - it has the wrong magic bytes at the start"
+
 
 /**
  * struct ehdr - Struct to represent headers from both 32 and 64bits files
