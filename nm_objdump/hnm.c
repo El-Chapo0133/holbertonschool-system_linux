@@ -10,7 +10,7 @@ ElfN_Ehdr process_header(int fd, char *file_name)
 	ElfN_Ehdr ehdr;
 
 	byte_read = read(fd, ehdr.e_ident, EI_NIDENT);
-	
+
 	if (byte_read != 0 && elf_check_file(ehdr.e_ident))
 	{
 		fprintf(stderr, "hnm: %s: File format not recognized\n", file_name);
@@ -22,7 +22,7 @@ ElfN_Ehdr process_header(int fd, char *file_name)
 		fprintf(stderr, "%s - %s\n", ERROR_ELF_FILE, file_name);
 		return (NULL);
 	}
-	
+
 	return (ehdr);
 }
 
@@ -32,7 +32,7 @@ int fill_e_ident_and_validate_elf(int fd, ElfN_ehdr *ehdr)
 	size_t byte_read;
 
 	byte_read = read(fd, (*ehdr).e_ident, EI_NIDENT);
-	
+
 	if (byte_read != 0 && elf_check_file((*ehdr).e_ident))
 	{
 		fprintf(stderr, "hnm: %s: File format not recognized\n", file_name);
@@ -44,7 +44,7 @@ int fill_e_ident_and_validate_elf(int fd, ElfN_ehdr *ehdr)
 		fprintf(stderr, "%s - %s\n", ERROR_ELF_FILE, file_name);
 		return (false);
 	}
-	
+
 	return (true);
 }
 
@@ -84,13 +84,13 @@ int main(int argc, char **argv)
 		fd = open_file(argv[index]);
 		if (fd == -1)
 			return (EXIT_FAILURE);
-		
-		if (!fill_e_ident_and_validate_elf(fd, &ehdr);
+
+		if (!fill_e_ident_and_validate_elf(fd, &ehdr))
 		{
 			fprintf(stderr, "ELF is incorrect");
 			return (EXIT_FAILURE);
 		}
-		
+
 		ehdr = process_header(fd, argv[index]);
 
 		index++;
