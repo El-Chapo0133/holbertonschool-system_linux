@@ -8,6 +8,8 @@ void print_python_float(PyObject *po)
 	PyFloatObject *pfo = NULL;
 	char *str;
 
+	estbuf(stdout, NULL);
+
 	printf("[.] float object info\n");
 	
 	if (!po || po->ob_type != &PyFloat_Type)
