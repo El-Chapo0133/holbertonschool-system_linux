@@ -25,6 +25,6 @@ void print_python_string(PyObject *po)
 	else
 	{
 		printf("  type: compact unicode object\n");
-		printf("  value: %ls\n", PyUnicode_2BYTE_DATA(po));
+		printf("  value: %hn\n", PyUnicode_2BYTE_DATA(po));
 	}
 }
