@@ -69,6 +69,13 @@ void print_python_list(PyObject *po)
 	
 	setbuf(stdout, NULL);
 	printf("[*] Python list info\n");
+	
+	if (!po || po->ob_type != &PyList_Type)
+	{
+		printf("  [ERROR] Invalid List Object\n");
+		return;
+	}
+	
 	printf("[*] Size of the Python List = %ld\n", po_size);
 	printf("[*] Allocated = %ld\n", plo->allocated);
 
