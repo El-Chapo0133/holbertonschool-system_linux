@@ -21,7 +21,7 @@ void print_python_bytes(PyObject *po)
 	printf("  trying string: %s\n", pbo->ob_sval);
 
 	size = size < 9 ? size + 1 : 10;
-	printf("  first %ld bytes: ");
+	printf("  first %ld bytes: ", size);
 	for (index = 0; index < size; index++)
 	{
 		printf("%02hhx", pbo->ob_sval[index]);
