@@ -16,12 +16,12 @@ void print_python_string(PyObject *po)
 	}
 
 	pao = (PyASCIIObject *)po;
-	printf("  length: %lu\n", pao->length);
 
 	if (pao->state.ascii)
 		printf("  type: compact ascii\n");
 	else
 		printf("  type: compact unicode object\n");
 
+	printf("  length: %lu\n", pao->length);
 	printf("  value: %s\n", PyUnicode_AsUTF8(po));
 }
