@@ -18,7 +18,7 @@ void print_python_bytes(PyObject *po)
 	}
 
 	printf("  size: %ld\n", size);
-	printf("  trying string: %s\n", pbo->ob_sval);
+	printf("  trying string: %s\n  ", pbo->ob_sval);
 
 	size = size < 9 ? size + 1 : 10;
 	for (index = 0; index < size; index++)
