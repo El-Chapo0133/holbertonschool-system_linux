@@ -22,6 +22,7 @@ void print_python_float(PyObject *po)
 	}
 	str = PyOS_double_to_string(pfo->ob_fval, 'g', 16, 0, NULL);
 
+	printf("[.] float object info\n");
 	printf("  value: %s%s\n", str, strchr(str, '.') ? "" : ".0");
 }
 
