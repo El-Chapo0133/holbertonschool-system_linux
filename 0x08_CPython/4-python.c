@@ -2,12 +2,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-
-int is_py_ascii_object_compact(PyASCIIObject *pao)
-{
-	return (pao->state.ascii);
-}
-	
 void print_python_string(PyObject *po)
 {
 	PyASCIIObject *pao = NULL;
@@ -22,11 +16,15 @@ void print_python_string(PyObject *po)
 	}
 
 	pao = (PyASCIIObject *)po;
-	if (is_py_ascii_object_compact(pao))
-		printf("  type: compact ascii\n");
-	else
-		printf("  type: compact unicode object\n");
-
 	printf("  length: %lu\n", pao->length);
-	printf("  value: %s\n", PyUnicode_1BYTE_DATA(po));
+	if (pao->state.ascii)
+	{
+		printf("  type: compact ascii\n");
+		printf("  value: %s\n", PyUnicode_1BYTE_DATA(po));
+	}
+	else
+	{
+		printf("  type: compact unicode object\n");
+		printf("  value: %s\n", PyUnicode_2BYTE_DATA(po));
+	}
 }
