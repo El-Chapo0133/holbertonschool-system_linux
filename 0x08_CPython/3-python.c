@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void print_python_float(PyObject *p)
+void print_python_float(PyObject *po)
 {
 	PyFloatObject *pfo = NULL;
 	char *str;
