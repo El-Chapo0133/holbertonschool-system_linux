@@ -47,5 +47,7 @@ void print_python_list(PyObject *po)
 	{
 		printf("Element %ld: %s\n", index, 
 			plo->ob_item[index]->ob_type->tp_name);
+		if (plo->ob_item[index]->ob_type == &PyBytes_Type)
+			print_python_bytes(plo->ob_item[index]);
 	}
 }
