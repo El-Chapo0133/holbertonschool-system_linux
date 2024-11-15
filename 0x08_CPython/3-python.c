@@ -35,6 +35,7 @@ void print_python_bytes(PyObject *po)
 	PyBytesObject *pbo = (PyBytesObject *)po;
 	size_t size = pvo->ob_size, index;
 
+	setbuf(stdout, NULL);
 	printf("[.] bytes object info\n");
 	
 	if (po->ob_type != &PyBytes_Type)
@@ -66,6 +67,7 @@ void print_python_list(PyObject *po)
 	size_t po_size = pvo->ob_size;
 	size_t index;
 	
+	setbuf(stdout, NULL);
 	printf("[*] Python list info\n");
 	printf("[*] Size of the Python List = %ld\n", po_size);
 	printf("[*] Allocated = %ld\n", plo->allocated);
