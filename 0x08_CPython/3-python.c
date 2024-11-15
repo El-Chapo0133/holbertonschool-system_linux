@@ -8,7 +8,7 @@ void print_python_float(PyObject *po)
 	PyFloatObject *pfo = NULL;
 	char *str;
 
-	estbuf(stdout, NULL);
+	setbuf(stdout, NULL);
 
 	printf("[.] float object info\n");
 	
