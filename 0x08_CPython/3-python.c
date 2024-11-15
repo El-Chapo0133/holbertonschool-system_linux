@@ -72,5 +72,7 @@ void print_python_list(PyObject *po)
 			plo->ob_item[index]->ob_type->tp_name);
 		if (plo->ob_item[index]->ob_type == &PyBytes_Type)
 			print_python_bytes(plo->ob_item[index]);
+		else if (plo->ob_item[index]->ob_type == &PyFloat_Type)
+			print_python_float(plo->ob_item[index]);
 	}
 }
