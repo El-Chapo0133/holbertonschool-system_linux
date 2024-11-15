@@ -8,6 +8,8 @@ void print_python_float(PyObject *po)
 	PyFloatObject *pfo = NULL;
 	char *str;
 
+	printf("[.] float object info\n");
+	
 	if (!po || po->ob_type != &PyFloat_Type)
 	{
 		printf("  [ERROR] Invalid Float Object\n");
@@ -22,7 +24,6 @@ void print_python_float(PyObject *po)
 	}
 	str = PyOS_double_to_string(pfo->ob_fval, 'g', 16, 0, NULL);
 
-	printf("[.] float object info\n");
 	printf("  value: %s%s\n", str, strchr(str, '.') ? "" : ".0");
 }
 
