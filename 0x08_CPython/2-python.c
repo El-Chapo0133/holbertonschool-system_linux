@@ -9,7 +9,7 @@ void print_python_bytes(PyObject *po)
 	PyBytesObject *pbo = (PyBytesObject *)po;
 	size_t size = pvo->ob_size, index;
 
-	printf("[,] bytes object info\n");
+	printf("[.] bytes object info\n");
 	
 	if (po->ob_type != &PyBytes_Type)
 	{
