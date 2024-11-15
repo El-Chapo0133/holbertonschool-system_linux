@@ -5,7 +5,7 @@
 
 void print_python_list(PyObject *po)
 {
-	size_t po_size = po->ob_size;
+	size_t po_size = ((PyVarObject *)po)->ob_size;
 	size_t index;
 	
 	printf("[*] Python list info\n");
@@ -15,6 +15,6 @@ void print_python_list(PyObject *po)
 	for (index = 0; index < po_size; index++)
 	{
 		printf("Element %ld: %s\n", index, 
-				po->ob_item[index]->ob_type->tp_name);
+				((PyListObject *)po)->ob_item[index]->ob_type->tp_name);
 	}
 }
