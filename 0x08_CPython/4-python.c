@@ -23,9 +23,9 @@ void print_python_string(PyObject *po)
 
 	pao = (PyASCIIObject *)po;
 	if (is_py_ascii_object_compact(pao))
-		printf("  type: compact ascii");
+		printf("  type: compact ascii\n");
 	else
-		printf("  type: compact unicode object");
+		printf("  type: compact unicode object\n");
 
 	printf("  length: %lu\n", pao->length);
 	printf("  value: %s\n", PyUnicode_1BYTE_DATA(po));
