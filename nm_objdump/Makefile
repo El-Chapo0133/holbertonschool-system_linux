@@ -1,33 +1,31 @@
 CC = gcc
-CFLAGS = -Wall -Werror -Wextra -pedantic -std=gnu90 -g
+CFLAGS = -Wall -Werror -Wextra -pedantic
 
-SRC0 = hnm.c utils.c endian.c endian2.c elf1.c print_sections_1.c print_sections_2.c print_symbols1.c print_symbols2.c print_symbols3.c
-OBJ0 = $(SRC0:.c=.o)
-NAME0 = hnm
+OBJ = $(wildcard *.c)
+HEADERS = $(wildcard *.h)
 
-SRC1 = hobjdump.c utils.c endian.c endian2.c elf1.c print_sections_1.c print_sections_2.c print_symbols2.c hobjdump_1.c hobjdump_2.c
-OBJ1 = $(SRC1:.c=.o)
-NAME1 = hobjdump
+NAME = hnm
 
-.PHONY: all clean oclean flcean re
+# Main directive
+all: $(NAME)
 
-all: $(OBJ0) $(OBJ1)
-	$(CC) $(OBJ0) -o $(NAME0)
-	$(CC) $(OBJ1) -o $(NAME1)
+# Compile executable from object files
+$(NAME): $(OBJ)
+	$(CC) $(CFLAGS) $^ -o $@
+
+.PHONY: clean, run, memcheck, memfull
+
 clean:
-	$(RM) *~ $(NAME0)
-	$(RM) *~ $(NAME1)
+	rm -f *.o $(NAME)
 
-oclean:
-	$(RM) $(OBJ0)
-	$(RM) $(OBJ1)
+run: all
+	@./$(NAME)
 
-fclean: clean oclean
+memcheck: all
+	@valgrind ./$(NAME)
 
-re: oclean all
+memfull: all
+	@valgrind --leak-check=full --track-origins=yes ./$(NAME)
 
-hnm: hreadelf.h $(OBJ0)
-	$(CC) $(OBJ0) -o $(NAME0)
-
-hobjdump: hreadelf.h $(OBJ1)
-	$(CC) $(OBJ1) -o $(NAME1)
+crun: clean, all
+	@./$(NAME)
