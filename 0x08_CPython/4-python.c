@@ -28,5 +28,5 @@ void print_python_string(PyObject *po)
 		printf("  type: compact unicode object");
 
 	printf("  length: %lu\n", pao->length);
-	printf("  value: %s\n", PyUnicode_2BYTE_DATA(po));
+	printf("  value: %s\n", PyUnicode_1BYTE_DATA(po));
 }
