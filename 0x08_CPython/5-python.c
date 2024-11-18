@@ -10,7 +10,7 @@ void print_python_int(PyObject *po)
 	PyVarObject *pvo = (PyVarObject *)po;
 	PyLongObject *plo = (PyLongObject *)po;
 	ssize_t index, size, is_neg;
-	unsigned long result, buffer;
+	unsigned long result = 0, buffer;
 	int shift;
 
 	setbuf(stdout, NULL);
@@ -24,11 +24,13 @@ void print_python_int(PyObject *po)
 	is_neg = size < 0;
 	size = is_neg ? -size : size;
 
+	/* Checks for overflows */
 	if (size > 3 || (size == 3 && plo->ob_digit[2] > 0xf))
 	{
 		printf("C unsigned long int overflow\n");
 		return;
 	}
+	/* loop over each digits and move them with the shift */
 	for (index = 0; index < size; index++)
 	{
 		shift = PyLong_SHIFT * index;
