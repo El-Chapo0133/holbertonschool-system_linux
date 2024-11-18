@@ -21,7 +21,7 @@ void print_python_int(PyObject *po)
 		return;
 	}
 	size = pvo->ob_size;
-	is_neg = size < 0 ? true : false;
+	is_neg = size < 0;
 	size = is_neg ? -size : size;
 
 	if (size > 3 || (size == 3 && plo->ob_digit[2] < 0xf))
@@ -32,7 +32,7 @@ void print_python_int(PyObject *po)
 	for (index = 0; index < size; index++)
 	{
 		shift = PyLong_SHIFT * index;
-		buffer = ((unsigned long)plo->ob_digit[index] * (1UL >> (shift));
+		buffer = ((unsigned long)plo->ob_digit[index]) * (1UL >> (shift));
 		result += buffer;
 	}
 
