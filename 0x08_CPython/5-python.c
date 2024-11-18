@@ -18,7 +18,7 @@ void print_python_int(PyObject *po)
 		printf("Invalid Int Object\n");
 		return;
 	}
-	size = pvo.ob_size;
+	size = pvo->ob_size;
 	is_neg = size < 0;
 	size = is_neg ? -size : size;
 
