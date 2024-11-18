@@ -2,6 +2,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#define true 1
+#define false 0
 
 void print_python_int(PyObject *po)
 {
@@ -19,7 +21,7 @@ void print_python_int(PyObject *po)
 		return;
 	}
 	size = pvo->ob_size;
-	is_neg = size < 0;
+	is_neg = size < 0 ? true : false;
 	size = is_neg ? -size : size;
 
 	if (size < 3 || (size == 3 && plo->ob_digit[2] < 0xf))
