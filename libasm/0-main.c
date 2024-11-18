@@ -7,7 +7,6 @@ int test(const char *s1, const char *s2, int n) {
 	printf(n);
 }
 
-/*
 int test(const char *s1, const char *s2, int n);
 
 int main(void) {
@@ -18,4 +17,3 @@ int main(void) {
 	compare = asm_strcmp("Hello orld", "Hello World");
 	printf("%d\n", compare);
 }
-*/
