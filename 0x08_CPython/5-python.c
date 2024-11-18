@@ -1,42 +1,37 @@
 #include <Python.h>
 #include <stdio.h>
-#include <stdlib.h>
 
-#define true 1
-#define false 0
-
-void print_python_int(PyObject *po)
+/**
+ * print_python_int - prints a python integer
+ * @p: pointer to python object
+ */
+void print_python_int(PyObject *p)
 {
-	PyVarObject *pvo = (PyVarObject *)po;
-	PyLongObject *plo = (PyLongObject *)po;
-	ssize_t index, size, is_neg;
-	unsigned long result, buffer;
-	int shift;
+	ssize_t sz, i, neg;
+	unsigned long num = 0;
 
 	setbuf(stdout, NULL);
-
-	if (!PyLong_Check(po))
+	if (!PyLong_Check(p))
 	{
 		printf("Invalid Int Object\n");
 		return;
 	}
-	size = pvo->ob_size;
-	is_neg = size < 0;
-	size = is_neg ? -size : size;
-
-	if (size > 3 || (size == 3 && plo->ob_digit[2] > 0xf))
+	sz = ((PyVarObject *)p)->ob_size;
+	neg = sz < 0;
+	sz = neg ? -sz : sz;
+	if (sz > 3 || (sz == 3 && ((PyLongObject *)p)->ob_digit[2] > 0xf))
 	{
 		printf("C unsigned long int overflow\n");
 		return;
 	}
-	for (index = 0; index < size; index++)
+	for (i = 0; i < sz; i++)
 	{
-		shift = PyLong_SHIFT * index;
-		buffer = ((unsigned long)plo->ob_digit[index]) * (1UL << (shift));
-		result += buffer;
+		int sh = PyLong_SHIFT * i;
+		unsigned long sub =
+			((unsigned long)((PyLongObject *)p)->ob_digit[i]) * (1UL << (sh));
+		num += sub;
 	}
-
-	if (is_neg)
+	if (neg)
 		printf("-");
-	printf("%lu\n", result);
+	printf("%lu\n", num);
 }
