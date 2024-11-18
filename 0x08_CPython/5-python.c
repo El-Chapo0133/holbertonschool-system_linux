@@ -32,7 +32,7 @@ void print_python_int(PyObject *po)
 	for (index = 0; index < size; index++)
 	{
 		shift = PyLong_SHIFT * index;
-		buffer = ((unsigned long)plo->ob_digit[index]) * (1UL >> (shift));
+		buffer = ((unsigned long)plo->ob_digit[index] * (1UL >> (shift));
 		result += buffer;
 	}
 
