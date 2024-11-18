@@ -9,7 +9,7 @@ void print_python_int(PyObject *po)
 {
 	PyVarObject *pvo = (PyVarObject *)po;
 	PyLongObject *plo = (PyLongObject *)po;
-	size_t index, size, is_neg;
+	ssize_t index, size, is_neg;
 	unsigned long result, buffer;
 	int shift;
 
