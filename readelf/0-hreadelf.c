@@ -32,20 +32,20 @@ int main(int argc, char *argv[])
 	{
 		arch = get_architecture(ehdr.e_ident[EI_CLASS]);
 		if (arch == 64)
-        {
+        	{
 			read_elf_header_64(&ehdr, file);
-		    print_elf_header(ehdr);
-        }
-        else if (arch == 32)
+			print_elf_header(ehdr);
+        	}
+        	else if (arch == 32)
 		{
-        	read_elf_header_32(&ehdr, file);
-		    print_elf_header(ehdr);
-        }
-        else /* architecture error */
-        {
-		    printf("%s: %s\n", ERROR_ELF_FILE, argv[0]);
-		    exit_status = 1;
-        }
+        		read_elf_header_32(&ehdr, file);
+			print_elf_header(ehdr);
+        	}
+        	else /* architecture error */
+        	{
+			printf("%s: %s\n", ERROR_ELF_FILE, argv[0]);
+			exit_status = 1;
+        	}
 	}
 	else
 	{

@@ -9,20 +9,18 @@
  */
 uint64_t get_byte_as_little_endian(unsigned char fifth_magic, uint64_t data, int size)
 {
-    if (fifth_magic == ELFDATA2LSB)
-    {
-        return (data);
-    }
+	if (fifth_magic == ELFDATA2LSB)
+		return (data);
 
 	switch (size)
 	{
-        case 2:
-            return (be16toh(data));
-        case 4:
-            return (be32toh(data));
-        case 8:
-            return (be64toh(data));
-        default:
-            return (0);
+		case 2:
+			return (be16toh(data));
+		case 4:
+			return (be32toh(data));
+		case 8:
+			return (be64toh(data));
+		default:
+			return (0);
 	}
 }
