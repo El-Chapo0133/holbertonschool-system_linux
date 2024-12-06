@@ -60,7 +60,7 @@ int main(int argc, char **argv)
 	
 	/* replace the process of pid=0 by the one given in argv[1] */
 	if (pid == 0)
-		return (replace_process(argv) == -1);
+		return (replace_process(argv + 1) == -1);
 
 	trace_all_sysnums(pid);
 
