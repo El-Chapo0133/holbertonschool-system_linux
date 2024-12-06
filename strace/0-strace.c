@@ -24,13 +24,13 @@ void trace_all_sysnums(pid_t pid)
 	struct user_regs_struct regs;
 
 	setbuf(stdout, NULL);
-	waitpid(pid, &status, 0);
 
 	/* set options of pid to trace syscalls */
 	ptrace(PTRACE_SETOPTIONS, pid, 0, PTRACE_O_TRACESYSGOOD);
 
 	while (1)
 	{
+		waitpid(pid, &status, 0);
 		if (WIFEXITED(status) || /* process exited */
 		    WIFSTOPPED(status))  /* process stopped */
 			break;
