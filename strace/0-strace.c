@@ -21,7 +21,7 @@
 void trace_all_sysnums(pid_t pid)
 {
 	int status;
-	struct user_regs_struct regs;
+	/* struct user_regs_struct regs;*/
 
 	setbuf(stdout, NULL);
 
