@@ -25,7 +25,7 @@
 #include <string.h>
 #include <sys/ptrace.h>
 #include <sys/stat.h>
-#include <sys/user.h>
+#include <sys/user.h> // for struct user_regs_struct
 #include <sys/wait.h>
 
 #include "syscalls.h"
