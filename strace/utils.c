@@ -18,7 +18,19 @@
 
 #include "strace.h"
 
-
+/**
+ * replace_process - replace this process by the one in argv[1]
+ * @argv: argv
+ *
+ * Return: -1 on error
+ */
+int replace_process(char **argv)
+{
+	if (ptrace(PTRACE_TRACEME) == -1)
+		return (-1);
+	kill(getpid(), SIGSTOP);
+	return (execvp(*argv, argv[1]);
+}
 
 /**
  * parse_args - check for args count and if file on argv[1] exists

@@ -30,6 +30,10 @@ void trace_all_sysnums(pid_t pid)
 
 	while (1)
 	{
+		if (WIFEXITED(status)) /* Child process exited */
+			break;
+
+
 		/* print ptrace info, ORIG_RAX is the offset=15 */
 		printf("%li\n", ptrace(PTRACE_PEEKUSER, pid, sizeof(long) * ORIG_RAX));
 	}
@@ -45,6 +49,10 @@ int main(int argc, char **argv)
 	pid = fork();
 	if (pid < 0)
 		return (EXIT_FAILURE);
+	
+	/* replace the process of pid=0 by the one given in argv[1] */
+	if (pid == 0)
+		return (replace_process(argv + 1) == -1);
 
 	trace_all_sysnums(pid);
 
