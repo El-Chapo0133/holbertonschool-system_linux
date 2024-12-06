@@ -49,6 +49,8 @@ void trace_all_sysnums(pid_t pid)
 int main(int argc, char **argv)
 {
 	pid_t pid;
+	
+	/* check args and if file argv[1] exists */
 	if (!parse_args(argc, argv))
 		return (EXIT_FAILURE);
 
