@@ -1,5 +1,5 @@
 /*
- * =====================================================================================
+ * ============================================================================
  *
  *       Filename:  0-strace.c
  *
@@ -13,7 +13,7 @@
  *         Author:  Loris Lévêque 
  *   Organization:  
  *
- * =====================================================================================
+ * ============================================================================
  */
 
 #include "strace.h"
@@ -33,7 +33,7 @@ void trace_all_sysnums(pid_t pid)
 		waitpid(pid, &status, 0);
 		if (WIFEXITED(status) || /* process exited */
 		    WIFSTOPPED(status))  /* process stopped */
-			break;
+			printf("Foo - "); /* break; */
 
 		if (ptrace(PTRACE_GETREGS, pid, 0, &regs) == -1)
 			break;
