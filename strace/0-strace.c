@@ -31,9 +31,9 @@ void trace_all_sysnums(pid_t pid)
 	while (1)
 	{
 		waitpid(pid, &status, 0);
-		if (/* WIFEXITED(status) || */ /* process exited */
-		    WIFSTOPPED(status))  /* process stopped */
-			break;
+		/* if (WIFEXITED(status) || process exited
+		    WIFSTOPPED(status))  process stopped
+			break; */
 
 		if (ptrace(PTRACE_GETREGS, pid, 0, &regs) == -1)
 			break;
