@@ -40,7 +40,7 @@ void trace_all_sysnums(pid_t pid)
 		if (ptrace(PTRACE_GETREGS, pid, 0, &regs) == -1)
 			break;
 
-		fprintf(stdout, "%llu\n", (long)regs.orig_rax);
+		fprintf(stdout, "%lu\n", (long)regs.orig_rax);
 	}
 }
 
