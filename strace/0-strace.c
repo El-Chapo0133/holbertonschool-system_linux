@@ -21,6 +21,7 @@
 void trace_all_sysnums(pid_t pid)
 {
 	int status;
+	struct user_regs_struct regs;
 
 	setbuf(stdout, NULL);
 	waitpid(pid, &status, 0);
@@ -36,7 +37,6 @@ void trace_all_sysnums(pid_t pid)
 		
 
 		/* print ptrace info, ORIG_RAX is the offset=15 */
-		struct user_regs regs;
 		if (ptrace(PTRACE_GETREGS, pid, 0, &regs) == -1)
 			break;
 
