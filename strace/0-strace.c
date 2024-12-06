@@ -46,6 +46,7 @@ int main(int argc, char **argv)
 	if (pid < 0)
 		return (EXIT_FAILURE);
 
+	trace_all_sysnums(pid);
 
 	return (EXIT_SUCCESS);
 }
