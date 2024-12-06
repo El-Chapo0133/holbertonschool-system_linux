@@ -30,12 +30,17 @@ void trace_all_sysnums(pid_t pid)
 
 	while (1)
 	{
-		if (WIFEXITED(status)) /* Child process exited */
+		if (WIFEXITED(status) || /* Child process exited */
+			WIFSTOPPED(status))
 			break;
-
+		
 
 		/* print ptrace info, ORIG_RAX is the offset=15 */
-		printf("%li\n", ptrace(PTRACE_PEEKUSER, pid, sizeof(long) * ORIG_RAX));
+		struct user_regs regs;
+		if (ptrace(PTRACE_GETREGS, pid, 0, &regs) == -1)
+			break;
+
+		fprintf(stdout, "%llu\n", (long long) regs.orig_rax);
 	}
 }
 
