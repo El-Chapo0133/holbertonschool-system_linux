@@ -19,7 +19,7 @@
 #include "strace.h"
 
 /**
- * replace_process - replace this process by the one in argv[1]
+ * replace_process - replace this process by the one in argv
  * @argv: argv
  *
  * Return: -1 on error
@@ -29,7 +29,7 @@ int replace_process(char **argv)
 	if (ptrace(PTRACE_TRACEME) == -1)
 		return (-1);
 	kill(getpid(), SIGSTOP);
-	return (execvp(*argv, argv[1]);
+	return (execvp(*argv, argv));
 }
 
 /**
