@@ -1,0 +1,51 @@
+/*
+ * =====================================================================================
+ *
+ *       Filename:  0-strace.c
+ *
+ *    Description: exo 0 strace 
+ *
+ *        Version:  1.0
+ *        Created:  06.12.2024 09:23:07
+ *       Revision:  none
+ *       Compiler:  gcc
+ *
+ *         Author:  Loris Lévêque 
+ *   Organization:  
+ *
+ * =====================================================================================
+ */
+
+#include "strace.h"
+
+void trace_all_sysnums(pid_t pid)
+{
+	int status;
+
+	setbuf(stdout, NULL);
+	waitpid(pid, &status, 0);
+
+	/* set options of pid to trace syscalls */
+	ptrace(PTRACE_SETOPTIONS, pid, 0, PTRACE_O_TRACESYSGOOD);
+
+	while (1)
+	{
+		/* print ptrace info, ORIG_RAX is the offset=15 */
+		printf("%li\n", ptrace(PTRACE_PEEKUSER, pid, sizeof(long) * ORIG_RAX));
+	}
+}
+
+
+int main(int argc, char **argv)
+{
+	pid_t pid;
+	if (!parse_args(argc, argv))
+		return (EXIT_FAILURE);
+
+	pid = fork();
+	if (pid < 0)
+		return (EXIT_FAILURE);
+
+
+	return (EXIT_SUCCESS);
+}

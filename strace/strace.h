@@ -1,0 +1,37 @@
+/*
+ * =====================================================================================
+ *
+ *       Filename:  strace.h
+ *
+ *    Description: strace.h 
+ *
+ *        Version:  1.0
+ *        Created:  06.12.2024 09:20:18
+ *       Revision:  none
+ *       Compiler:  gcc
+ *
+ *         Author:  Loris Lévêque
+ *   Organization:  
+ *
+ * =====================================================================================
+ */
+
+#ifndef STRACE_H
+#define STRACE_H
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <string.h>
+#include <sys/ptrace.h>
+#include <sys/stat.h>
+#include <sys/user.h>
+#include <sys/wait.h>
+
+#include "syscalls.h"
+#include "reg.h"
+
+/* utils */
+int parse_args(int argc, char **argv);
+
+#endif
