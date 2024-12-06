@@ -21,7 +21,7 @@
 void trace_all_sysnums(pid_t pid)
 {
 	int status;
-	/* struct user_regs_struct regs;*/
+	struct user_regs_struct regs;
 
 	setbuf(stdout, NULL);
 
@@ -31,16 +31,14 @@ void trace_all_sysnums(pid_t pid)
 	while (1)
 	{
 		waitpid(pid, &status, 0);
-		/* if (WIFEXITED(status) || process exited
-		    WIFSTOPPED(status))  process stopped
-			break; */
+		if (WIFSTOPPED(status) && /* process stopped */
+		    WSTOPDIG(status) & 0x80)
+			break;
 
-		/*if (ptrace(PTRACE_GETREGS, pid, 0, &regs) == -1)
+		if (ptrace(PTRACE_GETREGS, pid, 0, &regs) == -1)
 			break;
 		fprintf(stdout, "%lu\n", (long)regs.orig_rax);
-		*/
-		fprintf(stdout, "%li\n", ptrace(PTRACE_PEEKUSER, pid, sizeof(long) * ORIG_RAX));
-
+	
 		/*  resume the process execution */
 		if (ptrace(PTRACE_SYSCALL, pid, 0, 0) == -1)
 			break;
