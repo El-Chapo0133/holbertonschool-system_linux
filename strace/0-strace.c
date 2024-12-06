@@ -30,10 +30,15 @@ void trace_all_sysnums(pid_t pid)
 
 	while (1)
 	{
-		waitpid(pid, &status, 0);
-		if (WIFSTOPPED(status) && /* process stopped */
-		    WSTOPSIG(status) & 0x80) /* interrupt signal */
-			break;
+		while (1)
+		{
+			waitpid(pid, &status, 0);
+			if (WIFSTOPPED(status) && /* process stopped */
+			    WSTOPSIG(status) & 0x80) /* interrupt signal */
+				exit (EXIT_FAILURE);
+			if (WIFEXITED(status))
+				break;
+		}
 
 		if (ptrace(PTRACE_GETREGS, pid, 0, &regs) != -1)
 			fprintf(stdout, "%lu\n", (long)regs.orig_rax);
