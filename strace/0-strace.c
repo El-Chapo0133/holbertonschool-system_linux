@@ -39,6 +39,9 @@ void trace_all_sysnums(pid_t pid)
 			break;
 
 		fprintf(stdout, "%lu\n", (long)regs.orig_rax);
+	
+		if (ptrace(PTRACE_SYSCALL, pid, 0, 0) == -1)
+			break;
 	}
 }
 
