@@ -34,9 +34,7 @@ void trace_all_sysnums(pid_t pid)
 		if (WIFEXITED(status) || /* Child process exited */
 			WIFSTOPPED(status))
 			break;
-		
 
-		/* print ptrace info, ORIG_RAX is the offset=15 */
 		if (ptrace(PTRACE_GETREGS, pid, 0, &regs) == -1)
 			break;
 
