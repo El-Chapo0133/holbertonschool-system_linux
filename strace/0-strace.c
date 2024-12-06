@@ -31,6 +31,7 @@ void trace_all_sysnums(pid_t pid)
 	while (1)
 	{
 		waitpid(pid, &status, 0);
+		fprintf(stdout, "%d\n", WSTOPSIG(status));
 		if (WIFSTOPPED(status) && /* process stopped */
 		    WSTOPSIG(status) & 0x80)
 			break;
