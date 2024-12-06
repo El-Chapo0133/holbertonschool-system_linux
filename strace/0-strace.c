@@ -32,7 +32,7 @@ void trace_all_sysnums(pid_t pid)
 	{
 		waitpid(pid, &status, 0);
 		if (WIFSTOPPED(status) && /* process stopped */
-		    WSTOPDIG(status) & 0x80)
+		    WSTOPSIG(status) & 0x80)
 			break;
 
 		if (ptrace(PTRACE_GETREGS, pid, 0, &regs) == -1)
