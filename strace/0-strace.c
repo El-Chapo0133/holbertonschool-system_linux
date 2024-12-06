@@ -31,15 +31,15 @@ void trace_all_sysnums(pid_t pid)
 
 	while (1)
 	{
-		if (WIFEXITED(status) || /* Child process exited */
-			WIFSTOPPED(status))
+		if (WIFEXITED(status) || /* process exited */
+		    WIFSTOPPED(status))  /* process stopped */
 			break;
 
 		if (ptrace(PTRACE_GETREGS, pid, 0, &regs) == -1)
 			break;
-
 		fprintf(stdout, "%lu\n", (long)regs.orig_rax);
 	
+		/*  resume the process execution */
 		if (ptrace(PTRACE_SYSCALL, pid, 0, 0) == -1)
 			break;
 	}
