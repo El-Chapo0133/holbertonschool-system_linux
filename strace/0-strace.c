@@ -34,13 +34,13 @@ void trace_all_sysnums(pid_t pid)
 		if (WIFSTOPPED(status) && /* process stopped */
 		    WSTOPSIG(status) & 0x80) /* interrupt signal */
 			break;
+		/*  resume the process execution */
+		if (ptrace(PTRACE_SYSCALL, pid, 0, 0) == -1)
+			break;
 
 		if (ptrace(PTRACE_GETREGS, pid, 0, &regs) != -1)
 			fprintf(stdout, "%lu\n", (long)regs.orig_rax);
 	
-		/*  resume the process execution */
-		if (ptrace(PTRACE_SYSCALL, pid, 0, 0) == -1)
-			break;
 	}
 }
 
