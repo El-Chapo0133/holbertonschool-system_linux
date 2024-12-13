@@ -47,7 +47,7 @@ void trace_all_sysnums(pid_t pid)
 			break;
 		}
 		else
-			printf(" = %lx", regs.rax);
+			printf(" = %llx", regs.rax);
 	}
 }
 
