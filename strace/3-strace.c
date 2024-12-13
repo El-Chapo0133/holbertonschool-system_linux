@@ -66,11 +66,11 @@ void print_args(const syscall_t *syscall, struct user_regs_struct *regs, int pid
 	params[4] = regs->r9;
 	params[5] = regs->r8;
 
-	printf('(');
+	printf("(");
 	for (index = 0; syscall->params[0] != VOID && index < syscall->nb_params; index++)
 	{
-		if (syscaéé->params[index] == VARARGS)
-			printf("%s..." index ? ", " : "");
+		if (syscall->params[index] == VARARGS)
+			printf("%s...", index ? ", " : "");
 		else
 			printf("%s%#lx", index ? ", " : "", params[index]);
 	}
