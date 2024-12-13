@@ -59,6 +59,8 @@ void print_args(const syscall_t *syscall, struct user_regs_struct *regs, int pid
 {
 	size_t index, params[6]; /* assembly only allows 6 params */
 
+	(void)pid;
+
 	params[0] = regs->rdi;
 	params[1] = regs->rsi;
 	params[2] = regs->rdx;
