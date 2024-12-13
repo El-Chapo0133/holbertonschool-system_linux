@@ -31,19 +31,24 @@ void trace_all_sysnums(pid_t pid)
 	while (1)
 	{
 		if (await_syscall(pid))
+		{
+			printf(" = ?\n");
 			break;
+		}
 
 		memset(&regs, 0, sizeof(regs));
 		if (ptrace(PTRACE_GETREGS, pid, 0, &regs) != -1)
-			fprintf(stdout, "%s = %lx",
-					syscalls_64_g[(long)regs.orig_rax].name,
-					(long)regs.rax);
+			fprintf(stdout, "%s",
+				syscalls_64_g[(long)regs.orig_rax].name);
 
 		if (await_syscall(pid))
+		{
+			printf(" = ?\n");
 			break;
-		printf("\n");
+		}
+		else
+			printf(" = %lx", regs.rax);
 	}
-	printf("\n");
 }
 
 
