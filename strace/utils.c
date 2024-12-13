@@ -49,6 +49,7 @@ int replace_process(char **argv)
 {
 	if (ptrace(PTRACE_TRACEME) == -1)
 		return (-1);
+	kill(getpid(), SIGSTOP);
 	return (execvp(*argv, argv));
 }
 
