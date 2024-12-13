@@ -30,7 +30,8 @@ int await_syscall(int pid)
 
 	while (1)
 	{
-		waitpid(PTRACE_SYSCALL, pid, 0, 0);
+		ptrace(PTRACE_SYSCALL, pid, 0, 0);
+		waitpid(pid, &status, 0);
 		if (WIFSTOPPED(status) && WSTPèSIG(status) & 0x80)
 			return (0);
 		if (WIFEXITED(status))
