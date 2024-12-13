@@ -32,7 +32,7 @@ int await_syscall(int pid)
 	{
 		ptrace(PTRACE_SYSCALL, pid, 0, 0);
 		waitpid(pid, &status, 0);
-		if (WIFSTOPPED(status) && WSTPOSIG(status) & 0x80)
+		if (WIFSTOPPED(status) && WSTOPSIG(status) & 0x80)
 			return (0);
 		if (WIFEXITED(status))
 			return (1);
