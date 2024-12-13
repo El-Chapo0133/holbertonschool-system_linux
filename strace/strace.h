@@ -34,5 +34,6 @@
 int parse_args(int argc, char **argv);
 int replace_process(char **argv);
 int await_syscall(int pid);
+void print_args(const syscall_t *syscall, struct user_regs_struct *regs, int pid);
 
 #endif
