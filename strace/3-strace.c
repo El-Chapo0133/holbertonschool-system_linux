@@ -65,8 +65,8 @@ void print_args(const syscall_t *syscall, struct user_regs_struct *regs, int pid
 	params[1] = regs->rsi;
 	params[2] = regs->rdx;
 	params[3] = regs->r10;
-	params[4] = regs->r9;
-	params[5] = regs->r8;
+	params[4] = regs->r8;
+	params[5] = regs->r9;
 
 	printf("(");
 	for (index = 0; syscall->params[0] != VOID && index < syscall->nb_params; index++)
