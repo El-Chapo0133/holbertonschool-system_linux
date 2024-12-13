@@ -19,6 +19,26 @@
 #include "strace.h"
 
 /**
+ * await_syscall - looop to wait for the next syscall
+ * @pid: pid to wait
+ *
+ * Return: 0 when process is stopped 1 for exited
+ */
+int await_syscall(int pid)
+{
+	int status;
+
+	while (1)
+	{
+		waitpid(PTRACE_SYSCALL, pid, 0, 0);
+		if (WIFSTOPPED(status) && WSTPèSIG(status) & 0x80)
+			return (0);
+		if (WIFEXITED(status))
+			return (1);
+	}
+}
+
+/**
  * replace_process - replace this process by the one in argv
  * @argv: argv
  *
