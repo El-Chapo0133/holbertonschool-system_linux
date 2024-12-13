@@ -43,14 +43,14 @@ void trace_all_sysnums(pid_t pid)
 		
 		if (await_syscall(pid))
 		{
-			fprintf(stdout, " = ?\n");
+			fprintf(stdout, ") = ?\n");
 			break;
 		}
 		else
 		{
 			memset(&regs, 0, sizeof(regs));
 			if (ptrace(PTRACE_GETREGS, pid, 0, &regs) != -1)
-				fprintf(stdout, " = %#lx\n", (long)regs.rax);
+				fprintf(stdout, ") = %#lx\n", (long)regs.rax);
 		}
 	}
 }
