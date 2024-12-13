@@ -45,14 +45,9 @@ void trace_all_sysnums(pid_t pid)
 		}
 		else
 		{
-
-		memset(&regs, 0, sizeof(regs));
-		if (ptrace(PTRACE_GETREGS, pid, 0, &regs) != -1)
-			fprintf(stdout, "%#lx",
-				(long)regs.rax);
-/* 			fprintf(stdout, " = %#lx\n", (long)regs.rax);
- */
-	
+			memset(&regs, 0, sizeof(regs));
+			if (ptrace(PTRACE_GETREGS, pid, 0, &regs) != -1)
+				fprintf(stdout, " = %#lx\n", (long)regs.rax);
 		}
 	}
 }
