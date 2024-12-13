@@ -38,7 +38,7 @@ void trace_all_sysnums(pid_t pid)
 		{
 			fprintf(stdout, "%s",
 				syscalls_64_g[(long)regs.orig_rax].name);
-			print_args(syscalls_64_g[regs.orig_rax], &regs, pid);
+			print_args(*syscalls_64_g[regs.orig_rax], &regs, pid);
 		}
 		
 		if (await_syscall(pid))
