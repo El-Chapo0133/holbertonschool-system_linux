@@ -35,11 +35,11 @@ void trace_all_sysnums(pid_t pid)
 
 		memset(&regs, 0, sizeof(regs));
 		if (ptrace(PTRACE_GETREGS, pid, 0, &regs) != -1)
-			fprintf(stdout, "%s\n", syscalls_64_g[(long)regs.orig_rax].name);
+			fprintf(stdout, "%s", syscalls_64_g[(long)regs.orig_rax].name);
 
 		if (await_syscall(pid))
 			break;
-
+		printf("\n");
 	}
 }
 
