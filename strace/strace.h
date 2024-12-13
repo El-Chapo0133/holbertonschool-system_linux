@@ -29,7 +29,6 @@
 #include <sys/wait.h>
 
 #include "syscalls.h"
-#include "reg.h"
 
 /* utils */
 int parse_args(int argc, char **argv);
