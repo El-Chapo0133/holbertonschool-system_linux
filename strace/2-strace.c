@@ -40,11 +40,20 @@ void trace_all_sysnums(pid_t pid)
 
 		if (await_syscall(pid))
 		{
-			printf(" = ?\n");
+			fprintf(stdout, " = ?\n");
 			break;
 		}
 		else
-			printf(" = %#lx\n", (long)regs.rax);
+		{
+
+		memset(&regs, 0, sizeof(regs));
+		if (ptrace(PTRACE_GETREGS, pid, 0, &regs) != -1)
+			fprintf(stdout, "%#lx",
+				(long)regs.rax);
+/* 			fprintf(stdout, " = %#lx\n", (long)regs.rax);
+ */
+	
+		}
 	}
 }
 
