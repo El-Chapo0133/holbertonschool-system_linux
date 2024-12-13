@@ -31,10 +31,7 @@ void trace_all_sysnums(pid_t pid)
 	while (1)
 	{
 		if (await_syscall(pid))
-		{
-			printf(" = ?\n");
 			break;
-		}
 
 		memset(&regs, 0, sizeof(regs));
 		if (ptrace(PTRACE_GETREGS, pid, 0, &regs) != -1)
