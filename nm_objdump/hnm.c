@@ -1,101 +1,111 @@
-#include "hnm.h"
+#include "helf.h"
 
-
-
-
-
-ElfN_Ehdr process_header(int fd, char *file_name)
+/**
+ * conv_msb - convert to big endian by reversing given array
+ * @ptr: pointer to first octet of word
+ * @size: size of type ptr points to
+ */
+void conv_msb(char *ptr, size_t size)
 {
-	size_t byte_read;
-	ElfN_Ehdr ehdr;
+	size_t start, end;
 
-	byte_read = read(fd, ehdr.e_ident, EI_NIDENT);
-
-	if (byte_read != 0 && elf_check_file(ehdr.e_ident))
+	for (start = 0, end = size - 1; start < end; ++start, --end)
 	{
-		fprintf(stderr, "hnm: %s: File format not recognized\n", file_name);
+		ptr[start] ^= ptr[end];
+		ptr[end] ^= ptr[start];
+		ptr[start] ^= ptr[end];
+	}
+}
+
+/**
+ * getelf - get ELF information
+ * @fp: pointer to file stream
+ * @prog_name: name of program
+ * @arg_str: pointer to name of file to get ELF information from
+ * @exit_stat: current exit status to update accordingly
+ */
+void getelf(FILE *fp, char *prog_name, char *arg_str, int *exit_stat)
+{
+	hdrs hdr;
+	struct stat sb;
+
+	memset(&hdr, 0, sizeof(hdr));
+	if (stat(arg_str, &sb))
+		goto prnterr;
+	hdr.addr = mmap(NULL, sb.st_size, PROT_READ | PROT_WRITE, MAP_PRIVATE,
+			fileno(fp), 0);
+	if (hdr.addr == MAP_FAILED)
+	{
+prnterr:
+		perror(NULL);
+		goto out;
+	}
+	init_ehdr(&hdr);
+	if (memcmp(hdr.Ehdr64->e_ident, ELFMAG, SELFMAG))
+	{
+		fprintf(stderr, "%s: %s: file format not recognized\n",
+				prog_name, arg_str);
+out:
+		*exit_stat = 1;
+		fclose(fp);
+		return;
+	}
+	init_shdr(&hdr);
+	if (!sym(&hdr))
+		fprintf(stderr, "%s: %s: no symbols\n",
+				prog_name, arg_str);
+	fclose(fp);
+}
+
+/**
+ * parse_args - check for usage errors
+ * @argc: count of arguments
+ * @argv: pointer to array containing arguments
+ * @i: index for argv
+ *
+ * Return: pointer to file stream, otherwise NULL
+ */
+FILE *parse_args(int argc, char *argv[], int i)
+{
+	FILE *fp;
+	struct stat sb;
+
+	if (argc == 1)
+		argv[1] = "a.out";
+	stat(argv[i], &sb);
+	if (S_ISDIR(sb.st_mode))
+	{
+		fprintf(stderr, "%s: Warning: '%s' is a directory\n",
+				argv[0], argv[i]);
 		return (NULL);
 	}
-	arch = get_architechture(ehdr.e_ident[EI_CLASS]);
-	if (arch == -1)
+	fp = fopen(argv[i], "rb");
+	if (!fp)
 	{
-		fprintf(stderr, "%s - %s\n", ERROR_ELF_FILE, file_name);
+		fprintf(stderr, "%s: '%s': No such file\n", argv[0], argv[i]);
 		return (NULL);
 	}
-
-	return (ehdr);
+	return (fp);
 }
 
-int fill_e_ident_and_validate_elf(int fd, ElfN_ehdr *ehdr)
+/**
+ * main - entry point
+ * @argc: count of arguments
+ * @argv: pointer to an array containing arguments
+ *
+ * Return: 0 on success, otherwise 1
+ */
+int main(int argc, char *argv[])
 {
-	int arch;
-	size_t byte_read;
+	FILE *fp;
+	int exit_stat = 0, i = 1;
 
-	byte_read = read(fd, (*ehdr).e_ident, EI_NIDENT);
-
-	if (byte_read != 0 && elf_check_file((*ehdr).e_ident))
-	{
-		fprintf(stderr, "hnm: %s: File format not recognized\n", file_name);
-		return (false);
-	}
-	arch = get_architechture((*ehdr).e_ident[EI_CLASS]);
-	if (arch == -1)
-	{
-		fprintf(stderr, "%s - %s\n", ERROR_ELF_FILE, file_name);
-		return (false);
-	}
-
-	return (true);
-}
-
-int open_file(char *file_address)
-{
-	int fd;
-	struct stat fstat;
-
-	stat(file_address, &fstat);
-
-	if (S_ISDIR(fstat.st_mode)) /* given file is a directory */
-	{
-		fprintf(stderr, "hnm: Warning: '%s' is a directory\n", file_address);
-		return (-1);
-	}
-
-	fd = open(file_address, O_RDONLY);
-	if (!fd) /* ohoh not good */
-	{
-		fprintf(stderr, "hnm: '%s': No such file", file_address);
-		return (-1);
-	}
-	return (fd);
-}
-
-int main(int argc, char **argv)
-{
-	int fd, arch, flag, index = 1, exit_code = EXIT_SUCCESS;
-	ElfN_Ehdr ehdr;
-	ElfN_Shdr shdr;
-
-	do
-	{
-		if (argc == 1)
-			argv[index] = "a.out";
-
-		fd = open_file(argv[index]);
-		if (fd == -1)
-			return (EXIT_FAILURE);
-
-		if (!fill_e_ident_and_validate_elf(fd, &ehdr))
-		{
-			fprintf(stderr, "ELF is incorrect");
-			return (EXIT_FAILURE);
-		}
-
-		ehdr = process_header(fd, argv[index]);
-
-		index++;
-	}
-	while (index < argc);
-
-	return (exit_code);
+	do {
+		fp = parse_args(argc, argv, i);
+		if (!fp)
+			exit_stat = 1;
+		else
+			getelf(fp, argv[0], argv[i], &exit_stat);
+	} while (++i < argc);
+	return (exit_stat);
 }

@@ -1,31 +1,13 @@
 CC = gcc
-CFLAGS = -Wall -Werror -Wextra -pedantic
+CFLAGS = -Wall -Werror -Wextra -pedantic -std=gnu89 -g
 
-OBJ = $(wildcard *.c)
-HEADERS = $(wildcard *.h)
+SRC = $(wildcard *.c)
+OBJS = $(patsubst %.c, %.o, $(SRC))
+0 = $(patsubst %.c, %.o, hnm.c elf.c)
 
-NAME = hnm
+.PHONY: hnm clean
 
-# Main directive
-all: $(NAME)
-
-# Compile executable from object files
-$(NAME): $(OBJ)
-	$(CC) $(CFLAGS) $^ -o $@
-
-.PHONY: clean, run, memcheck, memfull
-
+hnm: $(0)
+	$(CC) $(CFLAGS) $(0) -o hnm
 clean:
-	rm -f *.o $(NAME)
-
-run: all
-	@./$(NAME)
-
-memcheck: all
-	@valgrind ./$(NAME)
-
-memfull: all
-	@valgrind --leak-check=full --track-origins=yes ./$(NAME)
-
-crun: clean, all
-	@./$(NAME)
+	rm -f $(OBJS) hnm
