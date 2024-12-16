@@ -52,7 +52,7 @@ int process_file(char *file_name, int multiple, char **argv)
 			lseek(fd, 0, SEEK_SET);
 			r = read(fd, &elf_header.e32, sizeof(elf_header.e32));
 			if (r != sizeof(elf_header.e32) || check_elf((char *)&elf_header.e32))
-				exit_status = fprintf(stderr, ERR_NOT_MAGIC, argv[0]), EXIT_FAILURE;
+				fprintf(stderr, ERR_NOT_MAGIC, argv[0]), EXIT_FAILURE;
 		}
 		if (multiple)
 			printf("\n%s:\n", file_name);
