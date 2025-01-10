@@ -35,9 +35,9 @@
  */
 typedef struct pixel_s
 {
-	uint_t r;
-	uint_t g;
-	uint_t b;
+	uint8_t r;
+	uint8_t g;
+	uint8_t b;
 } pixel_t;
 
 /**
