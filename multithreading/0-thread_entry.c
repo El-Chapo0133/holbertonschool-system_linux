@@ -1,20 +1,13 @@
 #include "multithreading.h"
 
 /**
- * main - Entry point
+ * thread_entry - entry point to new thread
+ * @arg: pointer to argument for thread
  *
- * Return: EXIT_SUCCESS
+ * Return: NULL pointer
  */
-int main(void)
+void *thread_entry(void *arg)
 {
-	pthread_t tid;
-
-	pthread_create(&tid, NULL, &thread_entry, "Holberton School");
-
-	sleep(1);
-	printf("Created thread ID -> %lu\n", tid);
-
-	thread_entry("C is fun");
-	printf("Should not be printed\n");
-	return (EXIT_SUCCESS);
+	printf("%s\n", (char *)arg);
+	pthread_exit(NULL);
 }
