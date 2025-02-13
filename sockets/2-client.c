@@ -27,7 +27,7 @@
 void close_and_exit(int fd, struct addrinfo *res)
 {
 	close(fd);
-        freeaddrinfo(res);
+	freeaddrinfo(res);
 	exit(1);
 }
 
@@ -38,9 +38,9 @@ void close_and_exit(int fd, struct addrinfo *res)
  */
 int main(int argc, char **argv)
 {
-        int socket_fd;
-        char host[HOST_LEN];
-        struct addrinfo hints, *res;
+	int socket_fd;
+	char host[HOST_LEN];
+	struct addrinfo hints, *res;
 
         if (argc != 3)
 	{
