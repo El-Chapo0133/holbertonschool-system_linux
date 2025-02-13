@@ -33,8 +33,6 @@ void close_and_exit(int fd)
 
 /**
  * main - main function
- * @argc: argc
- * @argv: argv
  *
  * Return: return code
  */
@@ -58,9 +56,9 @@ int main()
 	printf("Server listening on PORT %i\n", PORT);
 	
 	client_addrlen = sizeof(client_addr);
-	if (accept(sfd, (struct sockaddr *) &client_addr, &client_addrlen) ==
+	if (accept(socket_fd, (struct sockaddr *) &client_addr, &client_addrlen) ==
 			-1)
-		error(socket_fd);
+		close_and_exit(socket_fd);
 	printf("Client connected: %s\n", inet_ntoa(client_addr.sin_addr));
 	close(socket_fd);
 	
