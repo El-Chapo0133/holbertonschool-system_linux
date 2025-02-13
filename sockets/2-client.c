@@ -24,7 +24,7 @@
  *
  * Return: void
  */
-void close_and_exit(int fd, addrinfo *res)
+void close_and_exit(int fd, struct addrinfo *res)
 {
 	close(fd);
         freeaddrinfo(res);
