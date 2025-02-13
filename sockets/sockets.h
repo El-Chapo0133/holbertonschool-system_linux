@@ -27,6 +27,7 @@
 #include <string.h>
 
 #define PORT 12345
+#define HOST_LEN 256
 
 
 
