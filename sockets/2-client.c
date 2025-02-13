@@ -57,9 +57,9 @@ int main(int argc, char **argv)
 		return (EXIT_FAILURE);
 	socket_fd = socket(res->ai_family, res->ai_socktype, res->ai_protocol);
 	if (socket_fd == -1)
-		error(socket_fd, res);
+		close_and_exit(socket_fd, res);
 	if (connect(socket_fd, res->ai_addr, res->ai_addrlen) == -1)
-		error(socket_fd, res);
+		close_and_exit(socket_fd, res);
 	printf("Connected to %s:%s\n", argv[1], argv[2]);
 	freeaddrinfo(res);
 	close(socket_fd);
