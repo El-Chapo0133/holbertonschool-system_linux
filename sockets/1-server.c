@@ -54,13 +54,13 @@ int main(void)
 	if (listen(socket_fd, 10) == -1)
 		close_and_exit(socket_fd);
 	printf("Server listening on PORT %i\n", PORT);
-	
+
 	client_addrlen = sizeof(client_addr);
 	if (accept(socket_fd, (struct sockaddr *) &client_addr, &client_addrlen) ==
 			-1)
 		close_and_exit(socket_fd);
 	printf("Client connected: %s\n", inet_ntoa(client_addr.sin_addr));
 	close(socket_fd);
-	
+
 	return (0);
 }
