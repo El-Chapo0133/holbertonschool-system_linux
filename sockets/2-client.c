@@ -42,7 +42,7 @@ int main(int argc, char **argv)
 	char host[HOST_LEN];
 	struct addrinfo hints, *res;
 
-        if (argc != 3)
+	if (argc != 3)
 	{
 		fprintf(stderr, "Usage: %s <host> <port>\n", *argv);
 		return (EXIT_FAILURE);
