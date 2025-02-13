@@ -33,8 +33,6 @@ void close_and_exit(int fd)
 
 /**
  * main - main function
- * @argc: argc
- * @argv: argv
  *
  * Return: return code
  */
