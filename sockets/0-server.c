@@ -19,7 +19,12 @@
 
 #include "sockets.h"
 
-
+/**
+ * close_and_exit - close the given fd and exit(1)
+ * @fd: fd to close
+ *
+ * Return: void
+ */
 void close_and_exit(int fd)
 {
 	close(fd);
