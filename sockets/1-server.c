@@ -36,7 +36,7 @@ void close_and_exit(int fd)
  *
  * Return: return code
  */
-int main()
+int main(void)
 {
 	int socket_fd;
 	struct sockaddr_in addr, client_addr;
