@@ -21,8 +21,10 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <apra/inet.h> /* for addr formats */
+#include <unistd.h>
+#include <arpa/inet.h> /* for addr formats */
 #include <sys/socket.h>
+#include <string.h>
 
 #define PORT 12345
 

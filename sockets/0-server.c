@@ -4,7 +4,7 @@
  *       Filename:  0-server.c
  *
  *    Description:  opens an IPv4/TCP socket, and listens to traffic
- *			on port 12345
+ *			on PORT 12345
  *
  *        Version:  1.0
  *        Created:  10.02.2025 12:06:19
@@ -38,18 +38,18 @@ int main(int argc, char **argv)
 	int socket_fd;
 	struct sockaddr_in addr;
 
-	sfd = socket(AF_INET, SOCK_STREAM, 0);
-	if (sfd == -1)
+	socket_fd = socket(AF_INET, SOCK_STREAM, 0);
+	if (socket_fd == -1)
 		close_and_exit(socket_fd);
 	memset(&addr, 0, sizeof(addr));
 	addr.sin_family = AF_INET;
-	addr.sin_port = htons(port);
+	addr.sin_port = htons(PORT);
 	addr.sin_addr.s_addr = htonl(INADDR_ANY);
-	if (bind(sfd, (struct sockaddr *)&addr, sizeof(addr)) == -1)
+	if (bind(socket_fd, (struct sockaddr *)&addr, sizeof(addr)) == -1)
 		close_and_exit(socket_fd);
-	if (listen(sfd, 10) == -1)
+	if (listen(socket_fd, 10) == -1)
 		close_and_exit(socket_fd);
-	printf("Server listening on port %i\n", port);
+	printf("Server listening on PORT %i\n", PORT);
 	pause();
 	return (0);
 }
