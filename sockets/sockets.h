@@ -25,6 +25,7 @@
 #include <arpa/inet.h> /* for addr formats */
 #include <sys/socket.h>
 #include <string.h>
+#include <netdb.h> /* socket client */
 
 #define PORT 12345
 #define HOST_LEN 256
