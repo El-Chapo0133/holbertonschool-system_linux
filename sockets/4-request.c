@@ -39,12 +39,10 @@ int main(void)
 int parse_request(int client_fd, char *buffer)
 {
 	char *delims = " \t\r\n";
-	char *method, *path, *version;
 
-	method = strtok(buffer, delims);
-	path = strtok(NULL, delims);
-	version = strtok(NULL, delims);
 	fprintf(stdout, "Method: %s\nPath: %s\nVersion: %s\n",
-		method, path, version);
+			strtok_r(buffer, delims, &buffer),
+			strtok_r(buffer, delims, &buffer),
+			strtok_r(buffer, delims, &buffer));
 	return (send_response(client_fd, RESPONSE_200));
 }
