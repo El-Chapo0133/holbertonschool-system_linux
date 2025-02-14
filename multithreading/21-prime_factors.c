@@ -1,6 +1,6 @@
 #include "list.h"
 #include <stdio.h>	/* debug */
-
+#include <stdlib.h>
 /**
  * prime_factors - factorise a number into a list of prime factors
  * @s: string representation of the number to factorise
