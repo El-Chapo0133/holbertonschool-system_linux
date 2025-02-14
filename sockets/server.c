@@ -40,7 +40,7 @@ int start_server(void)
 
 	/* set server properties */
 	server.sin_family = AF_INET;
-	server.sin_port = PORT;
+	server.sin_port = htons(PORT);
 	server.sin_addr.s_addr = hton(INADDR_ANY); /* accept any in-address */
 	/* bind the fd to a socket */
 	if (bind(socket_fd, (struct sockaddr *)&server, sizeof(server)) > 0)
@@ -93,7 +93,7 @@ int accept_messages(int socket_fd)
 	if (bytes_read > 0)
 	{
 		buffer[bytes_read] = 0; /* mark end of string */
-		fprintf(stdout, "Raw request: \"%s\"\n", buffer);
+		fprintf(stdout, "Message received: \"%s\"\n", buffer);
 		/* parse message should happens here */
 	}
 
