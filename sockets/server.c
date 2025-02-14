@@ -42,7 +42,7 @@ int start_server(void)
 	/* set server properties */
 	server.sin_family = AF_INET;
 	server.sin_port = htons(PORT);
-	server.sin_addr.s_addr = hton(INADDR_ANY); /* accept any in-address */
+	server.sin_addr.s_addr = htonl(INADDR_ANY); /* accept any in-address */
 	/* bind the fd to a socket */
 	if (bind(socket_fd, (struct sockaddr *)&server, sizeof(server)) > 0)
 	{
@@ -72,25 +72,25 @@ int start_server(void)
 int accept_messages(int socket_fd)
 {
 	int client_fd;
-	struct sockaddr_int client;
+	struct sockaddr_in client;
 	socklen_t client_size = sizeof(client);
-	char buffer[MESSAGE_BUFFER_SIZE + 1] = {0};
+	char buffer[BUFFER_SIZE + 1] = {0};
 	ssize_t bytes_read;
 
 	/* accept client and save the fd */
 	client_fd = accept(socket_fd, (struct sockaddr *)&client, &client_size);
 	if (client_fd < 0)
 	{
-		fprintf("Accept failure, socket fd: %d", socket_fd);
+		fprintf(stdout, "Accept failure, socket fd: %d", socket_fd);
 		return (EXIT_FAILURE);
 	}
 
 	/* stdout client address */
-	inet_ntop(AD_INET, &client.sin_addr, buffer, INET_ADDRSTRLEN);
-	fprintf(strout, "Client connected: %s\n", buffer);
+	inet_ntop(AF_INET, &client.sin_addr, buffer, INET_ADDRSTRLEN);
+	fprintf(stdout, "Client connected: %s\n", buffer);
 
 	/* receive the message to the buffer */
-	bytes_read = recv(client_fd, buffer, MESSAGE_BUFFER_SIZE, 0);
+	bytes_read = recv(client_fd, buffer, BUFFER_SIZE, 0);
 	if (bytes_read > 0)
 	{
 		buffer[bytes_read] = 0; /* mark end of string */

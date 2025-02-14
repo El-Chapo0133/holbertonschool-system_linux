@@ -2,3 +2,4 @@ out
 test.c
 test
 *.swp
+todo_api_*
