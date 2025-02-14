@@ -19,6 +19,8 @@
 #ifndef H_MULTITHREADING
 #define H_MULTITHREADING
 
+#include "list.h"
+
 #include <stddef.h>
 #include <stdint.h>
 #include <stdio.h>
