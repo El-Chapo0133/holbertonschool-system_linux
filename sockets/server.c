@@ -61,7 +61,8 @@ int start_server(void)
 	fprintf(stdout, "Server listening on port %d\n",
 			ntohs(server.sin_port));
 	while (1)
-		accept_messages(socket_fd);
+		if (accept_messages(socket_fd) != EXIT_SUCCESS)
+			break;
 	close(socket_fd);
 }
 
@@ -114,6 +115,5 @@ int accept_messages(int socket_fd)
  */
 int send_response(int client_fd, char *response)
 {
-	send(client_fd, response, strlen(response), 0);
-	return (EXIT_SUCCESS);
+	return (send(client_fd, response, strlen(response), 0));
 }

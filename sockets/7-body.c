@@ -1,12 +1,12 @@
 /*
  * ==========================================================================
  *
- *       Filename:  6-headers.c
+ *       Filename:  7-body.c
  *
  *    Description:  opens an IPv4/TCP socket, and listens to traffic on PORT
  *
  *        Version:  1.0
- *        Created:  14.02.2025 14:38:46
+ *        Created:  14.02.2025 16:08:18
  *       Revision:  none
  *       Compiler:  gcc
  *
@@ -30,7 +30,7 @@ int main(void)
 }
 
 /**
- * parse_request - parse HTTP header and print fields
+ * parse_request - parse http request to print body property
  * @client_fd: client fd
  * @buffer: message buffer
  *
@@ -38,20 +38,8 @@ int main(void)
  */
 int parse_request(int client_fd, char *buffer)
 {
-	char *header, *key, *value, *save1, *save2;
+	
 
-	strtok_r(buffer, CRLF, &save1); /* define buffer for strtok */
-	/* get the headers */
-	header = strtok_r(NULL, CRLF, &save1);
-	while (header)
-	{
-		/* get the key of the first header (before the :) */
-		key = trim(strtok_r(header, ":", &save2));
-		/* get the value just after */
-		value = trim(strtok_r(NULL, CRLF, &save2));
-		fprintf(stdout, "Header: \"%s\" -> \"%s\"\n", key, value);
-		/* call for the next property */
-		header = strtok_r(NULL, CRLF, &save1);
-	}
+
 	return (send_response(client_fd, RESPONSE_200));
 }
