@@ -100,3 +100,16 @@ int accept_messages(int socket_fd)
 	close(client_fd);
 	return (EXIT_SUCCESS);
 }
+
+/**
+ * send_response - sends response back to the client
+ * @client_fd: client fd
+ * @response: response
+ *
+ * Return: 1 on success
+ */
+int send_response(int client_fd, char *response)
+{
+	send(client_fd, response, strlen(response), 0);
+	return (EXIT_SUCCESS);
+}
