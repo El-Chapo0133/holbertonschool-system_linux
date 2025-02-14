@@ -46,7 +46,7 @@ int parse_request(int client_fd, char *buffer)
 	path = strtok_r(path, "?", &save1); /* get after the ? */
 	fprintf(stdout, "Path: %s\n", path);
 	/* tokenize the query after the ? with & */
-	query = strtok_r(NULL, "&", &save2); 
+	query = strtok_r(NULL, "&", &save1); 
 	while (query)
 	{
 		key = strtok_r(query, "=", &save2); /* get the key before the = */
