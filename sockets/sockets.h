@@ -26,10 +26,15 @@
 #include <sys/socket.h>
 #include <string.h>
 #include <netdb.h> /* socket client */
+#include <ctype.h>
 
 #define PORT 12345
 #define HOST_LEN 256
+#define MESSAGE_BUFFER_SIZE 8192 /* 2^13 */
+#define BACKLOG 8 /* queue length of clients */
 
-
+/* Server functions */
+int start_server(void);
+int accept_messages(int socket_fd);
 
 #endif
