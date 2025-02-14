@@ -41,8 +41,8 @@ int parse_request(int client_fd, char *buffer)
 	char *delims = " \t\r\n";
 
 	fprintf(stdout, "Method: %s\nPath: %s\nVersion: %s\n",
-			strtok(buffer, delims),
-			strtok(buffer, delims),
-			strtok(buffer, delims));
+			strtok_r(buffer, delims, &buffer),
+			strtok_r(buffer, delims, &buffer),
+			strtok_r(buffer, delims, &buffer));
 	return (send_response(client_fd, RESPONSE_200));
 }
