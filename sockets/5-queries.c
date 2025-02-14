@@ -52,10 +52,13 @@ int parse_request(int client_fd, char *buffer)
 	query = strtok_r(NULL, "&", &save1); 
 	while (query)
 	{
-		key = strtok_r(query, "=", &save2); /* get the key before the = */
-		value = strtok_r(NULL, "?", &save2); /* get the value */
+		/* get the key before the = */
+		key = strtok_r(query, "=", &save2);
+		/* get the value and move save2 to next property */
+		value = strtok_r(NULL, "?", &save2);
 		fprintf(stdout, "Query: \"%s\" -> \"%s\"\n", key, value);
-		query = strtok_r(NULL, "&", &save1); /* call for the next token */
+		/* call for the next property */
+		query = strtok_r(NULL, "&", &save1);
 	}
 	return (send_response(client_fd, RESPONSE_200));
 }
