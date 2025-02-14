@@ -38,10 +38,10 @@ int main(void)
  */
 int parse_request(int client_fd, char *buffer)
 {
-	char *start_line, *header, *key, *value, *save1, *save2;
+	char *header, *key, *value, *save1, *save2;
 
-	start_line = strtok_r(buffer, CRLF, &save1);
-	header = strtok(NULL, CRLF, &save1);
+	strtok_r(buffer, CRLF, &save1);
+	header = strtok_r(NULL, CRLF, &save1);
 	while (header)
 	{
 		key = trim(strtok_r(header, ":", &save2));
