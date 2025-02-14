@@ -2,7 +2,7 @@ CC = gcc
 CFLAGS = -Wall -Werror -Wextra -pedantic -std=gnu90
 
 SRC0 = 4-request.c server.c utils.c
-OBJ0 = $(SRC0:c=.o)
+OBJ0 = $(SRC0:.c=.o)
 NAME0 = todo_api_0
 
 SRC1 = 5-queries.c server.c utils.c
@@ -32,6 +32,8 @@ NAME6 = todo_api_6
 SRC7 = 11-delete_a_todo.c server.c utils.c
 OBJ7 = $(SRC7:.c=.o)
 NAME7 = todo_api_7
+
+.PHONY: all clean oclean fclean re
 
 all: $(OBJ0) $(OBJ1) $(OBJ2) $(OBJ3) $(OBJ4) $(OBJ5) $(OBJ6) $(OBJ7)
 	$(CC) $(OBJ0) -o $(NAME0)
