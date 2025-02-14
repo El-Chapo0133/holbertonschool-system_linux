@@ -93,7 +93,7 @@ int accept_messages(int socket_fd)
 	if (bytes_read > 0)
 	{
 		buffer[bytes_read] = 0; /* mark end of string */
-		fprintf(stdout, "Message received: \"%s\"\n", buffer);
+		fprintf(stdout, "Raw request: \"%s\"\n", buffer);
 		/* parse message should happens here */
 	}
 
