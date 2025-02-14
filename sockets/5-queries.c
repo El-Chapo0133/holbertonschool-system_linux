@@ -41,6 +41,9 @@ int parse_request(int client_fd, char *buffer)
 	char *delims = " \t\r\n";
 	char *path, *query, *save1, *key, *value, *save2;
 
+	/* Exemple request :
+	 * GET /test?value1=holberton&value2=school HTTP/1.1
+	 */
 	strtok(buffer, delims); /* define buffer in strtok */
 	path = strtok(NULL, delims); /* get the path */
 	path = strtok_r(path, "?", &save1); /* get after the ? */
@@ -50,7 +53,7 @@ int parse_request(int client_fd, char *buffer)
 	while (query)
 	{
 		key = strtok_r(query, "=", &save2); /* get the key before the = */
-		value = strtok_r(path, "?", &save2); /* get the value */
+		value = strtok_r(NULL, "?", &save2); /* get the value */
 		fprintf(stdout, "Query: \"%s\" -> \"%s\"\n", key, value);
 		query = strtok_r(NULL, "&", &save1); /* call for the next token */
 	}
