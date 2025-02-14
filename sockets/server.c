@@ -96,8 +96,8 @@ int accept_messages(int socket_fd)
 	{
 		buffer[bytes_read] = 0; /* mark end of string */
 		fprintf(stdout, "Raw request: \"%s\"\n", buffer);
-		/* parse message should happens here */
-		parse_message(client_fd, buffer);
+		/* parse message happens here */
+		parse_request(client_fd, buffer);
 	}
 
 	close(client_fd);
