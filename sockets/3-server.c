@@ -36,7 +36,7 @@ int main(void)
 	}
 
 	server.sin_family = AF_INET;
-	server.sin_port = PORT;
+	server.sin_port = htons(PORT);
 	server.sin_addr.s_addr = htonl(INADDR_ANY);
 	if (bind(socket_fd, (struct sockaddr *)&server, sizeof(server)) < 0)
 	{
