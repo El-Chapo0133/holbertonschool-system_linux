@@ -25,6 +25,7 @@
  **/
 int main(void)
 {
+	/* start the server */
 	return (start_server());
 }
 
