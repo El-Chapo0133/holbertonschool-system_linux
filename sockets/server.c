@@ -22,7 +22,7 @@
 /**
  * start_server - fully starts a socket server
  * opens and binds socket to accept messages
- * 
+ *
  * Return: 0 on failure
  */
 int start_server(void)
@@ -57,7 +57,8 @@ int start_server(void)
 		close(socket_fd);
 		return (EXIT_FAILURE);
 	}
-	fprintf(stdout, "Server binded and listening on port: %d\n", ntohs(server.sin_port));
+	fprintf(stdout, "Server binded and listening on port: %d\n",
+			ntohs(server.sin_port));
 	while (1)
 		accept_messages(socket_fd);
 	close(socket_fd);

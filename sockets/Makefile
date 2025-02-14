@@ -92,3 +92,6 @@ todo_api_6: http.h $(OBJ6)
 
 todo_api_7: http.h $(OBJ7)
 	$(CC) $(OBJ7) -o $(NAME7)
+
+betty:
+	betty *.c *.h

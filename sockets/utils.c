@@ -3,7 +3,7 @@
  *
  *       Filename:  utils.c
  *
- *    Description:  
+ *    Description:  utils for the socket project
  *
  *        Version:  1.0
  *        Created:  14.02.2025 10:00:25
