@@ -51,7 +51,7 @@ int parse_request(int client_fd, char *buffer)
 	{
 		key = strtok_r(query, "=", &save2); /* get the key before the = */
 		value = strtok_r(path, "?", &save2); /* get the value */
-		fprintf(stdout, "Query: \"%s\" -> \"%s\"", key, value);
+		fprintf(stdout, "Query: \"%s\" -> \"%s\"\n", key, value);
 		query = strtok_r(NULL, "&", &save1); /* call for the next token */
 	}
 	return (send_response(client_fd, RESPONSE_200));
