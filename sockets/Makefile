@@ -69,28 +69,28 @@ fclean: clean oclean
 
 re: oclean all
 
-todo_api_0: http.h $(OBJ0)
+todo_api_0: $(OBJ0)
 	$(CC) $(OBJ0) -o $(NAME0)
 
-todo_api_1: http.h $(OBJ1)
+todo_api_1: $(OBJ1)
 	$(CC) $(OBJ1) -o $(NAME1)
 
-todo_api_2: http.h $(OBJ2)
+todo_api_2: $(OBJ2)
 	$(CC) $(OBJ2) -o $(NAME2)
 
-todo_api_3: http.h $(OBJ3)
+todo_api_3: $(OBJ3)
 	$(CC) $(OBJ3) -o $(NAME3)
 
-todo_api_4: http.h $(OBJ4)
+todo_api_4: $(OBJ4)
 	$(CC) $(OBJ4) -o $(NAME4)
 
-todo_api_5: http.h $(OBJ5)
+todo_api_5: $(OBJ5)
 	$(CC) $(OBJ5) -o $(NAME5)
 
-todo_api_6: http.h $(OBJ6)
+todo_api_6: $(OBJ6)
 	$(CC) $(OBJ6) -o $(NAME6)
 
-todo_api_7: http.h $(OBJ7)
+todo_api_7: $(OBJ7)
 	$(CC) $(OBJ7) -o $(NAME7)
 
 betty:
