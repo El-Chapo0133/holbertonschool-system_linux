@@ -57,7 +57,7 @@ int parse_request(int client_fd, char *buffer)
 	path = strtok(NULL, SP);
 	path = strtok(path, "?");
 	/* in case it's a post to /todos */
-	if (strcasecmp(methode, METHOD_GET) ||
+	if (strcasecmp(method, METHOD_GET) ||
 		strcasecmp(method, METHOD_POST) ||
 		strcasecmp(path, PATH_TODOS))
 		return (send_response(client_fd, RESPONSE_404));
