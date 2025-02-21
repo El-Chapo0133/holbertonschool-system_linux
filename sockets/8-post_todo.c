@@ -17,7 +17,7 @@
  * ==========================================================================
  */
 
-#include "http.h" 
+#include "http.h"
 
 /**
  * main - main function
@@ -86,8 +86,8 @@ int parse_request(int client_fd, char *buffer)
  */
 int post_request(int client_fd, char *body, int content_length)
 {
-	static int ids = 0;
-	static todo_t *todo_head = NULL;
+	static int ids;
+	static todo_t *todo_head;
 	char *query, *key, *value, *save1, *save2,
 	     *title = NULL, *desc = NULL;
 	char buffer1[2048] = {0}, buffer2[1024] = {0};
