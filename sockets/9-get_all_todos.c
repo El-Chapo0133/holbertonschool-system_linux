@@ -57,7 +57,9 @@ int parse_request(int client_fd, char *buffer)
 	path = strtok(NULL, SP);
 	path = strtok(path, "?");
 	/* in case it's a post to /todos */
-	if (strcasecmp(method, METHOD_POST) || strcasecmp(path, PATH_TODOS))
+	if (strcasecmp(methode, METHOD_GET) ||
+		strcasecmp(method, METHOD_POST) ||
+		strcasecmp(path, PATH_TODOS))
 		return (send_response(client_fd, RESPONSE_404));
 	fprintf(stdout, "Path: %s\n", path);
 	/* start with the headers just after */
@@ -80,9 +82,7 @@ int parse_request(int client_fd, char *buffer)
 		return (post_request(client_fd, body, content_length));
 	}
 	else if (!strcasecmp(method, METHOD_GET))
-	{
 		return (get_request(client_fd));
-	}
 	return (EXIT_FAILURE);
 }
 
