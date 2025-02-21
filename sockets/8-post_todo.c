@@ -92,7 +92,7 @@ int post_request(int client_fd, char *body, int content_length)
 	static todo_t *todo_head = NULL;
 	char *query, *key, *value, *save1, *save2,
 	     *title = NULL, *desc = NULL;
-	char buffer1[1024] = {0}, buffer2[1024] = {0};
+	char buffer1[2048] = {0}, buffer2[2048] = {0};
 	todo_t *todo, *node;
 
 	body[content_length] = 0; /* end-of-buffer null char */
