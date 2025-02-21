@@ -49,6 +49,7 @@ int parse_request(int client_fd, char *buffer)
 		body += strlen(CRLF CRLF);
 	}
 	start_line = strtok_r(buffer, CRLF, &save1);
+	/* this is the method, we don't care here */
 	strtok(start_line, SP);
 	/* extract the path */
 	path = strtok(NULL, SP);
