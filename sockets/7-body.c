@@ -58,7 +58,7 @@ int parse_request(int client_fd, char *buffer)
 	{
 		key = trim(strtok_r(header, ":", &save2));
 		value = trim(strtok_r(NULL, CRLF, &save2));
-		if (!strcasecmp(key, URL_ENCODED))
+		if (!strcasecmp(value, URL_ENCODED))
 			encoded = 1;
 		header = strtok_r(NULL, CRLF, &save1);
 	}
@@ -73,7 +73,7 @@ int parse_request(int client_fd, char *buffer)
 			key = strtok_r(query, "=", &save2);
 			/* get the value and move save2 to next property */
 			value = strtok_r(NULL, "?", &save2);
-			fprintf(stdout, "Query: \"%s\" -> \"%s\"\n", key, value);
+			fprintf(stdout, "Body param: \"%s\" -> \"%s\"\n", key, value);
 			/* call for the next property */
 		}
 	}
