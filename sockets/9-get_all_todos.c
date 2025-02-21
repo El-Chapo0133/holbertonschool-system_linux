@@ -38,7 +38,5 @@ int main(void)
 */
 int parse_request(int client_fd, char *buffer)
 {
-	fprintf(stdout, "%s\n", buffer);
-
-	return (send_response(client_fd, RESPONSE_200));	
+	return (send_response(client_fd, buffer));	
 }
