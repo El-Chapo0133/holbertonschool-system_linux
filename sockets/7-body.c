@@ -50,22 +50,28 @@ int parse_request(int client_fd, char *buffer)
 	}
 	start_line = strtok_r(buffer, CRLF, &save1);
 	strtok(start_line, SP);
+	/* extract the path */
 	path = strtok(NULL, SP);
 	path = strtok(path, "?");
 	fprintf(stdout, "Path: %s\n", path);
+	/* start with the headers just after */
 	header = strtok_r(NULL, CRLF, &save1);
 	while (header)
 	{
+		/* extract the key and the value between the ":" */
 		key = trim(strtok_r(header, ":", &save2));
 		value = trim(strtok_r(NULL, CRLF, &save2));
+		/* in case the value is application/x-www-form-urlencoded */
 		if (!strcasecmp(value, URL_ENCODED))
 			encoded = 1;
+		/* call for the next header */
 		header = strtok_r(NULL, CRLF, &save1);
 	}
 
 	/* if url is encoded, print the query */
 	if (encoded)
 	{
+		/* start after the "&" */
 		query = strtok_r(body, "&", &save1);
 		while (query)
 		{
