@@ -150,10 +150,13 @@ int get_request(int client_fd)
 
 	buffer2[0] = '[';
 	while (todo)
+	{
 		sprintf(buffer2 + strlen(buffer2),
 			"{\"" KEY_ID "\":%d\"" KEY_TITLE "\":\"%s\",\""
 			KEY_DESCRIPTION "\":\"%s\"}%s", todo->id, todo->title,
 			todo->description, todo->next ? "," : "");
+		todo = todo->next;
+	}
 	buffer2[strlen(buffer2)] = ']';
 	sprintf(buffer1, RESPONSE_200_NOCRLF CRLF CONTENT_LENGTH ":%lu" CRLF
 			CONTENT_TYPE ": " JSON_TYPE CRLF CRLF "%s",
