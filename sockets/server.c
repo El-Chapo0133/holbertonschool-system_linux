@@ -64,6 +64,7 @@ int start_server(void)
 		if (accept_messages(socket_fd) != EXIT_SUCCESS)
 			break;
 	close(socket_fd);
+	return (EXIT_SUCCESS);
 }
 
 /**
