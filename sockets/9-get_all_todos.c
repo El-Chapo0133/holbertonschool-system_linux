@@ -158,7 +158,7 @@ int get_request(int client_fd)
 		todo = todo->next;
 	}
 	buffer2[strlen(buffer2)] = ']';
-	sprintf(buffer1, RESPONSE_200_NOCRLF CRLF CONTENT_LENGTH ":%lu" CRLF
+	sprintf(buffer1, RESPONSE_200_NOCRLF CRLF CONTENT_LENGTH ": %lu" CRLF
 			CONTENT_TYPE ": " JSON_TYPE CRLF CRLF "%s",
 			strlen(buffer2), buffer2);
 
