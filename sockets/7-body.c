@@ -75,6 +75,7 @@ int parse_request(int client_fd, char *buffer)
 			value = strtok_r(NULL, "?", &save2);
 			fprintf(stdout, "Body param: \"%s\" -> \"%s\"\n", key, value);
 			/* call for the next property */
+			query = strtok_r(NULL, "&", &save1);
 		}
 	}
 
