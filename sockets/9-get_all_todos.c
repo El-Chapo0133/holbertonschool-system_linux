@@ -152,7 +152,7 @@ int get_request(int client_fd)
 	while (todo)
 	{
 		sprintf(buffer2 + strlen(buffer2),
-			"{\"" KEY_ID "\":%d\"," KEY_TITLE "\":\"%s\",\""
+			"{\"" KEY_ID "\":%d,\"" KEY_TITLE "\":\"%s\",\""
 			KEY_DESCRIPTION "\":\"%s\"}%s", todo->id, todo->title,
 			todo->description, todo->next ? "," : "");
 		todo = todo->next;
