@@ -73,9 +73,7 @@ int parse_request(int client_fd, char *buffer)
 	}
 	if (!content_length)
 		return (send_response(client_fd, RESPONSE_411));
-	post_request(client_fd, body, content_length);
-	
-	return (send_response(client_fd, RESPONSE_200));
+	return (post_request(client_fd, body, content_length));
 }
 
 /**
