@@ -38,7 +38,45 @@ int main(void)
  */
 int parse_request(int client_fd, char *buffer)
 {
-	fprintf(stdout, "%s\n", buffer);
+	char *start_line, *path, *header,  *body, *query,
+	     *key, *value, *save1, *save2;
+	int encoded = 0;
+
+	body = strstr(buffer, CRLF CRLF);
+	if (strlen(body))
+	{
+		*body = 0;
+		body += strlen(CRLF CRLF);
+	}
+	start_line = strtok_r(buffer, CRLF, &save1);
+	strtok(start_line, SP);
+	path = strtok(NULL, SP);
+	path = strtok(path, "?");
+	fprintf(stdout, "Path: %s\n", path);
+	header = strtok_r(NULL, CRLF, &save1);
+	while (header)
+	{
+		key = trim(strtok_r(header, ":", &save2));
+		value = trim(strtok_r(NULL, CRLF, &save2));
+		if (!strcasecmp(key, URL_ENCODED))
+			encoded = 1;
+		header = strtok_r(NULL, CRLF, &save1);
+	}
+
+	/* if url is encoded, print the query */
+	if (encoded)
+	{
+		query = strtok_r(body, "&", &save1);
+		while (query)
+		{
+			/* get the key before the = */
+			key = strtok_r(query, "=", &save2);
+			/* get the value and move save2 to next property */
+			value = strtok_r(NULL, "?", &save2);
+			fprintf(stdout, "Query: \"%s\" -> \"%s\"\n", key, value);
+			/* call for the next property */
+		}
+	}
 
 
 	return (send_response(client_fd, RESPONSE_200));
