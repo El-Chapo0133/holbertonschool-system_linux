@@ -145,7 +145,7 @@ int post_request(int client_fd, char *body, int content_length)
 
 int get_request(int client_fd)
 {
-	char buffer1[BUFFER_SIZE + 1] = {0}, buffer2[BUFFER_SIZE + 1] = {0};
+	char buffer1[BIGGER_BUFFER_SIZE + 1] = {0}, buffer2[BUFFER_SIZE + 1] = {0};
 	todo_t *todo = todo_head;
 
 	buffer2[0] = '[';

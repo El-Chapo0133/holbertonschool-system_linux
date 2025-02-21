@@ -29,6 +29,7 @@
 
 #define PORT 8080
 #define BUFFER_SIZE 8192 /* 2^13 */
+#define BIGGER_BUFFER_SIZE 16284 /* BUFFER_SIZE * 2 */
 #define CRLF "\r\n"
 #define SP " \t"
 #define BACKLOG 8 /* client queue size */
