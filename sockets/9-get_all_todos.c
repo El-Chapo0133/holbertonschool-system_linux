@@ -136,7 +136,7 @@ int post_request(int client_fd, char *body, int content_length)
 
 	sprintf(buffer2, "{\"" KEY_ID "\":%d,\"" KEY_TITLE "\":\"%s\",\""
 			KEY_DESCRIPTION "\":\"%s\"}", ids - 1, title, desc);
-	sprintf(buffer1, RESPONSE_201 CRLF CONTENT_LENGTH ": %lu" CRLF
+	sprintf(buffer1, RESPONSE_201 CRLF CONTENT_LENGTH": %lu" CRLF
 			CONTENT_TYPE ": " JSON_TYPE CRLF CRLF "%s",
 			strlen(buffer2), buffer2);
 	return (send_response(client_fd, buffer1));
@@ -152,7 +152,7 @@ int get_request(int client_fd)
 	while (todo)
 	{
 		sprintf(buffer2 + strlen(buffer2),
-			"{\"" KEY_ID "\":%d\"" KEY_TITLE "\":\"%s\",\""
+			"{\"" KEY_ID "\":%d\"," KEY_TITLE "\":\"%s\",\""
 			KEY_DESCRIPTION "\":\"%s\"}%s", todo->id, todo->title,
 			todo->description, todo->next ? "," : "");
 		todo = todo->next;
